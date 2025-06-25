@@ -1,6 +1,5 @@
 package view;// view.JFhome.java
 import entities.Preso;
-import service.PresoDAO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

@@ -3,12 +3,8 @@ package view;
 import javax.swing.*;
 import java.time.LocalDateTime;
 
-/**
- * Classe que representa a tela de login da aplicação.
- */
 public class JFlogin extends JFrame {
 
-    // --- Componentes da Interface Gráfica ---
     private JLabel lblUsuario;
     private JLabel lblSenha;
     private JTextField txtUsuario;
@@ -23,7 +19,6 @@ public class JFlogin extends JFrame {
         this.setLocationRelativeTo(null);
         this.setLayout(null);
 
-        // --- Componentes ---
         lblUsuario = new JLabel("Usuário:");
         lblUsuario.setBounds(50, 30, 80, 25);
         this.add(lblUsuario);
@@ -48,7 +43,6 @@ public class JFlogin extends JFrame {
         btnCancelar.setBounds(230, 120, 90, 30);
         this.add(btnCancelar);
 
-        // --- Ações dos Botões ---
         btnCancelar.addActionListener(e -> System.exit(0));
 
         btnLogin.addActionListener(e -> realizarLogin());
@@ -64,7 +58,6 @@ public class JFlogin extends JFrame {
         if (usuario.equals(USUARIO_VALIDO) && senha.equals(SENHA_VALIDA)) {
             LocalDateTime dataHoraLogin = LocalDateTime.now();
 
-            // ALTERAÇÃO AQUI: Chamar a nova tela view.JFhome
             JFhome telaHome = new JFhome(usuario, dataHoraLogin);
             telaHome.setVisible(true);
 

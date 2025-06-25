@@ -15,14 +15,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-/**
- * Tela de tratamento (Cadastro/Edição).
- * (Adicionada validação completa de CPF)
- */
 public class JFtreatment extends JFrame {
 
-    // --- Componentes da Interface ---
-    // Alterado para JFormattedTextField
     private JFormattedTextField txtCPF;
     private JTextField txtNomeCompleto, txtDataEntrada, txtDataNasc, txtNomeSocial,
             txtIdade, txtPais, txtMae, txtPai, txtProcedencia;
@@ -32,8 +26,6 @@ public class JFtreatment extends JFrame {
     private JComboBox<String> comboRaca, comboSexo, comboGenero, comboOrientacao;
     private JCheckBox checkPaiDesconhecido;
 
-    // --- Controle de Dados e Referência ---
-    private Preso presoAtual;
     private JFhome telaHome;
 
     public JFtreatment(JFhome telaHome, String operador, Preso presoParaEditar) {
@@ -61,13 +53,12 @@ public class JFtreatment extends JFrame {
         mainPanel.setPreferredSize(new Dimension(760, 800));
         scrollPane.setViewportView(mainPanel);
 
-        // --- DADOS AUTOMÁTICOS ---
         LocalDate dataAtual = LocalDate.now();
         LocalTime horaAtual = LocalTime.now();
         DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter formatadorHora = DateTimeFormatter.ofPattern("HH:mm");
 
-        // PAINEL DE ATENDIMENTO
+
         JPanel panelAtendimento = new JPanel();
         panelAtendimento.setBorder(new TitledBorder("ATENDIMENTO"));
         panelAtendimento.setLayout(null);
@@ -122,7 +113,6 @@ public class JFtreatment extends JFrame {
         radioTransfSim.addActionListener(e -> txtProcedencia.setEnabled(true));
         radioTransfNao.addActionListener(e -> txtProcedencia.setEnabled(false));
 
-        // PAINEL DE IDENTIFICAÇÃO
         JPanel panelIdentificacao = new JPanel();
         panelIdentificacao.setBorder(new TitledBorder("IDENTIFICAÇÃO"));
         panelIdentificacao.setLayout(null);
@@ -157,7 +147,6 @@ public class JFtreatment extends JFrame {
             mascaraCpf.setPlaceholderCharacter('_');
             txtCPF = new JFormattedTextField(mascaraCpf);
         } catch (ParseException ex) {
-            // Em caso de erro na máscara, usa um campo de texto normal como fallback
             System.err.println("Erro ao criar máscara de CPF. Usando JTextField padrão.");
             txtCPF = new JFormattedTextField();
         }
@@ -281,7 +270,7 @@ public class JFtreatment extends JFrame {
             setTitle("Editar Cadastro de Preso");
             txtNomeCompleto.setText(presoAtual.getNomeCompleto());
             txtNomeSocial.setText(presoAtual.getNomeSocial());
-            txtCPF.setValue(presoAtual.getCpf()); // Usar setValue para JFormattedTextField
+            txtCPF.setValue(presoAtual.getCpf());
             txtDataNasc.setText(presoAtual.getDataNascimento());
             txtDataEntrada.setText(presoAtual.getDataEntrada());
             txtMae.setText(presoAtual.getNomeMae());
@@ -351,9 +340,7 @@ public class JFtreatment extends JFrame {
         List<String> erros = new ArrayList<>();
         if (txtNomeCompleto.getText().trim().isEmpty()) erros.add("• Nome Completo");
 
-        // --- VALIDAÇÃO DO CPF ATUALIZADA ---
-        String cpf = (String) txtCPF.getValue(); // Pega o valor do campo formatado
-        // A máscara pode deixar o campo com placeholder, então precisamos verificar se está preenchido
+        String cpf = (String) txtCPF.getValue();
         if (cpf == null || cpf.contains("_")) {
             erros.add("• CPF (incompleto)");
         } else if (!isCPFValido(cpf)) {
@@ -392,27 +379,19 @@ public class JFtreatment extends JFrame {
         return null;
     }
 
-    /**
-     * Valida um CPF.
-     * @param cpf O CPF como String. Pode conter pontos e traço.
-     * @return true se o CPF for válido, false caso contrário.
-     */
     private static boolean isCPFValido(String cpf) {
-        // Remove caracteres não numéricos
+
         cpf = cpf.replaceAll("[^0-9]", "");
 
-        // Verifica se o tamanho é 11
         if (cpf.length() != 11) {
             return false;
         }
 
-        // Verifica se todos os dígitos são iguais (ex: 111.111.111-11), o que é inválido
-        if (cpf.matches("(\\d)\\1{10}")) {
+       if (cpf.matches("(\\d)\\1{10}")) {
             return false;
         }
 
         try {
-            // --- Cálculo do 1º dígito verificador ---
             int soma = 0;
             for (int i = 0; i < 9; i++) {
                 soma += (Character.getNumericValue(cpf.charAt(i)) * (10 - i));
@@ -420,7 +399,6 @@ public class JFtreatment extends JFrame {
             int resto = soma % 11;
             int digitoVerificador1 = (resto < 2) ? 0 : 11 - resto;
 
-            // Verifica se o 1º dígito verificador está correto
             if (digitoVerificador1 != Character.getNumericValue(cpf.charAt(9))) {
                 return false;
             }
@@ -433,7 +411,7 @@ public class JFtreatment extends JFrame {
             resto = soma % 11;
             int digitoVerificador2 = (resto < 2) ? 0 : 11 - resto;
 
-            // Verifica se o 2º dígito verificador está correto
+
             if (digitoVerificador2 != Character.getNumericValue(cpf.charAt(10))) {
                 return false;
             }
@@ -442,7 +420,6 @@ public class JFtreatment extends JFrame {
             return false;
         }
 
-        // Se passou por todas as verificações, o CPF é válido
         return true;
     }
 }
