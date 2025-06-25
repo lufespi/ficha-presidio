@@ -1,5 +1,9 @@
 package view;
 
+
+import controller.LoginController;
+import entities.User;
+
 import javax.swing.*;
 import java.time.LocalDateTime;
 
@@ -11,6 +15,7 @@ public class JFlogin extends JFrame {
     private JPasswordField txtSenha;
     private JButton btnLogin;
     private JButton btnCancelar;
+    private LoginController loginController;
 
     public JFlogin() {
         this.setTitle("Login do Sistema");
@@ -18,6 +23,7 @@ public class JFlogin extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setLayout(null);
+        this.loginController = new LoginController(this);
 
         lblUsuario = new JLabel("Usuário:");
         lblUsuario.setBounds(50, 30, 80, 25);
@@ -49,25 +55,19 @@ public class JFlogin extends JFrame {
     }
 
     private void realizarLogin() {
-        String usuario = txtUsuario.getText();
-        String senha = new String(txtSenha.getPassword());
+        String username = txtUsuario.getText();
+        String password = new String(txtSenha.getPassword());
 
-        final String USUARIO_VALIDO = "admin";
-        final String SENHA_VALIDA = "12345";
+        if(username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        if (usuario.equals(USUARIO_VALIDO) && senha.equals(SENHA_VALIDA)) {
-            LocalDateTime dataHoraLogin = LocalDateTime.now();
+        User user =  loginController.makeLogin(username, password);
 
-            JFhome telaHome = new JFhome(usuario, dataHoraLogin);
-            telaHome.setVisible(true);
-
+        if (user != null) {
+            new JFhome(user.getUsername(), LocalDateTime.now()).setVisible(true);
             this.dispose();
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Usuário ou senha inválidos.", "Erro de Login", JOptionPane.ERROR_MESSAGE);
-            txtUsuario.setText("");
-            txtSenha.setText("");
-            txtUsuario.requestFocus();
         }
     }
 

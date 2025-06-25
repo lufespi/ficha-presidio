@@ -28,9 +28,8 @@ public class JFtreatment extends JFrame {
 
     private JFhome telaHome;
 
-    public JFtreatment(JFhome telaHome, String operador, Preso presoParaEditar) {
+    public JFtreatment(JFhome telaHome, String operador) {
         this.telaHome = telaHome;
-        this.presoAtual = presoParaEditar;
 
         setSize(775, 840);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -260,71 +259,7 @@ public class JFtreatment extends JFrame {
         mainPanel.add(btnCancelar);
 
         btnCancelar.addActionListener(e -> confirmarCancelamento());
-        btnSalvar.addActionListener(e -> salvarDados());
 
-        popularFormulario();
-    }
-
-    private void popularFormulario() {
-        if (presoAtual != null) {
-            setTitle("Editar Cadastro de Preso");
-            txtNomeCompleto.setText(presoAtual.getNomeCompleto());
-            txtNomeSocial.setText(presoAtual.getNomeSocial());
-            txtCPF.setValue(presoAtual.getCpf());
-            txtDataNasc.setText(presoAtual.getDataNascimento());
-            txtDataEntrada.setText(presoAtual.getDataEntrada());
-            txtMae.setText(presoAtual.getNomeMae());
-            txtPai.setText(presoAtual.getNomePai());
-
-            switch (presoAtual.getNacionalidade() != null ? presoAtual.getNacionalidade() : "") {
-                case "Brasileira": radioBrasileira.setSelected(true); break;
-                case "Naturalizado": radioNaturalizado.setSelected(true); break;
-                case "Estrangeiro": radioEstrangeiro.setSelected(true); break;
-            }
-
-            switch (presoAtual.getEstadoCivil() != null ? presoAtual.getEstadoCivil() : "") {
-                case "Solteiro": radioSolteiro.setSelected(true); break;
-                case "Casado": radioCasado.setSelected(true); break;
-                case "União Estável": radioUniao.setSelected(true); break;
-            }
-
-            comboRaca.setSelectedItem(presoAtual.getRaca());
-            comboSexo.setSelectedItem(presoAtual.getSexo());
-            comboGenero.setSelectedItem(presoAtual.getIdentidadeGenero());
-            comboOrientacao.setSelectedItem(presoAtual.getOrientacaoSexual());
-        } else {
-            setTitle("Novo Cadastro de Preso");
-        }
-    }
-
-    private void salvarDados() {
-        if (!validarCampos()) {
-            return;
-        }
-
-        if (presoAtual == null) {
-            presoAtual = new Preso();
-        }
-
-        presoAtual.setNomeCompleto(txtNomeCompleto.getText().trim());
-        presoAtual.setNomeSocial(txtNomeSocial.getText().trim());
-        presoAtual.setCpf((String) txtCPF.getValue()); // Usar getValue para JFormattedTextField
-        presoAtual.setDataNascimento(txtDataNasc.getText().trim());
-        presoAtual.setDataEntrada(txtDataEntrada.getText().trim());
-        presoAtual.setNomeMae(txtMae.getText().trim());
-        presoAtual.setNomePai(checkPaiDesconhecido.isSelected() ? "Desconhecido" : txtPai.getText().trim());
-        presoAtual.setNacionalidade(getSelectedButtonText(groupNacionalidade));
-        presoAtual.setEstadoCivil(getSelectedButtonText(groupEC));
-
-        presoAtual.setRaca((String) comboRaca.getSelectedItem());
-        presoAtual.setSexo((String) comboSexo.getSelectedItem());
-        presoAtual.setIdentidadeGenero((String) comboGenero.getSelectedItem());
-        presoAtual.setOrientacaoSexual((String) comboOrientacao.getSelectedItem());
-
-        PresoDAO.salvar(presoAtual);
-        JOptionPane.showMessageDialog(this, "Dados salvos com sucesso!");
-        telaHome.carregarTabela(null);
-        this.dispose();
     }
 
     private void confirmarCancelamento() {
