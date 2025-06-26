@@ -1,7 +1,5 @@
 package view;
-import entities.*;
-import service.*;
-import view.*;
+import controller.TreatmentController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -11,25 +9,30 @@ import java.text.ParseException; // Import necessário para a exceção da másc
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 
 public class JFtreatment extends JFrame {
 
-    private JFormattedTextField txtCPF;
-    private JTextField txtNomeCompleto, txtDataEntrada, txtDataNasc, txtNomeSocial,
+    public JFormattedTextField txtCPF;
+    public JTextField txtNomeCompleto, txtDataEntrada, txtDataNasc, txtNomeSocial,
             txtIdade, txtPais, txtMae, txtPai, txtProcedencia;
-    private JRadioButton radioTransfNao, radioTransfSim, radioBrasileira, radioNaturalizado,
+    public JRadioButton radioTransfNao, radioTransfSim, radioBrasileira, radioNaturalizado,
             radioEstrangeiro, radioSolteiro, radioCasado, radioUniao;
-    private ButtonGroup groupTransferencia, groupNacionalidade, groupEC;
-    private JComboBox<String> comboRaca, comboSexo, comboGenero, comboOrientacao;
-    private JCheckBox checkPaiDesconhecido;
+    public ButtonGroup groupTransferencia, groupNacionalidade, groupEC;
+    public JComboBox<String> comboRaca, comboSexo, comboGenero, comboOrientacao;
+    public JCheckBox checkPaiDesconhecido;
 
-    private JFhome telaHome;
+    public LocalDate dataAtual;
+    public LocalTime horaAtual;
+    public JFhome homeScreen;
+    public String username;
+    private TreatmentController treatmentController;
 
-    public JFtreatment(JFhome telaHome, String operador) {
-        this.telaHome = telaHome;
+
+    public JFtreatment(JFhome homeScreen, String username) {
+        this.homeScreen = homeScreen;
+        this.username = username;
+        this.treatmentController = new TreatmentController(this);
 
         setSize(775, 840);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -52,8 +55,8 @@ public class JFtreatment extends JFrame {
         mainPanel.setPreferredSize(new Dimension(760, 800));
         scrollPane.setViewportView(mainPanel);
 
-        LocalDate dataAtual = LocalDate.now();
-        LocalTime horaAtual = LocalTime.now();
+        dataAtual = LocalDate.now();
+        horaAtual = LocalTime.now();
         DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter formatadorHora = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -66,7 +69,7 @@ public class JFtreatment extends JFrame {
         JLabel lblResponsavel = new JLabel("Responsável pelo atendimento:");
         lblResponsavel.setBounds(20, 30, 200, 25);
         panelAtendimento.add(lblResponsavel);
-        JLabel lblResponsavelValor = new JLabel(operador);
+        JLabel lblResponsavelValor = new JLabel(username);
         lblResponsavelValor.setFont(new Font("Arial", Font.BOLD, 12));
         lblResponsavelValor.setBounds(220, 30, 200, 25);
         panelAtendimento.add(lblResponsavelValor);
@@ -248,7 +251,6 @@ public class JFtreatment extends JFrame {
         comboOrientacao.setBounds(180, 135, 550, 25);
         panelAutodeclarado.add(comboOrientacao);
 
-        // BOTÕES DE AÇÃO
         JButton btnSalvar = new JButton("Salvar Cadastro");
         btnSalvar.setFont(new Font("Arial", Font.BOLD, 14));
         btnSalvar.setBounds(200, 670, 180, 40);
@@ -258,6 +260,8 @@ public class JFtreatment extends JFrame {
         btnCancelar.setBounds(420, 670, 180, 40);
         mainPanel.add(btnCancelar);
 
+
+        btnSalvar.addActionListener(e -> saveData());
         btnCancelar.addActionListener(e -> confirmarCancelamento());
 
     }
@@ -271,39 +275,6 @@ public class JFtreatment extends JFrame {
         }
     }
 
-    private boolean validarCampos() {
-        List<String> erros = new ArrayList<>();
-        if (txtNomeCompleto.getText().trim().isEmpty()) erros.add("• Nome Completo");
-
-        String cpf = (String) txtCPF.getValue();
-        if (cpf == null || cpf.contains("_")) {
-            erros.add("• CPF (incompleto)");
-        } else if (!isCPFValido(cpf)) {
-            erros.add("• CPF (inválido)");
-        }
-
-        if (txtDataNasc.getText().trim().isEmpty()) erros.add("• Data de Nascimento");
-        if (txtDataEntrada.getText().trim().isEmpty()) erros.add("• Data de Entrada na Unidade");
-        if (groupTransferencia.getSelection() == null) erros.add("• Transferência de outra Unidade");
-        if (groupNacionalidade.getSelection() == null) erros.add("• Nacionalidade");
-        if (groupEC.getSelection() == null) erros.add("• Estado Civil");
-        if (comboRaca.getSelectedIndex() <= 0) erros.add("• Raça/Cor");
-        if (comboSexo.getSelectedIndex() <= 0) erros.add("• Sexo Biológico");
-        if (comboGenero.getSelectedIndex() <= 0) erros.add("• Identidade de Gênero");
-        if (comboOrientacao.getSelectedIndex() <= 0) erros.add("• Orientação Sexual");
-
-        if (erros.isEmpty()) {
-            return true;
-        } else {
-            StringBuilder mensagemErro = new StringBuilder("Os seguintes campos são obrigatórios ou inválidos:\n\n");
-            for (String erro : erros) {
-                mensagemErro.append(erro).append("\n");
-            }
-            JOptionPane.showMessageDialog(this, mensagemErro.toString(), "Campos Obrigatórios", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-    }
-
     private String getSelectedButtonText(ButtonGroup buttonGroup) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
@@ -314,47 +285,5 @@ public class JFtreatment extends JFrame {
         return null;
     }
 
-    private static boolean isCPFValido(String cpf) {
-
-        cpf = cpf.replaceAll("[^0-9]", "");
-
-        if (cpf.length() != 11) {
-            return false;
-        }
-
-       if (cpf.matches("(\\d)\\1{10}")) {
-            return false;
-        }
-
-        try {
-            int soma = 0;
-            for (int i = 0; i < 9; i++) {
-                soma += (Character.getNumericValue(cpf.charAt(i)) * (10 - i));
-            }
-            int resto = soma % 11;
-            int digitoVerificador1 = (resto < 2) ? 0 : 11 - resto;
-
-            if (digitoVerificador1 != Character.getNumericValue(cpf.charAt(9))) {
-                return false;
-            }
-
-            // --- Cálculo do 2º dígito verificador ---
-            soma = 0;
-            for (int i = 0; i < 10; i++) {
-                soma += (Character.getNumericValue(cpf.charAt(i)) * (11 - i));
-            }
-            resto = soma % 11;
-            int digitoVerificador2 = (resto < 2) ? 0 : 11 - resto;
-
-
-            if (digitoVerificador2 != Character.getNumericValue(cpf.charAt(10))) {
-                return false;
-            }
-
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        return true;
-    }
+    private void saveData() {}
 }

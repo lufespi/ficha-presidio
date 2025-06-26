@@ -70,8 +70,4 @@ public class JFlogin extends JFrame {
             this.dispose();
         }
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new JFlogin().setVisible(true));
-    }
 }

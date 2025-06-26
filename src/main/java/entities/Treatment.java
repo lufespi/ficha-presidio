@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class Treatment {
   private int id;
-  private int userId;
+  private User user;
   private Date treatmentDate;
-  private Date treatmentHour;
+  private String treatmentHour;
   private Date entryDate;
   private boolean isTransfer;
   private String sourceTransfer;
@@ -17,11 +17,11 @@ public class Treatment {
   public void setId(int id) {
     this.id = id;
   }
-  public int getUserId() {
-    return userId;
+  public User getUser() {
+    return user;
   }
-  public void setUserId(int userId) {
-    this.userId = userId;
+  public void setUser(User user) {
+    this.user = user;
   }
   public Date getTreatmentDate() {
     return treatmentDate;
@@ -29,10 +29,10 @@ public class Treatment {
   public void setTreatmentDate(Date treatmentDate) {
     this.treatmentDate = treatmentDate;
   }
-  public Date getTreatmentHour() {
+  public String getTreatmentHour() {
     return treatmentHour;
   }
-  public void setTreatmentHour(Date treatmentHour) {
+  public void setTreatmentHour(String treatmentHour) {
     this.treatmentHour = treatmentHour;
   }
   public Date getEntryDate() {

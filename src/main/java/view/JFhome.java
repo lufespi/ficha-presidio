@@ -1,5 +1,7 @@
 package view;
 
+import controller.HomeController;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -9,14 +11,16 @@ import java.time.LocalDateTime;
 
 public class JFhome extends JFrame {
 
-    private JTextField txtPesquisaNome;
-    private JButton btnBusca, btnCadastro;
-    private JTable tabelaPresos;
-    private DefaultTableModel tableModel;
-    private String usuarioLogado;
+    public JTextField txtPesquisaNome;
+    public JButton btnBusca, btnCadastro;
+    public JTable tabelaPresos;
+    public DefaultTableModel tableModel;
+    public String usuarioLogado;
+    private HomeController homeController;
 
     public JFhome(String usuario, LocalDateTime dataHoraLogin) {
         this.usuarioLogado = usuario;
+        homeController = new HomeController();
 
         setTitle("Tela Principal - Sistema de Controle");
         setSize(800, 600);
@@ -32,7 +36,7 @@ public class JFhome extends JFrame {
         panelNorte.add(btnBusca);
         add(panelNorte, BorderLayout.NORTH);
 
-        String[] colunas = {"ID", "Nome Completo", "CPF", "Data de Entrada"};
+        String[] colunas = {"ID", "Nome Completo", "CPF", "Idade", "Nome da mãe", "Data de Entrada"};
         tableModel = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -68,5 +72,11 @@ public class JFhome extends JFrame {
                 }
             }
         });
+        populateTable();
+
+    }
+
+    public void populateTable() {
+        homeController.populateTable(this);
     }
 }
