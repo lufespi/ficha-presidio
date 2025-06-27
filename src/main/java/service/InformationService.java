@@ -3,6 +3,7 @@ package service;
 import configs.DBConnection;
 import entities.Information;
 import entities.Treatment;
+import utils.DateUtils;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -68,7 +69,7 @@ public class InformationService {
             Statement.RETURN_GENERATED_KEYS)) {
       stmt.setString(1, socialName);
       stmt.setString(2, fullName);
-      stmt.setDate(3, Date.valueOf(String.valueOf(bornDate)));
+      stmt.setString(3, DateUtils.getFormattedDate(bornDate));
       stmt.setInt(4, age);
       stmt.setString(5, cpf);
       stmt.setString(6, nationality);

@@ -6,7 +6,6 @@ public class Treatment {
   private int id;
   private User user;
   private Date treatmentDate;
-  private String treatmentHour;
   private Date entryDate;
   private boolean isTransfer;
   private String sourceTransfer;
@@ -28,12 +27,6 @@ public class Treatment {
   }
   public void setTreatmentDate(Date treatmentDate) {
     this.treatmentDate = treatmentDate;
-  }
-  public String getTreatmentHour() {
-    return treatmentHour;
-  }
-  public void setTreatmentHour(String treatmentHour) {
-    this.treatmentHour = treatmentHour;
   }
   public Date getEntryDate() {
     return entryDate;

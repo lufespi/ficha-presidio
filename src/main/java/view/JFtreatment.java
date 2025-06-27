@@ -1,5 +1,6 @@
 package view;
 import controller.TreatmentController;
+import entities.User;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -14,22 +15,22 @@ import java.util.Enumeration;
 public class JFtreatment extends JFrame {
 
     public JFormattedTextField txtCPF;
-    public JTextField txtNomeCompleto, txtDataEntrada, txtDataNasc, txtNomeSocial,
-            txtIdade, txtPais, txtMae, txtPai, txtProcedencia;
+    public JTextField txtNomeCompleto, txtEntryDate, txtDataNasc, txtNomeSocial,
+            txtIdade, txtPais, txtMae, txtPai, txtSource;
     public JRadioButton radioTransfNao, radioTransfSim, radioBrasileira, radioNaturalizado,
             radioEstrangeiro, radioSolteiro, radioCasado, radioUniao;
     public ButtonGroup groupTransferencia, groupNacionalidade, groupEC;
     public JComboBox<String> comboRaca, comboSexo, comboGenero, comboOrientacao;
     public JCheckBox checkPaiDesconhecido;
 
-    public LocalDate dataAtual;
-    public LocalTime horaAtual;
+    public LocalDate actualDate;
+    public LocalTime actualTime;
     public JFhome homeScreen;
-    public String username;
+    public User username;
     private TreatmentController treatmentController;
 
 
-    public JFtreatment(JFhome homeScreen, String username) {
+    public JFtreatment(JFhome homeScreen, User username) {
         this.homeScreen = homeScreen;
         this.username = username;
         this.treatmentController = new TreatmentController(this);
@@ -55,8 +56,9 @@ public class JFtreatment extends JFrame {
         mainPanel.setPreferredSize(new Dimension(760, 800));
         scrollPane.setViewportView(mainPanel);
 
-        dataAtual = LocalDate.now();
-        horaAtual = LocalTime.now();
+        actualDate = LocalDate.now();
+        LocalDate formattedActualDate = LocalDate.now();
+        actualTime = LocalTime.now();
         DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter formatadorHora = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -69,30 +71,30 @@ public class JFtreatment extends JFrame {
         JLabel lblResponsavel = new JLabel("Responsável pelo atendimento:");
         lblResponsavel.setBounds(20, 30, 200, 25);
         panelAtendimento.add(lblResponsavel);
-        JLabel lblResponsavelValor = new JLabel(username);
+        JLabel lblResponsavelValor = new JLabel(username.getUsername());
         lblResponsavelValor.setFont(new Font("Arial", Font.BOLD, 12));
         lblResponsavelValor.setBounds(220, 30, 200, 25);
         panelAtendimento.add(lblResponsavelValor);
         JLabel lblData = new JLabel("Data:");
         lblData.setBounds(20, 60, 40, 25);
         panelAtendimento.add(lblData);
-        JLabel lblDataValor = new JLabel(dataAtual.format(formatadorData));
+        JLabel lblDataValor = new JLabel(formattedActualDate.format(formatadorData));
         lblDataValor.setFont(new Font("Arial", Font.BOLD, 12));
         lblDataValor.setBounds(60, 60, 100, 25);
         panelAtendimento.add(lblDataValor);
         JLabel lblHorario = new JLabel("Horário:");
         lblHorario.setBounds(180, 60, 60, 25);
         panelAtendimento.add(lblHorario);
-        JLabel lblHorarioValor = new JLabel(horaAtual.format(formatadorHora));
+        JLabel lblHorarioValor = new JLabel(actualTime.format(formatadorHora));
         lblHorarioValor.setFont(new Font("Arial", Font.BOLD, 12));
         lblHorarioValor.setBounds(240, 60, 100, 25);
         panelAtendimento.add(lblHorarioValor);
         JLabel lblDataEntrada = new JLabel("Data de entrada na Unidade Prisional:");
         lblDataEntrada.setBounds(380, 60, 250, 25);
         panelAtendimento.add(lblDataEntrada);
-        txtDataEntrada = new JTextField();
-        txtDataEntrada.setBounds(630, 60, 100, 25);
-        panelAtendimento.add(txtDataEntrada);
+        txtEntryDate = new JTextField();
+        txtEntryDate.setBounds(630, 60, 100, 25);
+        panelAtendimento.add(txtEntryDate);
         JLabel lblTransferencia = new JLabel("Transferência de outra Unidade Prisional:");
         lblTransferencia.setBounds(20, 95, 250, 25);
         panelAtendimento.add(lblTransferencia);
@@ -108,12 +110,12 @@ public class JFtreatment extends JFrame {
         JLabel lblProcedencia = new JLabel("Se sim, qual a procedência:");
         lblProcedencia.setBounds(410, 95, 180, 25);
         panelAtendimento.add(lblProcedencia);
-        txtProcedencia = new JTextField();
-        txtProcedencia.setBounds(590, 95, 140, 25);
-        txtProcedencia.setEnabled(false);
-        panelAtendimento.add(txtProcedencia);
-        radioTransfSim.addActionListener(e -> txtProcedencia.setEnabled(true));
-        radioTransfNao.addActionListener(e -> txtProcedencia.setEnabled(false));
+        txtSource = new JTextField();
+        txtSource.setBounds(590, 95, 140, 25);
+        txtSource.setEnabled(false);
+        panelAtendimento.add(txtSource);
+        radioTransfSim.addActionListener(e -> txtSource.setEnabled(true));
+        radioTransfNao.addActionListener(e -> txtSource.setEnabled(false));
 
         JPanel panelIdentificacao = new JPanel();
         panelIdentificacao.setBorder(new TitledBorder("IDENTIFICAÇÃO"));
@@ -223,7 +225,7 @@ public class JFtreatment extends JFrame {
 
         String[] racas = {"Selecione...", "Branco(a)", "Preto(a)", "Pardo(a)", "Amarelo(a)", "Indígena", "Não desejo informar"};
         String[] sexos = {"Selecione...", "Feminino", "Masculino", "Intersexo", "Não desejo informar"};
-        String[] generos = {"Selecione...", "Mulher (cisgênero)", "Homem (cisgênero)", "Mulher (transgênero)", "Homem (transgênero)", "Travesti", "Não-binário", "Não desejo informar"};
+        String[] generos = {"Selecione...", "Mulher (cisgênero)", "Homem (cisgênero)", "Mulher (transgênero) / Travesti", "Homem (transgênero)", "Não-binário", "Não desejo informar"};
         String[] orientacoes = {"Selecione...", "Heterossexual", "Homossexual (Lésbica/Gay)", "Bissexual", "Assexual", "Pansexual", "Outra", "Não desejo informar"};
 
         JLabel lblRaca = new JLabel("Raça/Cor:");
@@ -285,5 +287,7 @@ public class JFtreatment extends JFrame {
         return null;
     }
 
-    private void saveData() {}
+    private void saveData() {
+        treatmentController.savePrisoner();
+    }
 }

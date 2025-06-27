@@ -1,6 +1,7 @@
 package view;
 
 import controller.HomeController;
+import entities.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,11 +16,11 @@ public class JFhome extends JFrame {
     public JButton btnBusca, btnCadastro;
     public JTable tabelaPresos;
     public DefaultTableModel tableModel;
-    public String usuarioLogado;
+    public User username;
     private HomeController homeController;
 
-    public JFhome(String usuario, LocalDateTime dataHoraLogin) {
-        this.usuarioLogado = usuario;
+    public JFhome(User user, LocalDateTime dataHoraLogin) {
+        this.username = user;
         homeController = new HomeController();
 
         setTitle("Tela Principal - Sistema de Controle");
@@ -52,13 +53,13 @@ public class JFhome extends JFrame {
         btnCadastro.setFont(new Font("Arial", Font.BOLD, 14));
         panelSul.add(btnCadastro, BorderLayout.EAST);
 
-        JLabel lblUsuarioLogado = new JLabel("  Usuário logado: " + this.usuarioLogado);
+        JLabel lblUsuarioLogado = new JLabel("  Usuário logado: " + this.username.getUsername());
         lblUsuarioLogado.setForeground(Color.GRAY);
         panelSul.add(lblUsuarioLogado, BorderLayout.WEST);
         add(panelSul, BorderLayout.SOUTH);
 
         btnCadastro.addActionListener(e -> {
-            JFtreatment telaCadastro = new JFtreatment(this, null);
+            JFtreatment telaCadastro = new JFtreatment(this, username);
             telaCadastro.setVisible(true);
         });
 
