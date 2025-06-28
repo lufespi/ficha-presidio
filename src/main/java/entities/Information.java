@@ -16,6 +16,15 @@ public class Information {
   private Ethnicity ethnicity;
   private BiologicalSex biologicalSex;
   private SexualOrientation sexualOrientation;
+  private User user;
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
 
   public GenderIdentity getGenderIdentity() {
     return genderIdentity;

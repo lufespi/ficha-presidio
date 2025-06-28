@@ -1,6 +1,7 @@
 package view;
 
 import controller.HomeController;
+import entities.Information;
 import entities.User;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class JFhome extends JFrame {
     public User username;
     private HomeController homeController;
 
-    public JFhome(User user, LocalDateTime dataHoraLogin) {
+    public JFhome(User user) {
         this.username = user;
         homeController = new HomeController();
 
@@ -59,25 +60,34 @@ public class JFhome extends JFrame {
         add(panelSul, BorderLayout.SOUTH);
 
         btnCadastro.addActionListener(e -> {
-            JFtreatment telaCadastro = new JFtreatment(this, username);
+            JFtreatment telaCadastro = new JFtreatment(this, username, null);
             telaCadastro.setVisible(true);
         });
 
         tabelaPresos.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) { // Detecta clique duplo
+                if (e.getClickCount() == 2) {
                     int selectedRow = tabelaPresos.getSelectedRow();
                     if (selectedRow != -1) {
                         int idPreso = (int) tableModel.getValueAt(selectedRow, 0);
+                        Information information = homeController.getInformationById(idPreso);
+                        if (information != null) {
+                            JFtreatment editScreen = new JFtreatment(JFhome.this, username, information);
+                            editScreen.setVisible(true);
+                        } else {
+                            JOptionPane.showMessageDialog(JFhome.this, "Informação não encontrada para o ID: " + idPreso,
+                                    "Erro", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
             }
         });
-        populateTable();
+        populateTable(null);
+        btnBusca.addActionListener(e -> populateTable(txtPesquisaNome.getText()));
 
     }
 
-    public void populateTable() {
-        homeController.populateTable(this);
+    public void populateTable(String filterName) {
+        homeController.populateTable(this, filterName);
     }
 }

@@ -50,4 +50,35 @@ public class TreatmentService {
     }
   }
 
+  public void updateTreatment (int id, User username, java.util.Date treatmentDate,
+                            java.util.Date entryDate, boolean isTransfer, String sourceTransfer) {
+
+    String sql = "UPDATE tb_treatment SET " +
+                 "user_id = (SELECT id FROM tb_user WHERE username = ?)," +
+                 "treatment_date = ?, entry_date = ?, " +
+                 "is_transfer = ?, source_transfer = ? " +
+                 "WHERE id = ?";
+
+    try (PreparedStatement stmt = dbConnection.getConnection().prepareStatement(sql)) {
+      stmt.setString(1, username.getUsername());
+
+      stmt.setString(2, DateUtils.getFormattedDateHour(treatmentDate));
+
+      if (entryDate != null) {
+        stmt.setString(3, DateUtils.getFormattedDate(entryDate));
+      } else {
+        stmt.setNull(3, Types.DATE);
+      }
+
+      stmt.setBoolean(4, isTransfer);
+      stmt.setString(5, sourceTransfer);
+      stmt.setInt(6, id);
+
+      stmt.executeUpdate();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
 }

@@ -1,6 +1,6 @@
 package utils;
 
-public class CPFValidator {
+public class CPFUtils {
   public static boolean isValidCPF(String cpf) {
       cpf = cpf.replaceAll("[^0-9]", "");
 
@@ -39,5 +39,18 @@ public class CPFValidator {
       }
 
       return true;
+    }
+    public static String maskCPF(String cpf) {
+      return String.format("***.%s.%s-**",
+              cpf.substring(3, 6),
+              cpf.substring(6, 9));
+    }
+
+    public static String formatCPF(String cpf) {
+      return String.format("%s.%s.%s-%s",
+              cpf.substring(0, 3),
+              cpf.substring(3, 6),
+              cpf.substring(6, 9),
+              cpf.substring(9, 11));
     }
 }

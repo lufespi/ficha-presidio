@@ -2,7 +2,7 @@ package controller;
 
 import service.InformationService;
 import service.TreatmentService;
-import utils.CPFValidator;
+import utils.CPFUtils;
 import utils.DateUtils;
 import view.JFtreatment;
 
@@ -32,7 +32,7 @@ public class TreatmentController {
     String cpf = (String) treatment.txtCPF.getValue();
     if (cpf == null || cpf.contains("_")) {
       erros.add("• CPF (incompleto)");
-    } else if (!CPFValidator.isValidCPF(cpf)) {
+    } else if (!CPFUtils.isValidCPF(cpf)) {
       erros.add("• CPF (inválido)");
     }
 
@@ -60,6 +60,7 @@ public class TreatmentController {
   }
 
   public int saveTreatment() {
+
     Date actualDate = Date.from(treatment.actualDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     Date entryDate;
     try {
@@ -70,6 +71,17 @@ public class TreatmentController {
     }
 
     boolean isTransfer = treatment.radioTransfSim.isSelected();
+
+    if(treatment.prisonerInformation != null) {
+      treatmentService.updateTreatment(treatment.prisonerInformation.getTreatment().getId(),
+              treatment.username,
+              actualDate,
+              entryDate,
+              isTransfer,
+              treatment.txtSource.getText()
+      );
+      return treatment.prisonerInformation.getTreatment().getId();
+    }
 
     return treatmentService.saveTreatment(
             treatment.username,
@@ -97,26 +109,61 @@ public class TreatmentController {
       return;
     }
 
+    if (bornDate.after(new Date())) {
+      JOptionPane.showMessageDialog(treatment, "Data de nascimento não pode ser no futuro.",
+              "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
 
+    int returnedValidation;
 
-    informationService.saveInformation(
-            treatment.txtNomeSocial.getText().trim(),
-            treatment.txtNomeCompleto.getText().trim(),
-            bornDate,
-            Integer.parseInt(treatment.txtIdade.getText()),
-            treatment.txtCPF.getValue().toString().replaceAll("[^0-9]", ""),
-            getSelectedButtonText(treatment.groupNacionalidade),
-            treatment.txtMae.getText().trim(),
-            treatment.checkPaiDesconhecido.isSelected() ? "Desconhecido" :
-                    treatment.txtPai.getText().trim(),
-            getSelectedButtonText(treatment.groupEC),
-            treatment.comboRaca.getSelectedItem().toString(),
-            treatment.comboSexo.getSelectedItem().toString(),
-            treatment.comboOrientacao.getSelectedItem().toString(),
-            treatment.comboGenero.getSelectedItem().toString(),
-            treatmentId
-    );
-    treatment.homeScreen.populateTable();
+    if (treatment.prisonerInformation != null) {
+      if (treatment.radioTransfNao.isSelected()) {
+        treatment.txtSource.setText("");
+      }
+      returnedValidation = informationService.updateInformation(treatment.prisonerInformation.getId(),
+              treatment.txtNomeSocial.getText().trim(),
+              treatment.txtNomeCompleto.getText().trim(),
+              bornDate,
+              Integer.parseInt(treatment.txtIdade.getText()),
+              treatment.txtCPF.getValue().toString().replaceAll("[^0-9]", ""),
+              getSelectedButtonText(treatment.groupNacionalidade),
+              treatment.txtMae.getText().trim(),
+              treatment.checkPaiDesconhecido.isSelected() ? "Desconhecido" :
+                      treatment.txtPai.getText().trim(),
+              getSelectedButtonText(treatment.groupEC),
+              treatment.comboRaca.getSelectedItem().toString(),
+              treatment.comboSexo.getSelectedItem().toString(),
+              treatment.comboOrientacao.getSelectedItem().toString(),
+              treatment.comboGenero.getSelectedItem().toString()
+              );
+    }else {
+
+      returnedValidation = informationService.saveInformation(
+              treatment.txtNomeSocial.getText().trim(),
+              treatment.txtNomeCompleto.getText().trim(),
+              bornDate,
+              Integer.parseInt(treatment.txtIdade.getText()),
+              treatment.txtCPF.getValue().toString().replaceAll("[^0-9]", ""),
+              getSelectedButtonText(treatment.groupNacionalidade),
+              treatment.txtMae.getText().trim(),
+              treatment.checkPaiDesconhecido.isSelected() ? "Desconhecido" :
+                      treatment.txtPai.getText().trim(),
+              getSelectedButtonText(treatment.groupEC),
+              treatment.comboRaca.getSelectedItem().toString(),
+              treatment.comboSexo.getSelectedItem().toString(),
+              treatment.comboOrientacao.getSelectedItem().toString(),
+              treatment.comboGenero.getSelectedItem().toString(),
+              treatmentId
+      );
+    }
+
+    if (returnedValidation <= 0) {
+      JOptionPane.showMessageDialog(treatment, "Erro ao salvar as informações do preso.", "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+
+    treatment.homeScreen.populateTable(null);
     treatment.dispose();
 
   }
@@ -131,4 +178,38 @@ public class TreatmentController {
     return null;
   }
 
+  public void populateFields() {
+    if (treatment.prisonerInformation == null) {
+      return;
+    }
+    treatment.txtNomeSocial.setText(treatment.prisonerInformation.getSocialName());
+    treatment.txtNomeCompleto.setText(treatment.prisonerInformation.getFullName());
+    treatment.txtDataNasc.setText(new SimpleDateFormat("dd/MM/yyyy").format(treatment.prisonerInformation.getBornDate()));
+    treatment.txtIdade.setText(String.valueOf(treatment.prisonerInformation.getAge()));
+    treatment.txtCPF.setValue(CPFUtils.formatCPF(treatment.prisonerInformation.getCpf()));
+    treatment.txtMae.setText(treatment.prisonerInformation.getMotherName());
+    treatment.txtPai.setText(treatment.prisonerInformation.getFatherName());
+    treatment.checkPaiDesconhecido.setSelected("Desconhecido".equals(treatment.prisonerInformation.getFatherName()));
+    treatment.comboRaca.setSelectedItem(treatment.prisonerInformation.getEthnicity().getEtnia());
+    treatment.comboSexo.setSelectedItem(treatment.prisonerInformation.getBiologicalSex().getBiologySex());
+    treatment.comboOrientacao.setSelectedItem(treatment.prisonerInformation.getSexualOrientation().getSexualOrientation());
+    treatment.comboGenero.setSelectedItem(treatment.prisonerInformation.getGenderIdentity().getGenderIdentity());
+    treatment.txtEntryDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(treatment.prisonerInformation.getTreatment().getEntryDate()));
+    treatment.txtSource.setText(treatment.prisonerInformation.getTreatment().getSourceTransfer());
+    treatment.txtSource.setEnabled(true);
+    treatment.radioTransfSim.setSelected(treatment.prisonerInformation.getTreatment().isTransfer());
+    treatment.radioTransfNao.setSelected(!treatment.prisonerInformation.getTreatment().isTransfer());
+
+    switch (treatment.prisonerInformation.getNationality()) {
+      case "Brasileira": treatment.radioBrasileira.setSelected(true); break;
+      case "Naturalizado": treatment.radioNaturalizado.setSelected(true); break;
+      case "Estrangeiro": treatment.radioEstrangeiro.setSelected(true); break;
+    }
+
+    switch (treatment.prisonerInformation.getMaritalStatus().getMaritalStatus()) {
+      case "Solteiro": treatment.radioSolteiro.setSelected(true); break;
+      case "Casado": treatment.radioCasado.setSelected(true); break;
+      case "União Estável": treatment.radioUniao.setSelected(true); break;
+    }
+  }
 }

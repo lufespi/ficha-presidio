@@ -1,5 +1,6 @@
 package view;
 import controller.TreatmentController;
+import entities.Information;
 import entities.User;
 
 import javax.swing.*;
@@ -16,7 +17,7 @@ public class JFtreatment extends JFrame {
 
     public JFormattedTextField txtCPF;
     public JTextField txtNomeCompleto, txtEntryDate, txtDataNasc, txtNomeSocial,
-            txtIdade, txtPais, txtMae, txtPai, txtSource;
+            txtIdade, txtMae, txtPai, txtSource;
     public JRadioButton radioTransfNao, radioTransfSim, radioBrasileira, radioNaturalizado,
             radioEstrangeiro, radioSolteiro, radioCasado, radioUniao;
     public ButtonGroup groupTransferencia, groupNacionalidade, groupEC;
@@ -28,12 +29,14 @@ public class JFtreatment extends JFrame {
     public JFhome homeScreen;
     public User username;
     private TreatmentController treatmentController;
+    public Information prisonerInformation;
 
 
-    public JFtreatment(JFhome homeScreen, User username) {
+    public JFtreatment(JFhome homeScreen, User username, Information prisonerInformation) {
         this.homeScreen = homeScreen;
         this.username = username;
         this.treatmentController = new TreatmentController(this);
+        this.prisonerInformation = prisonerInformation;
 
         setSize(775, 840);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -142,7 +145,6 @@ public class JFtreatment extends JFrame {
         txtDataNasc.setBounds(150, 100, 100, 25);
         panelIdentificacao.add(txtDataNasc);
 
-        // --- NOVO CAMPO DE CPF COM MÁSCARA ---
         JLabel lblCPF = new JLabel("CPF:");
         lblCPF.setBounds(270, 100, 40, 25);
         panelIdentificacao.add(lblCPF);
@@ -175,17 +177,10 @@ public class JFtreatment extends JFrame {
         radioEstrangeiro = new JRadioButton("Estrangeiro");
         radioEstrangeiro.setBounds(350, 135, 100, 25);
         panelIdentificacao.add(radioEstrangeiro);
-        txtPais = new JTextField();
-        txtPais.setBounds(460, 135, 270, 25);
-        txtPais.setEnabled(false);
-        panelIdentificacao.add(txtPais);
         groupNacionalidade = new ButtonGroup();
         groupNacionalidade.add(radioBrasileira);
         groupNacionalidade.add(radioNaturalizado);
         groupNacionalidade.add(radioEstrangeiro);
-        radioEstrangeiro.addActionListener(e -> txtPais.setEnabled(true));
-        radioBrasileira.addActionListener(e -> { txtPais.setEnabled(false); txtPais.setText(""); });
-        radioNaturalizado.addActionListener(e -> { txtPais.setEnabled(false); txtPais.setText(""); });
         JLabel lblMae = new JLabel("Nome da mãe:");
         lblMae.setBounds(20, 170, 100, 25);
         panelIdentificacao.add(lblMae);
@@ -216,7 +211,6 @@ public class JFtreatment extends JFrame {
         groupEC.add(radioCasado);
         groupEC.add(radioUniao);
 
-        // PAINEL AUTODECLARADO
         JPanel panelAutodeclarado = new JPanel();
         panelAutodeclarado.setBorder(new TitledBorder("INFORMAÇÕES AUTODECLARADAS"));
         panelAutodeclarado.setLayout(null);
@@ -225,7 +219,7 @@ public class JFtreatment extends JFrame {
 
         String[] racas = {"Selecione...", "Branco(a)", "Preto(a)", "Pardo(a)", "Amarelo(a)", "Indígena", "Não desejo informar"};
         String[] sexos = {"Selecione...", "Feminino", "Masculino", "Intersexo", "Não desejo informar"};
-        String[] generos = {"Selecione...", "Mulher (cisgênero)", "Homem (cisgênero)", "Mulher (transgênero) / Travesti", "Homem (transgênero)", "Não-binário", "Não desejo informar"};
+        String[] generos = {"Selecione...", "Mulher (cisgênero)", "Homem (cisgênero)", "Mulher (transgênero) / Travesti", "Homem (transgênero)", "Não binário", "Não desejo informar"};
         String[] orientacoes = {"Selecione...", "Heterossexual", "Homossexual (Lésbica/Gay)", "Bissexual", "Assexual", "Pansexual", "Outra", "Não desejo informar"};
 
         JLabel lblRaca = new JLabel("Raça/Cor:");
@@ -265,6 +259,8 @@ public class JFtreatment extends JFrame {
 
         btnSalvar.addActionListener(e -> saveData());
         btnCancelar.addActionListener(e -> confirmarCancelamento());
+
+        treatmentController.populateFields();
 
     }
 
