@@ -1,7 +1,7 @@
 package view;
-import entities.*;
-import service.*;
-import view.*;
+import controller.TreatmentController;
+import entities.Information;
+import entities.User;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -11,25 +11,32 @@ import java.text.ParseException; // Import necessário para a exceção da másc
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 
 public class JFtreatment extends JFrame {
 
-    private JFormattedTextField txtCPF;
-    private JTextField txtNomeCompleto, txtDataEntrada, txtDataNasc, txtNomeSocial,
-            txtIdade, txtPais, txtMae, txtPai, txtProcedencia;
-    private JRadioButton radioTransfNao, radioTransfSim, radioBrasileira, radioNaturalizado,
+    public JFormattedTextField txtCPF;
+    public JTextField txtNomeCompleto, txtEntryDate, txtDataNasc, txtNomeSocial,
+            txtIdade, txtMae, txtPai, txtSource;
+    public JRadioButton radioTransfNao, radioTransfSim, radioBrasileira, radioNaturalizado,
             radioEstrangeiro, radioSolteiro, radioCasado, radioUniao;
-    private ButtonGroup groupTransferencia, groupNacionalidade, groupEC;
-    private JComboBox<String> comboRaca, comboSexo, comboGenero, comboOrientacao;
-    private JCheckBox checkPaiDesconhecido;
+    public ButtonGroup groupTransferencia, groupNacionalidade, groupEC;
+    public JComboBox<String> comboRaca, comboSexo, comboGenero, comboOrientacao;
+    public JCheckBox checkPaiDesconhecido;
 
-    private JFhome telaHome;
+    public LocalDate actualDate;
+    public LocalTime actualTime;
+    public JFhome homeScreen;
+    public User username;
+    private TreatmentController treatmentController;
+    public Information prisonerInformation;
 
-    public JFtreatment(JFhome telaHome, String operador) {
-        this.telaHome = telaHome;
+
+    public JFtreatment(JFhome homeScreen, User username, Information prisonerInformation) {
+        this.homeScreen = homeScreen;
+        this.username = username;
+        this.treatmentController = new TreatmentController(this);
+        this.prisonerInformation = prisonerInformation;
 
         setSize(775, 840);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -52,8 +59,9 @@ public class JFtreatment extends JFrame {
         mainPanel.setPreferredSize(new Dimension(760, 800));
         scrollPane.setViewportView(mainPanel);
 
-        LocalDate dataAtual = LocalDate.now();
-        LocalTime horaAtual = LocalTime.now();
+        actualDate = LocalDate.now();
+        LocalDate formattedActualDate = LocalDate.now();
+        actualTime = LocalTime.now();
         DateTimeFormatter formatadorData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter formatadorHora = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -66,30 +74,30 @@ public class JFtreatment extends JFrame {
         JLabel lblResponsavel = new JLabel("Responsável pelo atendimento:");
         lblResponsavel.setBounds(20, 30, 200, 25);
         panelAtendimento.add(lblResponsavel);
-        JLabel lblResponsavelValor = new JLabel(operador);
+        JLabel lblResponsavelValor = new JLabel(username.getUsername());
         lblResponsavelValor.setFont(new Font("Arial", Font.BOLD, 12));
         lblResponsavelValor.setBounds(220, 30, 200, 25);
         panelAtendimento.add(lblResponsavelValor);
         JLabel lblData = new JLabel("Data:");
         lblData.setBounds(20, 60, 40, 25);
         panelAtendimento.add(lblData);
-        JLabel lblDataValor = new JLabel(dataAtual.format(formatadorData));
+        JLabel lblDataValor = new JLabel(formattedActualDate.format(formatadorData));
         lblDataValor.setFont(new Font("Arial", Font.BOLD, 12));
         lblDataValor.setBounds(60, 60, 100, 25);
         panelAtendimento.add(lblDataValor);
         JLabel lblHorario = new JLabel("Horário:");
         lblHorario.setBounds(180, 60, 60, 25);
         panelAtendimento.add(lblHorario);
-        JLabel lblHorarioValor = new JLabel(horaAtual.format(formatadorHora));
+        JLabel lblHorarioValor = new JLabel(actualTime.format(formatadorHora));
         lblHorarioValor.setFont(new Font("Arial", Font.BOLD, 12));
         lblHorarioValor.setBounds(240, 60, 100, 25);
         panelAtendimento.add(lblHorarioValor);
         JLabel lblDataEntrada = new JLabel("Data de entrada na Unidade Prisional:");
         lblDataEntrada.setBounds(380, 60, 250, 25);
         panelAtendimento.add(lblDataEntrada);
-        txtDataEntrada = new JTextField();
-        txtDataEntrada.setBounds(630, 60, 100, 25);
-        panelAtendimento.add(txtDataEntrada);
+        txtEntryDate = new JTextField();
+        txtEntryDate.setBounds(630, 60, 100, 25);
+        panelAtendimento.add(txtEntryDate);
         JLabel lblTransferencia = new JLabel("Transferência de outra Unidade Prisional:");
         lblTransferencia.setBounds(20, 95, 250, 25);
         panelAtendimento.add(lblTransferencia);
@@ -105,12 +113,12 @@ public class JFtreatment extends JFrame {
         JLabel lblProcedencia = new JLabel("Se sim, qual a procedência:");
         lblProcedencia.setBounds(410, 95, 180, 25);
         panelAtendimento.add(lblProcedencia);
-        txtProcedencia = new JTextField();
-        txtProcedencia.setBounds(590, 95, 140, 25);
-        txtProcedencia.setEnabled(false);
-        panelAtendimento.add(txtProcedencia);
-        radioTransfSim.addActionListener(e -> txtProcedencia.setEnabled(true));
-        radioTransfNao.addActionListener(e -> txtProcedencia.setEnabled(false));
+        txtSource = new JTextField();
+        txtSource.setBounds(590, 95, 140, 25);
+        txtSource.setEnabled(false);
+        panelAtendimento.add(txtSource);
+        radioTransfSim.addActionListener(e -> txtSource.setEnabled(true));
+        radioTransfNao.addActionListener(e -> txtSource.setEnabled(false));
 
         JPanel panelIdentificacao = new JPanel();
         panelIdentificacao.setBorder(new TitledBorder("IDENTIFICAÇÃO"));
@@ -137,7 +145,6 @@ public class JFtreatment extends JFrame {
         txtDataNasc.setBounds(150, 100, 100, 25);
         panelIdentificacao.add(txtDataNasc);
 
-        // --- NOVO CAMPO DE CPF COM MÁSCARA ---
         JLabel lblCPF = new JLabel("CPF:");
         lblCPF.setBounds(270, 100, 40, 25);
         panelIdentificacao.add(lblCPF);
@@ -170,17 +177,10 @@ public class JFtreatment extends JFrame {
         radioEstrangeiro = new JRadioButton("Estrangeiro");
         radioEstrangeiro.setBounds(350, 135, 100, 25);
         panelIdentificacao.add(radioEstrangeiro);
-        txtPais = new JTextField();
-        txtPais.setBounds(460, 135, 270, 25);
-        txtPais.setEnabled(false);
-        panelIdentificacao.add(txtPais);
         groupNacionalidade = new ButtonGroup();
         groupNacionalidade.add(radioBrasileira);
         groupNacionalidade.add(radioNaturalizado);
         groupNacionalidade.add(radioEstrangeiro);
-        radioEstrangeiro.addActionListener(e -> txtPais.setEnabled(true));
-        radioBrasileira.addActionListener(e -> { txtPais.setEnabled(false); txtPais.setText(""); });
-        radioNaturalizado.addActionListener(e -> { txtPais.setEnabled(false); txtPais.setText(""); });
         JLabel lblMae = new JLabel("Nome da mãe:");
         lblMae.setBounds(20, 170, 100, 25);
         panelIdentificacao.add(lblMae);
@@ -211,7 +211,6 @@ public class JFtreatment extends JFrame {
         groupEC.add(radioCasado);
         groupEC.add(radioUniao);
 
-        // PAINEL AUTODECLARADO
         JPanel panelAutodeclarado = new JPanel();
         panelAutodeclarado.setBorder(new TitledBorder("INFORMAÇÕES AUTODECLARADAS"));
         panelAutodeclarado.setLayout(null);
@@ -220,7 +219,7 @@ public class JFtreatment extends JFrame {
 
         String[] racas = {"Selecione...", "Branco(a)", "Preto(a)", "Pardo(a)", "Amarelo(a)", "Indígena", "Não desejo informar"};
         String[] sexos = {"Selecione...", "Feminino", "Masculino", "Intersexo", "Não desejo informar"};
-        String[] generos = {"Selecione...", "Mulher (cisgênero)", "Homem (cisgênero)", "Mulher (transgênero)", "Homem (transgênero)", "Travesti", "Não-binário", "Não desejo informar"};
+        String[] generos = {"Selecione...", "Mulher (cisgênero)", "Homem (cisgênero)", "Mulher (transgênero) / Travesti", "Homem (transgênero)", "Não binário", "Não desejo informar"};
         String[] orientacoes = {"Selecione...", "Heterossexual", "Homossexual (Lésbica/Gay)", "Bissexual", "Assexual", "Pansexual", "Outra", "Não desejo informar"};
 
         JLabel lblRaca = new JLabel("Raça/Cor:");
@@ -248,7 +247,6 @@ public class JFtreatment extends JFrame {
         comboOrientacao.setBounds(180, 135, 550, 25);
         panelAutodeclarado.add(comboOrientacao);
 
-        // BOTÕES DE AÇÃO
         JButton btnSalvar = new JButton("Salvar Cadastro");
         btnSalvar.setFont(new Font("Arial", Font.BOLD, 14));
         btnSalvar.setBounds(200, 670, 180, 40);
@@ -258,7 +256,11 @@ public class JFtreatment extends JFrame {
         btnCancelar.setBounds(420, 670, 180, 40);
         mainPanel.add(btnCancelar);
 
+
+        btnSalvar.addActionListener(e -> saveData());
         btnCancelar.addActionListener(e -> confirmarCancelamento());
+
+        treatmentController.populateFields();
 
     }
 
@@ -268,39 +270,6 @@ public class JFtreatment extends JFrame {
                 "Confirmar Cancelamento", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (resposta == JOptionPane.YES_OPTION) {
             this.dispose();
-        }
-    }
-
-    private boolean validarCampos() {
-        List<String> erros = new ArrayList<>();
-        if (txtNomeCompleto.getText().trim().isEmpty()) erros.add("• Nome Completo");
-
-        String cpf = (String) txtCPF.getValue();
-        if (cpf == null || cpf.contains("_")) {
-            erros.add("• CPF (incompleto)");
-        } else if (!isCPFValido(cpf)) {
-            erros.add("• CPF (inválido)");
-        }
-
-        if (txtDataNasc.getText().trim().isEmpty()) erros.add("• Data de Nascimento");
-        if (txtDataEntrada.getText().trim().isEmpty()) erros.add("• Data de Entrada na Unidade");
-        if (groupTransferencia.getSelection() == null) erros.add("• Transferência de outra Unidade");
-        if (groupNacionalidade.getSelection() == null) erros.add("• Nacionalidade");
-        if (groupEC.getSelection() == null) erros.add("• Estado Civil");
-        if (comboRaca.getSelectedIndex() <= 0) erros.add("• Raça/Cor");
-        if (comboSexo.getSelectedIndex() <= 0) erros.add("• Sexo Biológico");
-        if (comboGenero.getSelectedIndex() <= 0) erros.add("• Identidade de Gênero");
-        if (comboOrientacao.getSelectedIndex() <= 0) erros.add("• Orientação Sexual");
-
-        if (erros.isEmpty()) {
-            return true;
-        } else {
-            StringBuilder mensagemErro = new StringBuilder("Os seguintes campos são obrigatórios ou inválidos:\n\n");
-            for (String erro : erros) {
-                mensagemErro.append(erro).append("\n");
-            }
-            JOptionPane.showMessageDialog(this, mensagemErro.toString(), "Campos Obrigatórios", JOptionPane.WARNING_MESSAGE);
-            return false;
         }
     }
 
@@ -314,47 +283,7 @@ public class JFtreatment extends JFrame {
         return null;
     }
 
-    private static boolean isCPFValido(String cpf) {
-
-        cpf = cpf.replaceAll("[^0-9]", "");
-
-        if (cpf.length() != 11) {
-            return false;
-        }
-
-       if (cpf.matches("(\\d)\\1{10}")) {
-            return false;
-        }
-
-        try {
-            int soma = 0;
-            for (int i = 0; i < 9; i++) {
-                soma += (Character.getNumericValue(cpf.charAt(i)) * (10 - i));
-            }
-            int resto = soma % 11;
-            int digitoVerificador1 = (resto < 2) ? 0 : 11 - resto;
-
-            if (digitoVerificador1 != Character.getNumericValue(cpf.charAt(9))) {
-                return false;
-            }
-
-            // --- Cálculo do 2º dígito verificador ---
-            soma = 0;
-            for (int i = 0; i < 10; i++) {
-                soma += (Character.getNumericValue(cpf.charAt(i)) * (11 - i));
-            }
-            resto = soma % 11;
-            int digitoVerificador2 = (resto < 2) ? 0 : 11 - resto;
-
-
-            if (digitoVerificador2 != Character.getNumericValue(cpf.charAt(10))) {
-                return false;
-            }
-
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        return true;
+    private void saveData() {
+        treatmentController.savePrisoner();
     }
 }

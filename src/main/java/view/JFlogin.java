@@ -66,12 +66,8 @@ public class JFlogin extends JFrame {
         User user =  loginController.makeLogin(username, password);
 
         if (user != null) {
-            new JFhome(user.getUsername(), LocalDateTime.now()).setVisible(true);
+            new JFhome(user).setVisible(true);
             this.dispose();
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new JFlogin().setVisible(true));
     }
 }

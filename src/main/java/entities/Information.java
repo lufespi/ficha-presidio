@@ -11,12 +11,79 @@ public class Information {
   private String cpf;
   private String nationality;
   private String motherName;
-  private int maritalStatusId;
-  private int ethnicityId;
-  private int biologicalSexId;
-  private int sexualOrientationId;
-  private int genderIdentityId;
-  private int treatmentId;
+  private String fatherName;
+  private MaritalStatus maritalStatus;
+  private Ethnicity ethnicity;
+  private BiologicalSex biologicalSex;
+  private SexualOrientation sexualOrientation;
+  private User user;
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  public GenderIdentity getGenderIdentity() {
+    return genderIdentity;
+  }
+
+  public String getFatherName() {
+    return fatherName;
+  }
+
+  public void setFatherName(String fatherName) {
+    this.fatherName = fatherName;
+  }
+
+  public void setGenderIdentity(GenderIdentity genderIdentity) {
+    this.genderIdentity = genderIdentity;
+  }
+
+  public MaritalStatus getMaritalStatus() {
+    return maritalStatus;
+  }
+
+  public void setMaritalStatus(MaritalStatus maritalStatus) {
+    this.maritalStatus = maritalStatus;
+  }
+
+  public Ethnicity getEthnicity() {
+    return ethnicity;
+  }
+
+  public void setEthnicity(Ethnicity ethnicity) {
+    this.ethnicity = ethnicity;
+  }
+
+  public BiologicalSex getBiologicalSex() {
+    return biologicalSex;
+  }
+
+  public void setBiologicalSex(BiologicalSex biologicalSex) {
+    this.biologicalSex = biologicalSex;
+  }
+
+  public SexualOrientation getSexualOrientation() {
+    return sexualOrientation;
+  }
+
+  public void setSexualOrientation(SexualOrientation sexualOrientation) {
+    this.sexualOrientation = sexualOrientation;
+  }
+
+  public Treatment getTreatment() {
+    return treatment;
+  }
+
+  public void setTreatment(Treatment treatment) {
+    this.treatment = treatment;
+  }
+
+  private GenderIdentity genderIdentity;
+  private Treatment treatment;
 
   public int getId() {
     return id;
@@ -66,40 +133,5 @@ public class Information {
   public void setMotherName(String motherName) {
     this.motherName = motherName;
   }
-  public int getMaritalStatusId() {
-    return maritalStatusId;
-  }
-  public void setMaritalStatusId(int maritalStatusId) {
-    this.maritalStatusId = maritalStatusId;
-  }
-  public int getEthnicityId() {
-    return ethnicityId;
-  }
-  public void setEthnicityId(int ethnicityId) {
-    this.ethnicityId = ethnicityId;
-  }
-  public int getBiologicalSexId() {
-    return biologicalSexId;
-  }
-  public void setBiologicalSexId(int biologicalSexId) {
-    this.biologicalSexId = biologicalSexId;
-  }
-  public int getSexualOrientationId() {
-    return sexualOrientationId;
-  }
-  public void setSexualOrientationId(int sexualOrientationId) {
-    this.sexualOrientationId = sexualOrientationId;
-  }
-  public int getGenderIdentityId() {
-    return genderIdentityId;
-  }
-  public void setGenderIdentityId(int genderIdentityId) {
-    this.genderIdentityId = genderIdentityId;
-  }
-  public int getTreatmentId() {
-    return treatmentId;
-  }
-  public void setTreatmentId(int treatmentId) {
-    this.treatmentId = treatmentId;
-  }
+
 }
