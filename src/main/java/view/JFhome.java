@@ -5,6 +5,7 @@ import entities.Information;
 import entities.User;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -25,18 +26,20 @@ public class JFhome extends JFrame {
         homeController = new HomeController();
 
         setTitle("Tela Principal - Sistema de Controle");
-        setSize(800, 600);
+        setSize(800, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout(10, 10)); // Usando BorderLayout
+        setLayout(null);
 
         JPanel panelNorte = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelNorte.setBorder(new TitledBorder("Pesquisa"));
         panelNorte.add(new JLabel("Pesquisar por Nome:"));
         txtPesquisaNome = new JTextField(25);
         panelNorte.add(txtPesquisaNome);
         btnBusca = new JButton("Buscar");
         panelNorte.add(btnBusca);
-        add(panelNorte, BorderLayout.NORTH);
+        panelNorte.setBounds(10, 10, 785, 60);
+        add(panelNorte);
 
         String[] colunas = {"ID", "Nome Completo", "CPF", "Idade", "Nome da mãe", "Data de Entrada"};
         tableModel = new DefaultTableModel(colunas, 0) {
@@ -47,9 +50,12 @@ public class JFhome extends JFrame {
         };
         tabelaPresos = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(tabelaPresos);
-        add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setBorder(new TitledBorder("Tabela Presos"));
+        scrollPane.setBounds(10, 80, 785, 610);
+        add(scrollPane);
 
         JPanel panelSul = new JPanel(new BorderLayout());
+        panelSul.setBorder(new TitledBorder("Ações"));
         btnCadastro = new JButton("Cadastrar Novo Preso");
         btnCadastro.setFont(new Font("Arial", Font.BOLD, 14));
         panelSul.add(btnCadastro, BorderLayout.EAST);
@@ -57,7 +63,8 @@ public class JFhome extends JFrame {
         JLabel lblUsuarioLogado = new JLabel("  Usuário logado: " + this.username.getUsername());
         lblUsuarioLogado.setForeground(Color.GRAY);
         panelSul.add(lblUsuarioLogado, BorderLayout.WEST);
-        add(panelSul, BorderLayout.SOUTH);
+        panelSul.setBounds(10, 700, 785, 60);
+        add(panelSul);
 
         btnCadastro.addActionListener(e -> {
             JFtreatment telaCadastro = new JFtreatment(this, username, null);
