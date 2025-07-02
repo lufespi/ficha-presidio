@@ -5,6 +5,8 @@ import controller.LoginController;
 import entities.User;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
 import java.time.LocalDateTime;
 
 public class JFlogin extends JFrame {
@@ -25,29 +27,35 @@ public class JFlogin extends JFrame {
         this.setLayout(null);
         this.loginController = new LoginController(this);
 
+        JPanel loginPanel = new JPanel();
+        loginPanel.setBorder(new TitledBorder("Acesso ao Sistema"));
+        loginPanel.setLayout(null);
+        loginPanel.setBounds(10, 10, 360, 165);
+        this.add(loginPanel);
+
         lblUsuario = new JLabel("Usuário:");
         lblUsuario.setBounds(50, 30, 80, 25);
-        this.add(lblUsuario);
+        loginPanel.add(lblUsuario);
 
         txtUsuario = new JTextField();
         txtUsuario.setBounds(120, 30, 200, 25);
-        this.add(txtUsuario);
+        loginPanel.add(txtUsuario);
 
         lblSenha = new JLabel("Senha:");
         lblSenha.setBounds(50, 70, 80, 25);
-        this.add(lblSenha);
+        loginPanel.add(lblSenha);
 
         txtSenha = new JPasswordField();
         txtSenha.setBounds(120, 70, 200, 25);
-        this.add(txtSenha);
+        loginPanel.add(txtSenha);
 
         btnLogin = new JButton("Login");
         btnLogin.setBounds(120, 120, 90, 30);
-        this.add(btnLogin);
+        loginPanel.add(btnLogin);
 
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBounds(230, 120, 90, 30);
-        this.add(btnCancelar);
+        loginPanel.add(btnCancelar);
 
         btnCancelar.addActionListener(e -> System.exit(0));
 
