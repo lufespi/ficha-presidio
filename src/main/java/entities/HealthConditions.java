@@ -9,12 +9,21 @@ public class HealthConditions {
   private boolean hasSurgeries;
   private String surgeries;
   private String chronicDiseases;
+  private String infectiousDiseases;
   private boolean hasSkinDiseases;
   private String skinDiseases;
   private boolean useContinuousMedication;
   private String continuousMedication;
   private String bloodType;
   private String referrals;
+
+  public String getInfectiousDiseases() {
+    return infectiousDiseases;
+  }
+
+  public void setInfectiousDiseases(String infectiousDiseases) {
+    this.infectiousDiseases = infectiousDiseases;
+  }
 
   public int getId() {
     return id;

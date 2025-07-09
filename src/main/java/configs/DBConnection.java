@@ -14,12 +14,14 @@ public class DBConnection {
   private static String driver = dotenv.get("DB_DRIVER");
 
 
-  private Connection connection;
+  private static Connection connection;
 
   public DBConnection () {
     try {
-      Class.forName(driver);
-      connection = DriverManager.getConnection(url, user, password );
+      if(connection == null) {
+        Class.forName(driver);
+        connection = DriverManager.getConnection(url, user, password);
+      }
     } catch (SQLException ex) {
       ex.printStackTrace();
     } catch (ClassNotFoundException ex) {
