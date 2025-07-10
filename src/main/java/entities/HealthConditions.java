@@ -15,7 +15,6 @@ public class HealthConditions {
   private boolean useContinuousMedication;
   private String continuousMedication;
   private String bloodType;
-  private String referrals;
 
   public String getInfectiousDiseases() {
     return infectiousDiseases;
@@ -127,13 +126,5 @@ public class HealthConditions {
 
   public void setBloodType(String bloodType) {
     this.bloodType = bloodType;
-  }
-
-  public String getReferrals() {
-    return referrals;
-  }
-
-  public void setReferrals(String referrals) {
-    this.referrals = referrals;
   }
 }

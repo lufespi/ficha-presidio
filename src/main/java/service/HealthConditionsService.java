@@ -20,7 +20,7 @@ public class HealthConditionsService {
                                   String chronicDiseases, String infectiousDiseases,
                                   boolean hasSkinDisease, String skinDiseases,
                                   boolean useContinuousMedication, String continuousMedication,
-                                  String bloodType, String referrals) {
+                                  String bloodType) {
     String sql = """
         INSERT INTO tb_health_conditions (
             has_deficiency, deficiency,
@@ -29,8 +29,8 @@ public class HealthConditionsService {
             chronic_diseases, infectious_diseases,
             has_skin_disease, skin_diseases,
             use_continuous_medication, continuos_medication,
-            blood_type, referrals
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            blood_type
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """;
 
     try (PreparedStatement stmt = dbConnection.getConnection()
@@ -49,7 +49,6 @@ public class HealthConditionsService {
       stmt.setBoolean(11, useContinuousMedication);
       stmt.setString(12, continuousMedication);
       stmt.setString(13, bloodType);
-      stmt.setString(14, referrals);
 
       stmt.executeUpdate();
 
@@ -66,14 +65,14 @@ public class HealthConditionsService {
     }
   }
 
-  public boolean updateHealthConditions(int id,
+  public int updateHealthConditions(int id,
                                         boolean hasDeficiency, String deficiency,
                                         boolean hasAllergies, String allergies,
                                         boolean hasSurgeries, String surgeries,
                                         String chronicDiseases, String infectiousDiseases,
                                         boolean hasSkinDisease, String skinDiseases,
                                         boolean useContinuousMedication, String continuousMedication,
-                                        String bloodType, String referrals) {
+                                        String bloodType) {
     String sql = """
         UPDATE tb_health_conditions SET
             has_deficiency = ?, deficiency = ?,
@@ -82,7 +81,7 @@ public class HealthConditionsService {
             chronic_diseases = ?, infectious_diseases = ?,
             has_skin_disease = ?, skin_diseases = ?,
             use_continuous_medication = ?, continuos_medication = ?,
-            blood_type = ?, referrals = ?
+            blood_type = ?
         WHERE id = ?
     """;
 
@@ -101,14 +100,15 @@ public class HealthConditionsService {
       stmt.setBoolean(11, useContinuousMedication);
       stmt.setString(12, continuousMedication);
       stmt.setString(13, bloodType);
-      stmt.setString(14, referrals);
-      stmt.setInt(15, id);
+      stmt.setInt(14, id);
 
-      return stmt.executeUpdate() > 0;
+      stmt.executeUpdate();
+
+      return id;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return -1;
     }
   }
 

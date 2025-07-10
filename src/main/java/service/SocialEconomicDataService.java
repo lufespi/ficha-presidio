@@ -76,7 +76,7 @@ public class SocialEconomicDataService {
     }
   }
 
-  public boolean updateSocialEconomicData(int id,
+  public int updateSocialEconomicData(int id,
                                           String education,
                                           boolean hasFamilyBenefits, String familyBenefits,
                                           boolean hasChildren, Integer childrenQuantity, String ages,
@@ -121,11 +121,13 @@ public class SocialEconomicDataService {
       updateStmt.setBoolean(10, hasSocialAssistent);
       updateStmt.setInt(11, id);
 
-      return updateStmt.executeUpdate() > 0;
+      updateStmt.executeUpdate();
+
+      return id;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return -1;
     } finally {
       try {
         if (rs != null) rs.close();

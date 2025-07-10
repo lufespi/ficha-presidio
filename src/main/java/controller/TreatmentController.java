@@ -1,7 +1,6 @@
 package controller;
 
-import service.InformationService;
-import service.TreatmentService;
+import service.*;
 import utils.CPFUtils;
 import utils.DateUtils;
 import view.JFtreatment;
@@ -17,6 +16,9 @@ import java.util.List;
 public class TreatmentController {
   private TreatmentService treatmentService;
   private InformationService informationService;
+  private SocialEconomicDataService socialEconomicDataService;
+  private HealthConditionsService healthConditionsService;
+  private MentalHealthService mentalHealthService;
   private JFtreatment treatment;
 
   public TreatmentController(JFtreatment treatment) {
@@ -92,6 +94,87 @@ public class TreatmentController {
     );
   }
 
+  private int saveSocialEconomicData () {
+    if (treatment.prisonerInformation != null) {
+      return socialEconomicDataService.updateSocialEconomicData(
+              treatment.prisonerInformation.getSocialEconomicData().getId(),
+              treatment.comboEscolaridade.getSelectedItem().toString(),
+              treatment.radioBeneficioSim.isSelected(),
+              treatment.txtBeneficioQual.getText().trim(),
+              treatment.radioFilhosSim.isSelected(),
+              Integer.parseInt(treatment.txtFilhosQuantos.getText()),
+              treatment.txtFilhosIdades.getText().trim(),
+              treatment.radioDependentesSim.isSelected(),
+              Integer.parseInt(treatment.txtDependentesQuantos.getText()),
+              treatment.radioNeejaSim.isSelected(),
+              treatment.radioAssistenciaSim.isSelected()
+      );
+    } else {
+      return socialEconomicDataService.saveSocialEconomicData(
+              treatment.comboEscolaridade.getSelectedItem().toString(),
+              treatment.radioBeneficioSim.isSelected(),
+              treatment.txtBeneficioQual.getText().trim(),
+              treatment.radioFilhosSim.isSelected(),
+              Integer.parseInt(treatment.txtFilhosQuantos.getText()),
+              treatment.txtFilhosIdades.getText().trim(),
+              treatment.radioDependentesSim.isSelected(),
+              Integer.parseInt(treatment.txtDependentesQuantos.getText()),
+              treatment.radioNeejaSim.isSelected(),
+              treatment.radioAssistenciaSim.isSelected()
+      );
+    }
+  }
+
+  private int saveHealthConditions() {
+
+    String chronicDiseases = String.format("%s%s%s%s%s",treatment.checkHipertensao.isSelected() ? "Hipertensão, "
+            : "", treatment.checkDiabetes.isSelected() ? "Diabetes, "
+            : "", treatment.checkHIV.isSelected() ? "HIV, "
+            : "", treatment.checkAutoimune.isSelected() ? "Doença Autoimune, " : "",
+            treatment.txtAutoimuneOutra.getText().trim());
+    String infecciousDiseases = String.format("%s%s%s%s%s%s", treatment.checkSifilis.isSelected() ? "Sífilis, "
+            : "", treatment.checkHPV.isSelected() ? "HPV, "
+            : "", treatment.checkTuberculose.isSelected() ? "Tuberculose, "
+            : "", treatment.checkHepatiteB.isSelected() ? "Hepatite B, "
+            : "", treatment.checkHepatiteC.isSelected() ? "Hepatite C, ": "",
+            treatment.txtDoencasInfecciosas.getText().trim());
+
+    if (treatment.prisonerInformation != null) {
+      return healthConditionsService.updateHealthConditions(
+              treatment.prisonerInformation.getHealthConditions().getId(),
+              treatment.radioDeficienciaSim.isSelected(),
+              treatment.txtDeficienciaQual.getText().trim(),
+              treatment.radioAlergiaSim.isSelected(),
+              treatment.txtAlergiaQual.getText().trim(),
+              treatment.radioCirurgiaSim.isSelected(),
+              treatment.txtCirurgiaQual.getText().trim(),
+              chronicDiseases,
+              infecciousDiseases,
+              treatment.checkPele.isSelected(),
+              treatment.txtPeleQual.getText().trim(),
+              treatment.checkMedicamentoContinuo.isSelected(),
+              treatment.txtMedicamentoQual.getText().trim(),
+              treatment.comboTipoSanguineo.getSelectedItem().toString()
+      );
+    } else {
+      return healthConditionsService.saveHealthConditions(
+              treatment.radioDeficienciaSim.isSelected(),
+              treatment.txtDeficienciaQual.getText().trim(),
+              treatment.radioAlergiaSim.isSelected(),
+              treatment.txtAlergiaQual.getText().trim(),
+              treatment.radioCirurgiaSim.isSelected(),
+              treatment.txtCirurgiaQual.getText().trim(),
+              chronicDiseases,
+              infecciousDiseases,
+              treatment.checkPele.isSelected(),
+              treatment.txtPeleQual.getText().trim(),
+              treatment.checkMedicamentoContinuo.isSelected(),
+              treatment.txtMedicamentoQual.getText().trim(),
+              treatment.comboTipoSanguineo.getSelectedItem().toString()
+      );
+    }
+  }
+
   public void savePrisoner () {
     if(!validateFields()) return;
     int treatmentId = saveTreatment();
@@ -115,13 +198,26 @@ public class TreatmentController {
       return;
     }
 
+    int socialEconomicDataId = saveSocialEconomicData();
+    if (socialEconomicDataId <= 0) {
+      JOptionPane.showMessageDialog(treatment, "Erro ao salvar os dados socais e econômicos.", "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+
+    int healthConditionsId = saveHealthConditions();
+
+    if (healthConditionsId <= 0) {
+      JOptionPane.showMessageDialog(treatment, "Erro ao salvar as condições de saúde.", "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+ /*
     int returnedValidation;
 
     if (treatment.prisonerInformation != null) {
       if (treatment.radioTransfNao.isSelected()) {
         treatment.txtSource.setText("");
       }
-      returnedValidation = informationService.updateInformation(treatment.prisonerInformation.getId(),
+     returnedValidation = informationService.updateInformation(treatment.prisonerInformation.getId(),
               treatment.txtNomeSocial.getText().trim(),
               treatment.txtNomeCompleto.getText().trim(),
               bornDate,
@@ -162,10 +258,8 @@ public class TreatmentController {
       JOptionPane.showMessageDialog(treatment, "Erro ao salvar as informações do preso.", "Erro", JOptionPane.ERROR_MESSAGE);
       return;
     }
-
     treatment.homeScreen.populateTable(null);
-    treatment.dispose();
-
+    treatment.dispose();*/
   }
 
   private String getSelectedButtonText(ButtonGroup buttonGroup) {

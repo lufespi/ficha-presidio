@@ -98,7 +98,6 @@ public class InformationService {
                    "  hc.use_continuous_medication,\n" +
                    "  hc.continuos_medication,\n" +
                    "  hc.blood_type,\n" +
-                   "  hc.referrals,\n" +
                    "\n" +
                    "  -- tb_women_health\n" +
                    "  wh.id AS women_health_id,\n" +
@@ -283,7 +282,6 @@ public class InformationService {
           healthConditions.setUseContinuousMedication(rs.getBoolean("use_continuous_medication"));
           healthConditions.setContinuousMedication(rs.getString("continuos_medication"));
           healthConditions.setBloodType(rs.getString("blood_type"));
-          healthConditions.setReferrals(rs.getString("referrals"));
 
           womenHealth.setId(rs.getInt("women_health_id"));
           womenHealth.setPregnant(rs.getBoolean("is_pregnant"));

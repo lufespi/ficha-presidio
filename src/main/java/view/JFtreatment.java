@@ -17,11 +17,9 @@ import java.util.List;
 
 public class JFtreatment extends JFrame {
 
-    // --- Variáveis de Instância para UI ---
     public JPanel mainPanel;
     public JScrollPane scrollPane;
 
-    // --- Componentes da Interface (Públicos) ---
     public JFormattedTextField txtCPF;
     public JTextField txtNomeCompleto, txtEntryDate, txtDataNasc, txtNomeSocial,
             txtIdade, txtMae, txtPai, txtSource;
@@ -31,7 +29,6 @@ public class JFtreatment extends JFrame {
     public JCheckBox checkPaiDesconhecido;
     public JComboBox<String> comboRaca, comboSexo, comboGenero, comboOrientacao;
     public JComboBox<String> comboEscolaridade;
-    public JTextArea txtProfissao;
     public JRadioButton radioBeneficioNao, radioBeneficioSim;
     public JTextField txtBeneficioQual;
     public JRadioButton radioFilhosNao, radioFilhosSim;
@@ -48,8 +45,7 @@ public class JFtreatment extends JFrame {
     public JCheckBox checkHipertensao, checkDiabetes, checkHIV, checkSifilis, checkHPV, checkTuberculose, checkPele;
     public JTextField txtPeleQual;
     public JCheckBox checkAutoimune, checkHepatiteB, checkHepatiteC, checkMedicamentoContinuo;
-    public JTextField txtAutoimuneOutra;
-    public JTextArea txtAutoimuneObs, txtHepatiteObs;
+    public JTextField txtAutoimuneOutra, txtDoencasInfecciosas;
     public JTextField txtMedicamentoQual;
     public JComboBox<String> comboTipoSanguineo;
     public JRadioButton radioSaudeMulher, radioSaudeHomem;
@@ -73,7 +69,6 @@ public class JFtreatment extends JFrame {
     public JTextField txtTratamentoReducaoQual, txtGostariaTratamentoQual;
     public JCheckBox checkEncaminhaPsicologia, checkEncaminhaPsiquiatra, checkEncaminhaReceitas, checkEncaminhaGruposApoio;
 
-    // --- Variáveis de Controle ---
     public LocalDate actualDate;
     public LocalTime actualTime;
     public JFhome homeScreen;
@@ -320,13 +315,6 @@ public class JFtreatment extends JFrame {
         comboEscolaridade = new JComboBox<>(escolaridades);
         comboEscolaridade.setBounds(130, 30, 240, 25);
         panelSocial.add(comboEscolaridade);
-        JLabel lblProfissao = new JLabel("Profissão/Ocupação/Renda:");
-        lblProfissao.setBounds(20, 65, 200, 25);
-        panelSocial.add(lblProfissao);
-        txtProfissao = new JTextArea();
-        JScrollPane scrollProfissao = new JScrollPane(txtProfissao);
-        scrollProfissao.setBounds(20, 90, 350, 60);
-        panelSocial.add(scrollProfissao);
         JLabel lblBeneficio = new JLabel("A família recebe algum benefício?");
         lblBeneficio.setBounds(380, 65, 250, 25);
         panelSocial.add(lblBeneficio);
@@ -442,8 +430,6 @@ public class JFtreatment extends JFrame {
         checkAutoimune = new JCheckBox("Doença Autoimune"); checkAutoimune.setBounds(30, 280, 150, 25); panelSaude.add(checkAutoimune);
         JLabel lblAutoimuneOutra = new JLabel("Outra:"); lblAutoimuneOutra.setBounds(190, 280, 50, 25); panelSaude.add(lblAutoimuneOutra);
         txtAutoimuneOutra = new JTextField(); txtAutoimuneOutra.setBounds(240, 280, 100, 25); panelSaude.add(txtAutoimuneOutra);
-        JLabel lblAutoimuneObs = new JLabel("Obs:"); lblAutoimuneObs.setBounds(30, 310, 50, 25); panelSaude.add(lblAutoimuneObs);
-        txtAutoimuneObs = new JTextArea(); JScrollPane scrollAutoimune = new JScrollPane(txtAutoimuneObs); scrollAutoimune.setBounds(30, 335, 310, 40); panelSaude.add(scrollAutoimune);
         JLabel lblInfecciosas = new JLabel("Histórico doenças infecciosas:");
         lblInfecciosas.setBounds(360, 180, 200, 25);
         panelSaude.add(lblInfecciosas);
@@ -452,8 +438,9 @@ public class JFtreatment extends JFrame {
         checkTuberculose = new JCheckBox("Tuberculose"); checkTuberculose.setBounds(370, 255, 150, 25); panelSaude.add(checkTuberculose);
         checkHepatiteB = new JCheckBox("Hepatite B"); checkHepatiteB.setBounds(370, 280, 150, 25); panelSaude.add(checkHepatiteB);
         checkHepatiteC = new JCheckBox("Hepatite C"); checkHepatiteC.setBounds(370, 305, 150, 25); panelSaude.add(checkHepatiteC);
-        JLabel lblHepatiteObs = new JLabel("Obs:"); lblHepatiteObs.setBounds(370, 335, 50, 25); panelSaude.add(lblHepatiteObs);
-        txtHepatiteObs = new JTextArea(); JScrollPane scrollHepatite = new JScrollPane(txtHepatiteObs); scrollHepatite.setBounds(370, 360, 360, 40); panelSaude.add(scrollHepatite);
+        txtDoencasInfecciosas = new JTextField();
+        txtAutoimuneOutra.setBounds(240, 280, 100, 25);
+        panelSaude.add(txtAutoimuneOutra);
         checkPele = new JCheckBox("Possui doença de pele?");
         checkPele.setBounds(540, 180, 200, 25);
         panelSaude.add(checkPele);
@@ -741,5 +728,6 @@ public class JFtreatment extends JFrame {
 
     private void saveData() {
         JOptionPane.showMessageDialog(this, "Lógica de salvamento a ser implementada.");
+        // treatmentController.savePrisoner();
     }
 }
