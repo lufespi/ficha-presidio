@@ -17,6 +17,78 @@ public class Information {
   private BiologicalSex biologicalSex;
   private SexualOrientation sexualOrientation;
   private User user;
+  private SocialEconomicData socialEconomicData;
+  private HealthConditions healthConditions;
+  private WomenHealth womenHealth;
+  private MenHealth menHealth;
+  private MentalHealth mentalHealth;
+  private VaccinationStatus vaccinationStatus;
+  private ClinicalCare clinicalCare;
+  private QuickTests quickTests;
+
+  public SocialEconomicData getSocialEconomicData() {
+    return socialEconomicData;
+  }
+
+  public void setSocialEconomicData(SocialEconomicData socialEconomicData) {
+    this.socialEconomicData = socialEconomicData;
+  }
+
+  public HealthConditions getHealthConditions() {
+    return healthConditions;
+  }
+
+  public void setHealthConditions(HealthConditions healthConditions) {
+    this.healthConditions = healthConditions;
+  }
+
+  public WomenHealth getWomenHealth() {
+    return womenHealth;
+  }
+
+  public void setWomenHealth(WomenHealth womenHealth) {
+    this.womenHealth = womenHealth;
+  }
+
+  public MenHealth getMenHealth() {
+    return menHealth;
+  }
+
+  public void setMenHealth(MenHealth menHealth) {
+    this.menHealth = menHealth;
+  }
+
+  public MentalHealth getMentalHealth() {
+    return mentalHealth;
+  }
+
+  public void setMentalHealth(MentalHealth mentalHealth) {
+    this.mentalHealth = mentalHealth;
+  }
+
+  public VaccinationStatus getVaccinationStatus() {
+    return vaccinationStatus;
+  }
+
+  public void setVaccinationStatus(VaccinationStatus vaccinationStatus) {
+    this.vaccinationStatus = vaccinationStatus;
+  }
+
+  public ClinicalCare getClinicalCare() {
+    return clinicalCare;
+  }
+
+  public void setClinicalCare(ClinicalCare clinicalCare) {
+    this.clinicalCare = clinicalCare;
+  }
+
+  public QuickTests getQuickTests() {
+    return quickTests;
+  }
+
+  public void setQuickTests(QuickTests quickTests) {
+    this.quickTests = quickTests;
+  }
 
   public User getUser() {
     return user;
