@@ -17,9 +17,11 @@ import java.util.List;
 
 public class JFtreatment extends JFrame {
 
+    // --- Variáveis de Instância para UI ---
     public JPanel mainPanel;
     public JScrollPane scrollPane;
 
+    // --- Componentes da Interface (Públicos) ---
     public JFormattedTextField txtCPF;
     public JTextField txtNomeCompleto, txtEntryDate, txtDataNasc, txtNomeSocial,
             txtIdade, txtMae, txtPai, txtSource;
@@ -29,6 +31,7 @@ public class JFtreatment extends JFrame {
     public JCheckBox checkPaiDesconhecido;
     public JComboBox<String> comboRaca, comboSexo, comboGenero, comboOrientacao;
     public JComboBox<String> comboEscolaridade;
+    public JTextArea txtProfissao;
     public JRadioButton radioBeneficioNao, radioBeneficioSim;
     public JTextField txtBeneficioQual;
     public JRadioButton radioFilhosNao, radioFilhosSim;
@@ -36,18 +39,32 @@ public class JFtreatment extends JFrame {
     public JRadioButton radioDependentesNao, radioDependentesSim;
     public JTextField txtDependentesQuantos;
     public JRadioButton radioNeejaNao, radioNeejaSim, radioAssistenciaNao, radioAssistenciaSim;
+
+    // Componentes Atendimento Clínico
+    public JTextField txtPeso, txtAltura, txtIMC, txtPA, txtFC, txtSAT, txtTemp;
+    public JCheckBox checkSintomasResp;
+    public JCheckBox checkTosse, checkCoriza, checkEspirros, checkFebre, checkCalafrios;
+    public JTextField txtSintomasOutros;
+    public JFormattedTextField txtDataInicioSintomas;
+
+    // Componentes Condições de Saúde
     public JRadioButton radioDeficienciaNao, radioDeficienciaSim;
     public JTextArea txtDeficienciaQual;
     public JRadioButton radioAlergiaNao, radioAlergiaSim;
     public JTextArea txtAlergiaQual;
     public JRadioButton radioCirurgiaNao, radioCirurgiaSim;
     public JTextArea txtCirurgiaQual;
+    public JCheckBox checkLesoes;
+    public JTextField txtLesoesLocal;
     public JCheckBox checkHipertensao, checkDiabetes, checkHIV, checkSifilis, checkHPV, checkTuberculose, checkPele;
     public JTextField txtPeleQual;
     public JCheckBox checkAutoimune, checkHepatiteB, checkHepatiteC, checkMedicamentoContinuo;
     public JTextField txtAutoimuneOutra, txtDoencasInfecciosas;
+    public JTextArea txtAutoimuneObs, txtHepatiteObs;
     public JTextField txtMedicamentoQual;
     public JComboBox<String> comboTipoSanguineo;
+
+    // Componentes Saúde Específica
     public JRadioButton radioSaudeMulher, radioSaudeHomem;
     public JRadioButton radioGestacaoNaoSabe, radioGestacaoNao, radioGestacaoSim;
     public JTextField txtIdadeGestacional;
@@ -57,6 +74,8 @@ public class JFtreatment extends JFrame {
     public JCheckBox checkEncaminhaContraceptivo, checkEncaminhaPreventivo, checkEncaminhaPreNatal;
     public JCheckBox checkExameProstata, checkHistFamiliarProstata, checkVasectomia, checkParceiraGestante, checkParticipaPreNatal, checkEncaminhaVasectomia, checkEncaminhaPreNatalParceiro;
     public JTextField txtExameProstataAno, txtHistFamiliarProstataQual;
+
+    // Componentes Saúde Mental
     public JCheckBox checkCaps, checkAcompanhamentoMental;
     public JTextField txtCapsQual, txtAcompanhamentoMotivo;
     public JCheckBox checkAnsiedade, checkDepressao, checkBipolaridade, checkEsquizofrenia, checkAutismo;
@@ -69,6 +88,28 @@ public class JFtreatment extends JFrame {
     public JTextField txtTratamentoReducaoQual, txtGostariaTratamentoQual;
     public JCheckBox checkEncaminhaPsicologia, checkEncaminhaPsiquiatra, checkEncaminhaReceitas, checkEncaminhaGruposApoio;
 
+    // Componentes Vacinação
+    public JCheckBox checkVacinaCovid, checkVacinaInfluenza, checkVacinaTetano, checkVacinaHepatiteB;
+    public JCheckBox checkOfertaNao, checkOfertaHepatiteB, checkOfertaCovid, checkOfertaInfluenza,
+            checkOfertaFebreAmarela, checkOfertaDuplaAdulto, checkOfertaTripliceViral,
+            checkOfertaOutra;
+    public JTextField txtOfertaVacinaOutra;
+    public JCheckBox checkOfertarCopiaCarteira;
+
+    // Componentes Finalização
+    public JRadioButton radioGravidezNeg, radioGravidezPos, radioGravidezNao;
+    public JCheckBox checkColetaEscarro;
+    public JCheckBox checkOutraQueixa;
+    public JTextField txtOutraQueixaQual;
+    public JTextArea txtOutraQueixaConduta;
+    public JCheckBox checkQueixaOdonto;
+    public JTextField txtQueixaOdontoQual;
+    public JCheckBox checkAvaliacaoDentista;
+    public JTextArea txtQueixaOdontoConduta;
+    public JTextArea txtEncaminhamentosFinais;
+
+
+    // --- Variáveis de Controle ---
     public LocalDate actualDate;
     public LocalTime actualTime;
     public JFhome homeScreen;
@@ -100,7 +141,7 @@ public class JFtreatment extends JFrame {
 
         mainPanel = new JPanel();
         mainPanel.setLayout(null);
-        mainPanel.setPreferredSize(new Dimension(760, 2450)); // Altura total para todos os painéis
+        mainPanel.setPreferredSize(new Dimension(760, 3700)); // Altura total para todos os painéis
         scrollPane.setViewportView(mainPanel);
 
         this.add(scrollPane, BorderLayout.CENTER);
@@ -125,7 +166,6 @@ public class JFtreatment extends JFrame {
         panelAtendimento.setLayout(null);
         panelAtendimento.setBounds(10, 10, 740, 140);
         mainPanel.add(panelAtendimento);
-        // ... (código do painel de atendimento)
         JLabel lblResponsavel = new JLabel("Responsável pelo atendimento:");
         lblResponsavel.setBounds(20, 30, 200, 25);
         panelAtendimento.add(lblResponsavel);
@@ -181,7 +221,6 @@ public class JFtreatment extends JFrame {
         panelIdentificacao.setLayout(null);
         panelIdentificacao.setBounds(10, 160, 740, 280);
         mainPanel.add(panelIdentificacao);
-        // ... (código do painel de identificação)
         JLabel lblNomeCompleto = new JLabel("Nome Completo:");
         lblNomeCompleto.setBounds(20, 30, 100, 25);
         panelIdentificacao.add(lblNomeCompleto);
@@ -271,7 +310,6 @@ public class JFtreatment extends JFrame {
         panelAutodeclarado.setLayout(null);
         panelAutodeclarado.setBounds(10, 450, 740, 200);
         mainPanel.add(panelAutodeclarado);
-        // ... (código do painel autodeclarado) ...
         String[] racas = {"Selecione...", "Branco(a)", "Preto(a)", "Pardo(a)", "Amarelo(a)", "Indígena", "Não desejo informar"};
         String[] sexos = {"Selecione...", "Feminino", "Masculino", "Intersexo", "Não desejo informar"};
         String[] generos = {"Selecione...", "Mulher (cisgênero)", "Homem (cisgênero)", "Mulher (transgênero) / Travesti", "Homem (transgênero)", "Não binário", "Não desejo informar"};
@@ -307,7 +345,6 @@ public class JFtreatment extends JFrame {
         panelSocial.setLayout(null);
         panelSocial.setBounds(10, 660, 740, 320);
         mainPanel.add(panelSocial);
-        // ... (código do painel social) ...
         JLabel lblEscolaridade = new JLabel("Escolaridade:");
         lblEscolaridade.setBounds(20, 30, 100, 25);
         panelSocial.add(lblEscolaridade);
@@ -315,6 +352,13 @@ public class JFtreatment extends JFrame {
         comboEscolaridade = new JComboBox<>(escolaridades);
         comboEscolaridade.setBounds(130, 30, 240, 25);
         panelSocial.add(comboEscolaridade);
+        JLabel lblProfissao = new JLabel("Profissão/Ocupação/Renda:");
+        lblProfissao.setBounds(20, 65, 200, 25);
+        panelSocial.add(lblProfissao);
+        txtProfissao = new JTextArea();
+        JScrollPane scrollProfissao = new JScrollPane(txtProfissao);
+        scrollProfissao.setBounds(20, 90, 350, 60);
+        panelSocial.add(scrollProfissao);
         JLabel lblBeneficio = new JLabel("A família recebe algum benefício?");
         lblBeneficio.setBounds(380, 65, 250, 25);
         panelSocial.add(lblBeneficio);
@@ -365,13 +409,157 @@ public class JFtreatment extends JFrame {
         ButtonGroup groupAssistencia = new ButtonGroup();
         groupAssistencia.add(radioAssistenciaNao); groupAssistencia.add(radioAssistenciaSim);
 
+        // --- PAINEL: PRIMEIRO ATENDIMENTO CLÍNICO ---
+        JPanel panelAtendimentoClinico = new JPanel();
+        panelAtendimentoClinico.setBorder(new TitledBorder("PRIMEIRO ATENDIMENTO CLÍNICO"));
+        panelAtendimentoClinico.setLayout(null);
+        panelAtendimentoClinico.setBounds(10, 990, 740, 350);
+        mainPanel.add(panelAtendimentoClinico);
+
+        // Sub-painel Antropometria e Sinais Vitais
+        JPanel panelAntropometria = new JPanel();
+        panelAntropometria.setBorder(new TitledBorder("Antropometria e Sinais Vitais"));
+        panelAntropometria.setLayout(null);
+        panelAntropometria.setBounds(10, 20, 350, 200);
+        panelAtendimentoClinico.add(panelAntropometria);
+
+        JLabel lblPeso = new JLabel("Peso:");
+        lblPeso.setBounds(10, 30, 50, 25);
+        panelAntropometria.add(lblPeso);
+        txtPeso = new JTextField();
+        txtPeso.setBounds(60, 30, 80, 25);
+        panelAntropometria.add(txtPeso);
+        JLabel lblKg = new JLabel("kg");
+        lblKg.setBounds(145, 30, 30, 25);
+        panelAntropometria.add(lblKg);
+
+        JLabel lblAltura = new JLabel("Altura:");
+        lblAltura.setBounds(10, 60, 50, 25);
+        panelAntropometria.add(lblAltura);
+        txtAltura = new JTextField();
+        txtAltura.setBounds(60, 60, 80, 25);
+        panelAntropometria.add(txtAltura);
+        JLabel lblCm = new JLabel("cm");
+        lblCm.setBounds(145, 60, 30, 25);
+        panelAntropometria.add(lblCm);
+
+        JLabel lblIMC = new JLabel("IMC:");
+        lblIMC.setBounds(10, 90, 50, 25);
+        panelAntropometria.add(lblIMC);
+        txtIMC = new JTextField();
+        txtIMC.setBounds(60, 90, 80, 25);
+        panelAntropometria.add(txtIMC);
+        JLabel lblKgm2 = new JLabel("kg/m²");
+        lblKgm2.setBounds(145, 90, 50, 25);
+        panelAntropometria.add(lblKgm2);
+
+        JLabel lblPA = new JLabel("PA:");
+        lblPA.setBounds(10, 120, 50, 25);
+        panelAntropometria.add(lblPA);
+        txtPA = new JTextField();
+        txtPA.setBounds(60, 120, 80, 25);
+        panelAntropometria.add(txtPA);
+        JLabel lblMmhg = new JLabel("mmHg");
+        lblMmhg.setBounds(145, 120, 50, 25);
+        panelAntropometria.add(lblMmhg);
+
+        JLabel lblFC = new JLabel("FC:");
+        lblFC.setBounds(200, 30, 40, 25);
+        panelAntropometria.add(lblFC);
+        txtFC = new JTextField();
+        txtFC.setBounds(240, 30, 60, 25);
+        panelAntropometria.add(txtFC);
+        JLabel lblBpm = new JLabel("bpm");
+        lblBpm.setBounds(305, 30, 40, 25);
+        panelAntropometria.add(lblBpm);
+
+        JLabel lblSAT = new JLabel("SAT:");
+        lblSAT.setBounds(200, 60, 40, 25);
+        panelAntropometria.add(lblSAT);
+        txtSAT = new JTextField();
+        txtSAT.setBounds(240, 60, 60, 25);
+        panelAntropometria.add(txtSAT);
+        JLabel lblPercent = new JLabel("%");
+        lblPercent.setBounds(305, 60, 40, 25);
+        panelAntropometria.add(lblPercent);
+
+        JLabel lblTemp = new JLabel("Temp.:");
+        lblTemp.setBounds(200, 90, 50, 25);
+        panelAntropometria.add(lblTemp);
+        txtTemp = new JTextField();
+        txtTemp.setBounds(250, 90, 50, 25);
+        panelAntropometria.add(txtTemp);
+        JLabel lblCelsius = new JLabel("°C");
+        lblCelsius.setBounds(305, 90, 40, 25);
+        panelAntropometria.add(lblCelsius);
+
+        // Sub-painel Sintomas Respiratórios
+        JPanel panelSintomas = new JPanel();
+        panelSintomas.setBorder(new TitledBorder("Sintomas Respiratórios"));
+        panelSintomas.setLayout(null);
+        panelSintomas.setBounds(370, 20, 360, 320);
+        panelAtendimentoClinico.add(panelSintomas);
+
+        checkSintomasResp = new JCheckBox("Apresenta sintomas respiratórios?");
+        checkSintomasResp.setBounds(10, 25, 340, 25);
+        panelSintomas.add(checkSintomasResp);
+
+        checkTosse = new JCheckBox("Tosse");
+        checkTosse.setBounds(20, 55, 100, 25);
+        panelSintomas.add(checkTosse);
+
+        checkCoriza = new JCheckBox("Coriza");
+        checkCoriza.setBounds(130, 55, 100, 25);
+        panelSintomas.add(checkCoriza);
+
+        checkEspirros = new JCheckBox("Espirros");
+        checkEspirros.setBounds(240, 55, 100, 25);
+        panelSintomas.add(checkEspirros);
+
+        checkFebre = new JCheckBox("Febre");
+        checkFebre.setBounds(20, 85, 100, 25);
+        panelSintomas.add(checkFebre);
+
+        checkCalafrios = new JCheckBox("Calafrios");
+        checkCalafrios.setBounds(130, 85, 100, 25);
+        panelSintomas.add(checkCalafrios);
+
+        JLabel lblSintomasOutros = new JLabel("Outros:");
+        lblSintomasOutros.setBounds(20, 115, 60, 25);
+        panelSintomas.add(lblSintomasOutros);
+        txtSintomasOutros = new JTextField();
+        txtSintomasOutros.setBounds(80, 115, 270, 25);
+        panelSintomas.add(txtSintomasOutros);
+
+        JLabel lblDataInicioSintomas = new JLabel("Data do início dos sintomas:");
+        lblDataInicioSintomas.setBounds(20, 145, 180, 25);
+        panelSintomas.add(lblDataInicioSintomas);
+        try {
+            MaskFormatter mascaraData = new MaskFormatter("##/##/####");
+            mascaraData.setPlaceholderCharacter('_');
+            txtDataInicioSintomas = new JFormattedTextField(mascaraData);
+        } catch (ParseException ex) {
+            System.err.println("Erro ao criar máscara de data.");
+            txtDataInicioSintomas = new JFormattedTextField();
+        }
+        txtDataInicioSintomas.setBounds(200, 145, 100, 25);
+        panelSintomas.add(txtDataInicioSintomas);
+
+        JTextArea areaObs = new JTextArea("OBS: em caso positivo, deve ser ofertado a coleta de escarro para Tuberculose e teste para Covid-19.");
+        areaObs.setWrapStyleWord(true);
+        areaObs.setLineWrap(true);
+        areaObs.setOpaque(false);
+        areaObs.setEditable(false);
+        areaObs.setFont(new Font("Arial", Font.ITALIC, 11));
+        areaObs.setBounds(20, 180, 330, 60);
+        panelSintomas.add(areaObs);
+
         // --- PAINEL: CONDIÇÕES DE SAÚDE ---
         JPanel panelSaude = new JPanel();
         panelSaude.setBorder(new TitledBorder("CONDIÇÕES DE SAÚDE"));
         panelSaude.setLayout(null);
-        panelSaude.setBounds(10, 990, 740, 520);
+        panelSaude.setBounds(10, 1350, 740, 560); // Altura aumentada
         mainPanel.add(panelSaude);
-        // ... (código do painel de saúde)
         JLabel lblDeficiencia = new JLabel("Possui alguma deficiência?");
         lblDeficiencia.setBounds(20, 30, 200, 25);
         panelSaude.add(lblDeficiencia);
@@ -418,69 +606,81 @@ public class JFtreatment extends JFrame {
         txtCirurgiaQual.setEnabled(false);
         radioCirurgiaSim.addActionListener(e -> scrollCirurgia.getViewport().getView().setEnabled(true));
         radioCirurgiaNao.addActionListener(e -> scrollCirurgia.getViewport().getView().setEnabled(false));
+
+        checkLesoes = new JCheckBox("Apresenta lesões/ferimentos no corpo?");
+        checkLesoes.setBounds(20, 165, 300, 25);
+        panelSaude.add(checkLesoes);
+        JLabel lblLesoesLocal = new JLabel("Local(is):");
+        lblLesoesLocal.setBounds(330, 165, 70, 25);
+        panelSaude.add(lblLesoesLocal);
+        txtLesoesLocal = new JTextField();
+        txtLesoesLocal.setBounds(400, 165, 310, 25);
+        panelSaude.add(txtLesoesLocal);
+
         JSeparator separator1 = new JSeparator();
-        separator1.setBounds(10, 165, 720, 5);
+        separator1.setBounds(10, 200, 720, 5);
         panelSaude.add(separator1);
         JLabel lblCronicas = new JLabel("Condições crônicas:");
-        lblCronicas.setBounds(20, 180, 200, 25);
+        lblCronicas.setBounds(20, 215, 200, 25);
         panelSaude.add(lblCronicas);
-        checkHipertensao = new JCheckBox("Hipertensão"); checkHipertensao.setBounds(30, 205, 150, 25); panelSaude.add(checkHipertensao);
-        checkDiabetes = new JCheckBox("Diabetes"); checkDiabetes.setBounds(30, 230, 150, 25); panelSaude.add(checkDiabetes);
-        checkHIV = new JCheckBox("HIV"); checkHIV.setBounds(30, 255, 150, 25); panelSaude.add(checkHIV);
-        checkAutoimune = new JCheckBox("Doença Autoimune"); checkAutoimune.setBounds(30, 280, 150, 25); panelSaude.add(checkAutoimune);
-        JLabel lblAutoimuneOutra = new JLabel("Outra:"); lblAutoimuneOutra.setBounds(190, 280, 50, 25); panelSaude.add(lblAutoimuneOutra);
-        txtAutoimuneOutra = new JTextField(); txtAutoimuneOutra.setBounds(240, 280, 100, 25); panelSaude.add(txtAutoimuneOutra);
+        checkHipertensao = new JCheckBox("Hipertensão"); checkHipertensao.setBounds(30, 240, 150, 25); panelSaude.add(checkHipertensao);
+        checkDiabetes = new JCheckBox("Diabetes"); checkDiabetes.setBounds(30, 265, 150, 25); panelSaude.add(checkDiabetes);
+        checkHIV = new JCheckBox("HIV"); checkHIV.setBounds(30, 290, 150, 25); panelSaude.add(checkHIV);
+        checkAutoimune = new JCheckBox("Doença Autoimune"); checkAutoimune.setBounds(30, 315, 150, 25); panelSaude.add(checkAutoimune);
+        JLabel lblAutoimuneOutra = new JLabel("Outra:"); lblAutoimuneOutra.setBounds(190, 315, 50, 25); panelSaude.add(lblAutoimuneOutra);
+        txtAutoimuneOutra = new JTextField(); txtAutoimuneOutra.setBounds(240, 315, 100, 25); panelSaude.add(txtAutoimuneOutra);
+        JLabel lblAutoimuneObs = new JLabel("Obs:"); lblAutoimuneObs.setBounds(30, 345, 50, 25); panelSaude.add(lblAutoimuneObs);
+        txtAutoimuneObs = new JTextArea(); JScrollPane scrollAutoimune = new JScrollPane(txtAutoimuneObs); scrollAutoimune.setBounds(30, 370, 310, 40); panelSaude.add(scrollAutoimune);
         JLabel lblInfecciosas = new JLabel("Histórico doenças infecciosas:");
-        lblInfecciosas.setBounds(360, 180, 200, 25);
+        lblInfecciosas.setBounds(360, 215, 200, 25);
         panelSaude.add(lblInfecciosas);
-        checkSifilis = new JCheckBox("Sífilis"); checkSifilis.setBounds(370, 205, 150, 25); panelSaude.add(checkSifilis);
-        checkHPV = new JCheckBox("HPV"); checkHPV.setBounds(370, 230, 150, 25); panelSaude.add(checkHPV);
-        checkTuberculose = new JCheckBox("Tuberculose"); checkTuberculose.setBounds(370, 255, 150, 25); panelSaude.add(checkTuberculose);
-        checkHepatiteB = new JCheckBox("Hepatite B"); checkHepatiteB.setBounds(370, 280, 150, 25); panelSaude.add(checkHepatiteB);
-        checkHepatiteC = new JCheckBox("Hepatite C"); checkHepatiteC.setBounds(370, 305, 150, 25); panelSaude.add(checkHepatiteC);
+        checkSifilis = new JCheckBox("Sífilis"); checkSifilis.setBounds(370, 240, 150, 25); panelSaude.add(checkSifilis);
+        checkHPV = new JCheckBox("HPV"); checkHPV.setBounds(370, 265, 150, 25); panelSaude.add(checkHPV);
+        checkTuberculose = new JCheckBox("Tuberculose"); checkTuberculose.setBounds(370, 290, 150, 25); panelSaude.add(checkTuberculose);
+        checkHepatiteB = new JCheckBox("Hepatite B"); checkHepatiteB.setBounds(370, 315, 150, 25); panelSaude.add(checkHepatiteB);
+        checkHepatiteC = new JCheckBox("Hepatite C"); checkHepatiteC.setBounds(370, 340, 150, 25); panelSaude.add(checkHepatiteC);
+        JLabel lblHepatiteObs = new JLabel("Obs:"); lblHepatiteObs.setBounds(370, 370, 50, 25); panelSaude.add(lblHepatiteObs);
         txtDoencasInfecciosas = new JTextField();
-        txtAutoimuneOutra.setBounds(240, 280, 100, 25);
-        panelSaude.add(txtAutoimuneOutra);
+        txtHepatiteObs = new JTextArea(); JScrollPane scrollHepatite = new JScrollPane(txtHepatiteObs); scrollHepatite.setBounds(370, 395, 360, 40); panelSaude.add(scrollHepatite);
         checkPele = new JCheckBox("Possui doença de pele?");
-        checkPele.setBounds(540, 180, 200, 25);
+        checkPele.setBounds(540, 215, 200, 25);
         panelSaude.add(checkPele);
         JLabel lblPeleQual = new JLabel("Qual(is)?:");
-        lblPeleQual.setBounds(550, 205, 70, 25);
+        lblPeleQual.setBounds(550, 240, 70, 25);
         panelSaude.add(lblPeleQual);
         txtPeleQual = new JTextField();
-        txtPeleQual.setBounds(550, 230, 180, 25);
+        txtPeleQual.setBounds(550, 265, 180, 25);
         txtPeleQual.setEnabled(false);
         panelSaude.add(txtPeleQual);
         checkPele.addActionListener(e -> txtPeleQual.setEnabled(checkPele.isSelected()));
         JSeparator separator3 = new JSeparator();
-        separator3.setBounds(10, 415, 720, 5);
+        separator3.setBounds(10, 450, 720, 5);
         panelSaude.add(separator3);
         checkMedicamentoContinuo = new JCheckBox("Usa medicamento contínuo?");
-        checkMedicamentoContinuo.setBounds(20, 430, 220, 25);
+        checkMedicamentoContinuo.setBounds(20, 465, 220, 25);
         panelSaude.add(checkMedicamentoContinuo);
         JLabel lblMedicamentoQual = new JLabel("Qual(is)?:");
-        lblMedicamentoQual.setBounds(250, 430, 70, 25);
+        lblMedicamentoQual.setBounds(250, 465, 70, 25);
         panelSaude.add(lblMedicamentoQual);
         txtMedicamentoQual = new JTextField();
-        txtMedicamentoQual.setBounds(320, 430, 410, 25);
+        txtMedicamentoQual.setBounds(320, 465, 410, 25);
         txtMedicamentoQual.setEnabled(false);
         panelSaude.add(txtMedicamentoQual);
         checkMedicamentoContinuo.addActionListener(e -> txtMedicamentoQual.setEnabled(checkMedicamentoContinuo.isSelected()));
         JLabel lblTipoSanguineo = new JLabel("Tipo sanguíneo:");
-        lblTipoSanguineo.setBounds(20, 465, 120, 25);
+        lblTipoSanguineo.setBounds(20, 500, 120, 25);
         panelSaude.add(lblTipoSanguineo);
         String[] tiposSanguineos = {"Selecione...", "A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-", "Não sabe"};
         comboTipoSanguineo = new JComboBox<>(tiposSanguineos);
-        comboTipoSanguineo.setBounds(140, 465, 150, 25);
+        comboTipoSanguineo.setBounds(140, 500, 150, 25);
         panelSaude.add(comboTipoSanguineo);
 
         // --- PAINEL: SAÚDE MENTAL E USO DE SUBSTÂNCIAS ---
         JPanel panelSaudeMental = new JPanel();
         panelSaudeMental.setBorder(new TitledBorder("SAÚDE MENTAL E USO DE SUBSTÂNCIAS"));
         panelSaudeMental.setLayout(null);
-        panelSaudeMental.setBounds(10, 1520, 740, 490);
+        panelSaudeMental.setBounds(10, 1920, 740, 490);
         mainPanel.add(panelSaudeMental);
-        // ... (código do painel de saúde mental) ...
         checkCaps = new JCheckBox("Possui vínculo com CAPS?");
         checkCaps.setBounds(20, 30, 200, 25);
         panelSaudeMental.add(checkCaps);
@@ -568,12 +768,69 @@ public class JFtreatment extends JFrame {
         checkEncaminhaReceitas = new JCheckBox("Encaminhar para renovação de receitas"); checkEncaminhaReceitas.setBounds(30, 455, 300, 25); panelSaudeMental.add(checkEncaminhaReceitas);
         checkEncaminhaGruposApoio = new JCheckBox("Ofertar encaminhamento para grupos de apoio"); checkEncaminhaGruposApoio.setBounds(340, 455, 350, 25); panelSaudeMental.add(checkEncaminhaGruposApoio);
 
+        // --- PAINEL: SITUAÇÃO VACINAL ---
+        JPanel panelVacinacao = new JPanel();
+        panelVacinacao.setBorder(new TitledBorder("SITUAÇÃO VACINAL"));
+        panelVacinacao.setLayout(null);
+        panelVacinacao.setBounds(10, 2420, 740, 260);
+        mainPanel.add(panelVacinacao);
+        checkVacinaCovid = new JCheckBox("Recebeu a vacina da Covid-19 no último ano?");
+        checkVacinaCovid.setBounds(20, 30, 350, 25);
+        panelVacinacao.add(checkVacinaCovid);
+        checkVacinaInfluenza = new JCheckBox("Recebeu a vacina da Influenza no último ano?");
+        checkVacinaInfluenza.setBounds(380, 30, 350, 25);
+        panelVacinacao.add(checkVacinaInfluenza);
+        checkVacinaTetano = new JCheckBox("Recebeu a vacina do Tétano nos últimos 10 anos?");
+        checkVacinaTetano.setBounds(20, 60, 350, 25);
+        panelVacinacao.add(checkVacinaTetano);
+        checkVacinaHepatiteB = new JCheckBox("Recebeu a vacina da Hepatite B alguma vez na vida?");
+        checkVacinaHepatiteB.setBounds(380, 60, 350, 25);
+        panelVacinacao.add(checkVacinaHepatiteB);
+        JLabel lblEncaminhamentosVacina = new JLabel("Encaminhamentos:");
+        lblEncaminhamentosVacina.setFont(new Font("Arial", Font.BOLD, 12));
+        lblEncaminhamentosVacina.setBounds(20, 95, 200, 25);
+        panelVacinacao.add(lblEncaminhamentosVacina);
+        JLabel lblOfertarVacinas = new JLabel("Ofertar as vacinas disponíveis:");
+        lblOfertarVacinas.setBounds(30, 120, 200, 25);
+        panelVacinacao.add(lblOfertarVacinas);
+        checkOfertaNao = new JCheckBox("Não");
+        checkOfertaNao.setBounds(40, 145, 100, 25);
+        panelVacinacao.add(checkOfertaNao);
+        checkOfertaHepatiteB = new JCheckBox("Hepatite B");
+        checkOfertaHepatiteB.setBounds(150, 145, 100, 25);
+        panelVacinacao.add(checkOfertaHepatiteB);
+        checkOfertaCovid = new JCheckBox("Covid-19");
+        checkOfertaCovid.setBounds(260, 145, 100, 25);
+        panelVacinacao.add(checkOfertaCovid);
+        checkOfertaInfluenza = new JCheckBox("Influenza");
+        checkOfertaInfluenza.setBounds(370, 145, 100, 25);
+        panelVacinacao.add(checkOfertaInfluenza);
+        checkOfertaFebreAmarela = new JCheckBox("Febre Amarela");
+        checkOfertaFebreAmarela.setBounds(40, 170, 120, 25);
+        panelVacinacao.add(checkOfertaFebreAmarela);
+        checkOfertaDuplaAdulto = new JCheckBox("Dupla Adulto (dT)");
+        checkOfertaDuplaAdulto.setBounds(170, 170, 150, 25);
+        panelVacinacao.add(checkOfertaDuplaAdulto);
+        checkOfertaTripliceViral = new JCheckBox("Tríplice Viral (SRC)");
+        checkOfertaTripliceViral.setBounds(330, 170, 150, 25);
+        panelVacinacao.add(checkOfertaTripliceViral);
+        checkOfertaOutra = new JCheckBox("Outra:");
+        checkOfertaOutra.setBounds(490, 170, 70, 25);
+        panelVacinacao.add(checkOfertaOutra);
+        txtOfertaVacinaOutra = new JTextField();
+        txtOfertaVacinaOutra.setBounds(565, 170, 160, 25);
+        txtOfertaVacinaOutra.setEnabled(false);
+        panelVacinacao.add(txtOfertaVacinaOutra);
+        checkOfertarCopiaCarteira = new JCheckBox("Ofertar cópia da carteira de vacinação");
+        checkOfertarCopiaCarteira.setBounds(30, 210, 300, 25);
+        panelVacinacao.add(checkOfertarCopiaCarteira);
+
+
         // --- PAINEL DE SELEÇÃO DE SAÚDE ESPECÍFICA ---
         JPanel panelSelecao = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelSelecao.setBorder(new TitledBorder("SAÚDE ESPECÍFICA"));
-        panelSelecao.setBounds(10, 2020, 740, 60);
+        panelSelecao.setBounds(10, 2690, 740, 60);
         mainPanel.add(panelSelecao);
-
         JLabel lblSaude = new JLabel("Saúde:");
         panelSelecao.add(lblSaude);
         radioSaudeMulher = new JRadioButton("Mulher");
@@ -588,14 +845,13 @@ public class JFtreatment extends JFrame {
         JPanel panelContainerDinamico = new JPanel();
         CardLayout cardLayout = new CardLayout();
         panelContainerDinamico.setLayout(cardLayout);
-        panelContainerDinamico.setBounds(10, 2090, 740, 350);
+        panelContainerDinamico.setBounds(10, 2760, 740, 350);
         mainPanel.add(panelContainerDinamico);
 
         // --- Painel Saúde da Mulher ---
         JPanel panelSaudeMulher = new JPanel();
         panelSaudeMulher.setBorder(new TitledBorder("SAÚDE DA MULHER"));
         panelSaudeMulher.setLayout(null);
-        // ... (conteúdo do painel da mulher)
         JLabel lblGestacao = new JLabel("Gestação no momento:");
         lblGestacao.setBounds(20, 30, 150, 25);
         panelSaudeMulher.add(lblGestacao);
@@ -628,7 +884,6 @@ public class JFtreatment extends JFrame {
         JPanel panelSaudeHomem = new JPanel();
         panelSaudeHomem.setBorder(new TitledBorder("SAÚDE DO HOMEM"));
         panelSaudeHomem.setLayout(null);
-        // ... (código do painel do homem)
         checkExameProstata = new JCheckBox("Já realizou exame preventivo para o câncer de próstata?");
         checkExameProstata.setBounds(20, 30, 400, 25);
         panelSaudeHomem.add(checkExameProstata);
@@ -675,15 +930,166 @@ public class JFtreatment extends JFrame {
         panelContainerDinamico.add(panelSaudeMulher, "MULHER");
         panelContainerDinamico.add(panelSaudeHomem, "HOMEM");
 
+        // --- PAINEL FINALIZAÇÃO ---
+        JPanel panelFinalizacao = new JPanel();
+        panelFinalizacao.setBorder(new TitledBorder("FINALIZAÇÃO DO ATENDIMENTO"));
+        panelFinalizacao.setLayout(null);
+        panelFinalizacao.setBounds(10, 3120, 740, 530);
+        mainPanel.add(panelFinalizacao);
+
+        // Seção Teste de Gravidez e Coleta
+        JPanel panelTestesDiversos = new JPanel();
+        panelTestesDiversos.setBorder(new TitledBorder("Testes e Coletas"));
+        panelTestesDiversos.setLayout(null);
+        panelTestesDiversos.setBounds(10, 20, 720, 70);
+        panelFinalizacao.add(panelTestesDiversos);
+
+        JLabel lblGravidez = new JLabel("Teste de gravidez:");
+        lblGravidez.setBounds(10, 30, 120, 25);
+        panelTestesDiversos.add(lblGravidez);
+        radioGravidezNeg = new JRadioButton("Negativo");
+        radioGravidezNeg.setBounds(140, 30, 90, 25);
+        panelTestesDiversos.add(radioGravidezNeg);
+        radioGravidezPos = new JRadioButton("Positivo");
+        radioGravidezPos.setBounds(230, 30, 90, 25);
+        panelTestesDiversos.add(radioGravidezPos);
+        radioGravidezNao = new JRadioButton("Não realizado");
+        radioGravidezNao.setBounds(320, 30, 120, 25);
+        panelTestesDiversos.add(radioGravidezNao);
+        ButtonGroup groupGravidez = new ButtonGroup();
+        groupGravidez.add(radioGravidezNeg);
+        groupGravidez.add(radioGravidezPos);
+        groupGravidez.add(radioGravidezNao);
+
+        checkColetaEscarro = new JCheckBox("Coleta de escarro");
+        checkColetaEscarro.setBounds(480, 30, 150, 25);
+        panelTestesDiversos.add(checkColetaEscarro);
+
+        // Seção Outras Queixas
+        JPanel panelOutrasQueixas = new JPanel();
+        panelOutrasQueixas.setBorder(new TitledBorder("Outras Queixas"));
+        panelOutrasQueixas.setLayout(null);
+        panelOutrasQueixas.setBounds(10, 100, 720, 120);
+        panelFinalizacao.add(panelOutrasQueixas);
+
+        checkOutraQueixa = new JCheckBox("Apresenta alguma outra queixa?");
+        checkOutraQueixa.setBounds(10, 25, 250, 25);
+        panelOutrasQueixas.add(checkOutraQueixa);
+        JLabel lblOutraQueixaQual = new JLabel("Qual(is):");
+        lblOutraQueixaQual.setBounds(270, 25, 60, 25);
+        panelOutrasQueixas.add(lblOutraQueixaQual);
+        txtOutraQueixaQual = new JTextField();
+        txtOutraQueixaQual.setBounds(330, 25, 380, 25);
+        panelOutrasQueixas.add(txtOutraQueixaQual);
+        JLabel lblOutraQueixaConduta = new JLabel("Conduta:");
+        lblOutraQueixaConduta.setBounds(10, 55, 70, 25);
+        panelOutrasQueixas.add(lblOutraQueixaConduta);
+        txtOutraQueixaConduta = new JTextArea();
+        JScrollPane scrollOutraQueixa = new JScrollPane(txtOutraQueixaConduta);
+        scrollOutraQueixa.setBounds(80, 55, 630, 55);
+        panelOutrasQueixas.add(scrollOutraQueixa);
+
+        // Seção Queixa Odontológica
+        JPanel panelOdonto = new JPanel();
+        panelOdonto.setBorder(new TitledBorder("Queixa Odontológica"));
+        panelOdonto.setLayout(null);
+        panelOdonto.setBounds(10, 230, 720, 150);
+        panelFinalizacao.add(panelOdonto);
+
+        checkQueixaOdonto = new JCheckBox("Apresenta alguma queixa odontológica?");
+        checkQueixaOdonto.setBounds(10, 25, 300, 25);
+        panelOdonto.add(checkQueixaOdonto);
+        JLabel lblQueixaOdontoQual = new JLabel("Qual(is):");
+        lblQueixaOdontoQual.setBounds(320, 25, 60, 25);
+        panelOdonto.add(lblQueixaOdontoQual);
+        txtQueixaOdontoQual = new JTextField();
+        txtQueixaOdontoQual.setBounds(380, 25, 330, 25);
+        panelOdonto.add(txtQueixaOdontoQual);
+
+        checkAvaliacaoDentista = new JCheckBox("Necessita avaliação imediata de dentista");
+        checkAvaliacaoDentista.setBounds(10, 55, 300, 25);
+        panelOdonto.add(checkAvaliacaoDentista);
+
+        JLabel lblQueixaOdontoConduta = new JLabel("Conduta:");
+        lblQueixaOdontoConduta.setBounds(10, 85, 70, 25);
+        panelOdonto.add(lblQueixaOdontoConduta);
+        txtQueixaOdontoConduta = new JTextArea();
+        JScrollPane scrollOdontoConduta = new JScrollPane(txtQueixaOdontoConduta);
+        scrollOdontoConduta.setBounds(80, 85, 630, 55);
+        panelOdonto.add(scrollOdontoConduta);
+
+        // Seção Encaminhamentos Finais
+        JPanel panelEncaminhamentos = new JPanel();
+        panelEncaminhamentos.setBorder(new TitledBorder("Encaminhamentos Finais"));
+        panelEncaminhamentos.setLayout(null);
+        panelEncaminhamentos.setBounds(10, 390, 720, 130);
+        panelFinalizacao.add(panelEncaminhamentos);
+
+        txtEncaminhamentosFinais = new JTextArea();
+        JScrollPane scrollEncaminhamentos = new JScrollPane(txtEncaminhamentosFinais);
+        scrollEncaminhamentos.setBounds(10, 25, 700, 95);
+        panelEncaminhamentos.add(scrollEncaminhamentos);
+
+
         // --- Lógica de controle ---
         radioSaudeMulher.addActionListener(e -> cardLayout.show(panelContainerDinamico, "MULHER"));
         radioSaudeHomem.addActionListener(e -> cardLayout.show(panelContainerDinamico, "HOMEM"));
+
+        // Lógica para habilitar/desabilitar campos de sintomas respiratórios
+        Component[] componentesSintomas = {checkTosse, checkCoriza, checkEspirros, checkFebre, checkCalafrios, txtSintomasOutros, txtDataInicioSintomas};
+        for(Component c : componentesSintomas) {
+            c.setEnabled(false);
+        }
+        checkSintomasResp.addActionListener(e -> {
+            boolean selecionado = checkSintomasResp.isSelected();
+            for(Component c : componentesSintomas) {
+                c.setEnabled(selecionado);
+            }
+            if(!selecionado) {
+                checkTosse.setSelected(false);
+                checkCoriza.setSelected(false);
+                checkEspirros.setSelected(false);
+                checkFebre.setSelected(false);
+                checkCalafrios.setSelected(false);
+                txtSintomasOutros.setText("");
+                txtDataInicioSintomas.setText("");
+            }
+        });
+
+        checkLesoes.addActionListener(e -> txtLesoesLocal.setEnabled(checkLesoes.isSelected()));
+        txtLesoesLocal.setEnabled(false);
+
 
         checkCaps.addActionListener(e -> txtCapsQual.setEnabled(checkCaps.isSelected()));
         checkAcompanhamentoMental.addActionListener(e -> txtAcompanhamentoMotivo.setEnabled(checkAcompanhamentoMental.isSelected()));
         checkUsaMedicamentoControlado.addActionListener(e -> txtMedicamentoControladoQual.setEnabled(checkUsaMedicamentoControlado.isSelected()));
         checkTratamentoReducao.addActionListener(e -> txtTratamentoReducaoQual.setEnabled(checkTratamentoReducao.isSelected()));
         checkGostariaTratamento.addActionListener(e -> txtGostariaTratamentoQual.setEnabled(checkGostariaTratamento.isSelected()));
+        checkOfertaOutra.addActionListener(e -> txtOfertaVacinaOutra.setEnabled(checkOfertaOutra.isSelected()));
+
+        checkOfertaNao.addActionListener(e -> {
+            boolean naoSelecionado = checkOfertaNao.isSelected();
+            checkOfertaHepatiteB.setEnabled(!naoSelecionado);
+            checkOfertaCovid.setEnabled(!naoSelecionado);
+            checkOfertaInfluenza.setEnabled(!naoSelecionado);
+            checkOfertaFebreAmarela.setEnabled(!naoSelecionado);
+            checkOfertaDuplaAdulto.setEnabled(!naoSelecionado);
+            checkOfertaTripliceViral.setEnabled(!naoSelecionado);
+            checkOfertaOutra.setEnabled(!naoSelecionado);
+
+            if (naoSelecionado) {
+                checkOfertaHepatiteB.setSelected(false);
+                checkOfertaCovid.setSelected(false);
+                checkOfertaInfluenza.setSelected(false);
+                checkOfertaFebreAmarela.setSelected(false);
+                checkOfertaDuplaAdulto.setSelected(false);
+                checkOfertaTripliceViral.setSelected(false);
+                checkOfertaOutra.setSelected(false);
+                txtOfertaVacinaOutra.setEnabled(false);
+                txtOfertaVacinaOutra.setText("");
+            }
+        });
+
         radioGestacaoSim.addActionListener(e -> {
             txtIdadeGestacional.setEnabled(true);
             checkEncaminhaPreNatal.setEnabled(true);
@@ -691,10 +1097,12 @@ public class JFtreatment extends JFrame {
         radioGestacaoNao.addActionListener(e -> {
             txtIdadeGestacional.setEnabled(false);
             checkEncaminhaPreNatal.setEnabled(false);
+            txtIdadeGestacional.setText("");
         });
         radioGestacaoNaoSabe.addActionListener(e -> {
             txtIdadeGestacional.setEnabled(false);
             checkEncaminhaPreNatal.setEnabled(false);
+            txtIdadeGestacional.setText("");
         });
         checkPapanicolau.addActionListener(e -> txtPapanicolauAno.setEnabled(checkPapanicolau.isSelected()));
         checkContraNao.addActionListener(e -> {
@@ -704,6 +1112,13 @@ public class JFtreatment extends JFrame {
             checkContraInjetavel.setEnabled(!selecionado);
             checkContraLigadura.setEnabled(!selecionado);
             checkContraHisterectomia.setEnabled(!selecionado);
+            if (selecionado) {
+                checkContraOral.setSelected(false);
+                checkContraDIU.setSelected(false);
+                checkContraInjetavel.setSelected(false);
+                checkContraLigadura.setSelected(false);
+                checkContraHisterectomia.setSelected(false);
+            }
         });
         checkExameProstata.addActionListener(e -> txtExameProstataAno.setEnabled(checkExameProstata.isSelected()));
         checkHistFamiliarProstata.addActionListener(e -> txtHistFamiliarProstataQual.setEnabled(checkHistFamiliarProstata.isSelected()));
@@ -711,7 +1126,43 @@ public class JFtreatment extends JFrame {
             boolean selecionado = checkParceiraGestante.isSelected();
             checkParticipaPreNatal.setEnabled(selecionado);
             checkEncaminhaPreNatalParceiro.setEnabled(selecionado);
+            if (!selecionado) {
+                checkParticipaPreNatal.setSelected(false);
+            }
         });
+
+        // Lógica para painel de finalização
+        Component[] componentesOutraQueixa = {txtOutraQueixaQual, txtOutraQueixaConduta, scrollOutraQueixa.getViewport()};
+        for(Component c : componentesOutraQueixa) {
+            c.setEnabled(false);
+        }
+        checkOutraQueixa.addActionListener(e -> {
+            boolean selecionado = checkOutraQueixa.isSelected();
+            for(Component c : componentesOutraQueixa) {
+                c.setEnabled(selecionado);
+            }
+            if(!selecionado) {
+                txtOutraQueixaQual.setText("");
+                txtOutraQueixaConduta.setText("");
+            }
+        });
+
+        Component[] componentesOdonto = {txtQueixaOdontoQual, checkAvaliacaoDentista, txtQueixaOdontoConduta, scrollOdontoConduta.getViewport()};
+        for(Component c : componentesOdonto) {
+            c.setEnabled(false);
+        }
+        checkQueixaOdonto.addActionListener(e -> {
+            boolean selecionado = checkQueixaOdonto.isSelected();
+            for(Component c : componentesOdonto) {
+                c.setEnabled(selecionado);
+            }
+            if(!selecionado) {
+                txtQueixaOdontoQual.setText("");
+                checkAvaliacaoDentista.setSelected(false);
+                txtQueixaOdontoConduta.setText("");
+            }
+        });
+
 
         btnSalvar.addActionListener(e -> saveData());
         btnCancelar.addActionListener(e -> confirmarCancelamento());
@@ -728,6 +1179,5 @@ public class JFtreatment extends JFrame {
 
     private void saveData() {
         JOptionPane.showMessageDialog(this, "Lógica de salvamento a ser implementada.");
-        // treatmentController.savePrisoner();
     }
 }
