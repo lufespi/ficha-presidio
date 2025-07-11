@@ -13,18 +13,32 @@ public class ClinicalCareService {
     this.dbConnection = new DBConnection();
   }
 
-  public int saveClinicalCare(BigDecimal weight, BigDecimal height, BigDecimal imc,
-                              BigDecimal bloodPressure, BigDecimal heartRate, BigDecimal saturation,
-                              BigDecimal temperature, String respiratorySymptoms,
-                              java.util.Date startDateRespiratorySymptoms,
-                              boolean hasInjuries, String injuriesSites) {
+  public int saveClinicalCare(
+          BigDecimal weight,
+          BigDecimal height,
+          BigDecimal imc,
+          BigDecimal bloodPressure,
+          BigDecimal hearRate,
+          BigDecimal saturation,
+          BigDecimal temperature,
+          boolean hasCough,
+          boolean hasRunnyNose,
+          boolean hasSneezing,
+          boolean hasFever,
+          boolean hasChills,
+          String otherSymptoms,
+          java.sql.Date startDateRespiratorySymptoms,
+          boolean hasInjuries,
+          String injuriesSites) {
 
     String sql = """
         INSERT INTO tb_clinical_care (
             weight, height, imc, blood_pressure, hear_rate,
-            saturation, temperature, respiratory_symptoms,
-            start_date_respiratory_symptoms, has_injuries, injuries_sites
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            saturation, temperature,
+            has_cough, has_runny_nose, has_sneezing, has_fever, has_chills,
+            other_symptoms, start_date_respiratory_symptoms,
+            has_injuries, injuries_sites
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """;
 
     try (PreparedStatement stmt = dbConnection.getConnection()
@@ -34,19 +48,18 @@ public class ClinicalCareService {
       stmt.setBigDecimal(2, height);
       stmt.setBigDecimal(3, imc);
       stmt.setBigDecimal(4, bloodPressure);
-      stmt.setBigDecimal(5, heartRate);
+      stmt.setBigDecimal(5, hearRate);
       stmt.setBigDecimal(6, saturation);
       stmt.setBigDecimal(7, temperature);
-      stmt.setString(8, respiratorySymptoms);
-
-      if (startDateRespiratorySymptoms != null) {
-        stmt.setString(9, DateUtils.getFormattedDate(startDateRespiratorySymptoms));
-      } else {
-        stmt.setNull(9, Types.DATE);
-      }
-
-      stmt.setBoolean(10, hasInjuries);
-      stmt.setString(11, injuriesSites);
+      stmt.setBoolean(8, hasCough);
+      stmt.setBoolean(9, hasRunnyNose);
+      stmt.setBoolean(10, hasSneezing);
+      stmt.setBoolean(11, hasFever);
+      stmt.setBoolean(12, hasChills);
+      stmt.setString(13, otherSymptoms);
+      stmt.setDate(14, startDateRespiratorySymptoms);
+      stmt.setBoolean(15, hasInjuries);
+      stmt.setString(16, injuriesSites);
 
       stmt.executeUpdate();
 
@@ -54,7 +67,7 @@ public class ClinicalCareService {
       if (rs.next()) {
         return rs.getInt(1);
       } else {
-        throw new SQLException("Erro ao obter o ID do atendimento clínico inserido.");
+        throw new SQLException("Erro ao obter o ID de tb_clinical_care inserido.");
       }
 
     } catch (SQLException e) {
@@ -63,17 +76,33 @@ public class ClinicalCareService {
     }
   }
 
-  public boolean updateClinicalCare(int id, BigDecimal weight, BigDecimal height, BigDecimal imc,
-                                    BigDecimal bloodPressure, BigDecimal heartRate, BigDecimal saturation,
-                                    BigDecimal temperature, String respiratorySymptoms,
-                                    java.util.Date startDateRespiratorySymptoms,
-                                    boolean hasInjuries, String injuriesSites) {
+
+  public int updateClinicalCare(
+          int id,
+          BigDecimal weight,
+          BigDecimal height,
+          BigDecimal imc,
+          BigDecimal bloodPressure,
+          BigDecimal hearRate,
+          BigDecimal saturation,
+          BigDecimal temperature,
+          boolean hasCough,
+          boolean hasRunnyNose,
+          boolean hasSneezing,
+          boolean hasFever,
+          boolean hasChills,
+          String otherSymptoms,
+          java.sql.Date startDateRespiratorySymptoms,
+          boolean hasInjuries,
+          String injuriesSites) {
 
     String sql = """
         UPDATE tb_clinical_care SET
             weight = ?, height = ?, imc = ?, blood_pressure = ?, hear_rate = ?,
-            saturation = ?, temperature = ?, respiratory_symptoms = ?,
-            start_date_respiratory_symptoms = ?, has_injuries = ?, injuries_sites = ?
+            saturation = ?, temperature = ?,
+            has_cough = ?, has_runny_nose = ?, has_sneezing = ?, has_fever = ?, has_chills = ?,
+            other_symptoms = ?, start_date_respiratory_symptoms = ?,
+            has_injuries = ?, injuries_sites = ?
         WHERE id = ?
     """;
 
@@ -83,28 +112,30 @@ public class ClinicalCareService {
       stmt.setBigDecimal(2, height);
       stmt.setBigDecimal(3, imc);
       stmt.setBigDecimal(4, bloodPressure);
-      stmt.setBigDecimal(5, heartRate);
+      stmt.setBigDecimal(5, hearRate);
       stmt.setBigDecimal(6, saturation);
       stmt.setBigDecimal(7, temperature);
-      stmt.setString(8, respiratorySymptoms);
+      stmt.setBoolean(8, hasCough);
+      stmt.setBoolean(9, hasRunnyNose);
+      stmt.setBoolean(10, hasSneezing);
+      stmt.setBoolean(11, hasFever);
+      stmt.setBoolean(12, hasChills);
+      stmt.setString(13, otherSymptoms);
+      stmt.setDate(14, startDateRespiratorySymptoms);
+      stmt.setBoolean(15, hasInjuries);
+      stmt.setString(16, injuriesSites);
+      stmt.setInt(17, id);
 
-      if (startDateRespiratorySymptoms != null) {
-        stmt.setString(9, DateUtils.getFormattedDate(startDateRespiratorySymptoms));
-      } else {
-        stmt.setNull(9, Types.DATE);
-      }
+      stmt.executeUpdate();
 
-      stmt.setBoolean(10, hasInjuries);
-      stmt.setString(11, injuriesSites);
-      stmt.setInt(12, id);
-
-      return stmt.executeUpdate() > 0;
+      return id;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return -1;
     }
   }
+
 
 
 }

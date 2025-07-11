@@ -24,174 +24,159 @@ public class InformationService {
     }
 
     String query = "SELECT \n" +
-                   "  -- tb_information\n" +
-                   "  i.id AS information_id,\n" +
-                   "  i.social_name,\n" +
-                   "  i.full_name,\n" +
-                   "  i.born_date,\n" +
-                   "  i.age,\n" +
-                   "  i.cpf,\n" +
-                   "  i.nationality,\n" +
-                   "  i.mother_name,\n" +
-                   "  i.father_name,\n" +
+                   "    info.id AS information_id,\n" +
+                   "    info.social_name,\n" +
+                   "    info.full_name,\n" +
+                   "    info.born_date,\n" +
+                   "    info.age,\n" +
+                   "    info.cpf,\n" +
+                   "    info.nationality,\n" +
+                   "    info.mother_name,\n" +
+                   "    info.father_name,\n" +
                    "\n" +
-                   "  -- tb_marital_status\n" +
-                   "  ms.id AS marital_status_id,\n" +
-                   "  ms.marital_status,\n" +
+                   "    ms.marital_status,\n" +
+                   "    eth.etnia,\n" +
+                   "    bs.biology_sex,\n" +
+                   "    so.sexual_orientation,\n" +
+                   "    gi.gender_identity,\n" +
                    "\n" +
-                   "  -- tb_ethnicity\n" +
-                   "  e.id AS ethnicity_id,\n" +
-                   "  e.etnia,\n" +
+                   "    t.treatment_date,\n" +
+                   "    t.entry_date,\n" +
+                   "    t.is_transfer,\n" +
+                   "    t.source_transfer,\n" +
+                   "    u.username,\n" +
                    "\n" +
-                   "  -- tb_biological_sex\n" +
-                   "  bs.id AS biological_sex_id,\n" +
-                   "  bs.biology_sex,\n" +
+                   "    edu.education,\n" +
+                   "    sed.has_family_benefits,\n" +
+                   "    sed.family_benefits,\n" +
+                   "    sed.has_children,\n" +
+                   "    sed.children_quantity,\n" +
+                   "    sed.ages,\n" +
+                   "    sed.has_dependents,\n" +
+                   "    sed.dependents_quantity,\n" +
+                   "    sed.has_neeja_education,\n" +
+                   "    sed.has_social_assistent,\n" +
                    "\n" +
-                   "  -- tb_sexual_orientation\n" +
-                   "  so.id AS sexual_orientation_id,\n" +
-                   "  so.sexual_orientation,\n" +
+                   "    hc.has_deficiency,\n" +
+                   "    hc.deficiency,\n" +
+                   "    hc.has_allergies,\n" +
+                   "    hc.allergies,\n" +
+                   "    hc.has_surgeries,\n" +
+                   "    hc.surgeries,\n" +
+                   "    hc.has_hypertension,\n" +
+                   "    hc.has_diabetes,\n" +
+                   "    hc.has_hiv,\n" +
+                   "    hc.has_autoimmune,\n" +
+                   "    hc.has_syphilis,\n" +
+                   "    hc.has_hpv,\n" +
+                   "    hc.other_chronic_disease,\n" +
+                   "    hc.has_tuberculosis,\n" +
+                   "    hc.has_hepatitis_B,\n" +
+                   "    hc.has_hepatitis_C,\n" +
+                   "    hc.other_infectious_disease,\n" +
+                   "    hc.has_skin_disease,\n" +
+                   "    hc.skin_diseases,\n" +
+                   "    hc.use_continuous_medication,\n" +
+                   "    hc.continuos_medication,\n" +
+                   "    hc.blood_type,\n" +
                    "\n" +
-                   "  -- tb_gender_identity\n" +
-                   "  gi.id AS gender_identity_id,\n" +
-                   "  gi.gender_identity,\n" +
+                   "    wh.is_pregant,\n" +
+                   "    wh.pregnant_age,\n" +
+                   "    wh.contraceptive_method,\n" +
+                   "    wh.has_preventive_exam,\n" +
+                   "    wh.preventive_exam_year,\n" +
+                   "    wh.offer_contraceptive_method,\n" +
+                   "    wh.offer_preventive_exam,\n" +
+                   "    wh.is_prenatal,\n" +
                    "\n" +
-                   "  -- tb_treatment\n" +
-                   "  t.id AS treatment_id,\n" +
-                   "  t.treatment_date,\n" +
-                   "  t.entry_date,\n" +
-                   "  t.is_transfer,\n" +
-                   "  t.source_transfer,\n" +
+                   "    mh.has_prevent_exam,\n" +
+                   "    mh.prevent_exam_year,\n" +
+                   "    mh.has_prostate_cancer_family_history,\n" +
+                   "    mh.prostate_cancer_family,\n" +
+                   "    mh.vasectomy,\n" +
+                   "    mh.pregnant_partner,\n" +
+                   "    mh.prenatal_pregnant_partner,\n" +
+                   "    mh.offer_vasectomy,\n" +
+                   "    mh.offer_prenatal,\n" +
                    "\n" +
-                   "  -- tb_user\n" +
-                   "  u.id AS user_id,\n" +
-                   "  u.username,\n" +
+                   "    mth.has_link_caps,\n" +
+                   "    mth.caps_city,\n" +
+                   "    mth.has_anxiety,\n" +
+                   "    mth.has_depression,\n" +
+                   "    mth.has_bipolarity,\n" +
+                   "    mth.has_schizophrenia,\n" +
+                   "    mth.has_autism,\n" +
+                   "    mth.other_mental_disorder,\n" +
+                   "    mth.use_controlled_medicine,\n" +
+                   "    mth.controlled_medicines,\n" +
+                   "    mth.was_accompaniment,\n" +
+                   "    mth.reason_accompaniment,\n" +
+                   "    mth.use_alcohol,\n" +
+                   "    mth.use_cigarettes,\n" +
+                   "    mth.use_marijuana,\n" +
+                   "    mth.use_crack,\n" +
+                   "    mth.use_cocaine,\n" +
+                   "    mth.use_amphetamines,\n" +
+                   "    mth.use_k_drugs,\n" +
+                   "    mth.other_substances,\n" +
+                   "    mth.has_treatment,\n" +
+                   "    mth.substance_treatment,\n" +
+                   "    mth.wanna_treatment,\n" +
+                   "    mth.wanna_treatment_substance,\n" +
+                   "    mth.offer_psychology,\n" +
+                   "    mth.offer_psychiatrist,\n" +
+                   "    mth.revenue_renewal,\n" +
+                   "    mth.support_groups,\n" +
                    "\n" +
-                   "  -- tb_social_economic_data\n" +
-                   "  sed.id AS social_economic_data_id,\n" +
-                   "  sed.education_id AS sed_education_id,\n" +
-                   "  sed.has_family_benefits,\n" +
-                   "  sed.family_benefits,\n" +
-                   "  sed.has_children,\n" +
-                   "  sed.children_quantity,\n" +
-                   "  sed.ages,\n" +
-                   "  sed.has_dependents,\n" +
-                   "  sed.dependents_quantity,\n" +
-                   "  sed.has_neeja_education,\n" +
-                   "  sed.has_social_assistent,\n" +
+                   "    vs.covid,\n" +
+                   "    vs.influenza,\n" +
+                   "    vs.tetanus,\n" +
+                   "    vs.hepatitis_b,\n" +
+                   "    vs.offer_vaccination,\n" +
+                   "    vs.offer_portfolio_copy,\n" +
                    "\n" +
-                   "  -- tb_education\n" +
-                   "  ed.id AS education_id,\n" +
-                   "  ed.education,\n" +
+                   "    cc.weight,\n" +
+                   "    cc.height,\n" +
+                   "    cc.imc,\n" +
+                   "    cc.blood_pressure,\n" +
+                   "    cc.hear_rate,\n" +
+                   "    cc.saturation,\n" +
+                   "    cc.temperature,\n" +
+                   "    cc.has_cough,\n" +
+                   "    cc.has_runny_nose,\n" +
+                   "    cc.has_sneezing,\n" +
+                   "    cc.has_fever,\n" +
+                   "    cc.has_chills,\n" +
+                   "    cc.other_symptoms,\n" +
+                   "    cc.start_date_respiratory_symptoms,\n" +
+                   "    cc.has_injuries,\n" +
+                   "    cc.injuries_sites,\n" +
                    "\n" +
-                   "  -- tb_health_conditions\n" +
-                   "  hc.id AS health_conditions_id,\n" +
-                   "  hc.has_deficiency,\n" +
-                   "  hc.deficiency,\n" +
-                   "  hc.has_allergies,\n" +
-                   "  hc.allergies,\n" +
-                   "  hc.has_surgeries,\n" +
-                   "  hc.surgeries,\n" +
-                   "  hc.chronic_diseases,\n" +
-                   "  hc.infectious_diseases,\n" +
-                   "  hc.has_skin_disease,\n" +
-                   "  hc.skin_diseases,\n" +
-                   "  hc.use_continuous_medication,\n" +
-                   "  hc.continuos_medication,\n" +
-                   "  hc.blood_type,\n" +
+                   "    qt.pregnant_test,\n" +
+                   "    qt.sputum_collection,\n" +
+                   "    qt.has_complaint,\n" +
+                   "    qt.complaint_description,\n" +
+                   "    qt.has_dental_complaint,\n" +
+                   "    qt.dental_complaint,\n" +
+                   "    qt.needs_dental_assessment\n" +
                    "\n" +
-                   "  -- tb_women_health\n" +
-                   "  wh.id AS women_health_id,\n" +
-                   "  wh.is_pregant,\n" +
-                   "  wh.pregnant_age,\n" +
-                   "  wh.contraceptive_method,\n" +
-                   "  wh.has_preventive_exam,\n" +
-                   "  wh.preventive_exam_year,\n" +
-                   "  wh.offer_contraceptive_method,\n" +
-                   "  wh.offer_preventive_exam,\n" +
-                   "  wh.is_prenatal,\n" +
-                   "\n" +
-                   "  -- tb_men_health\n" +
-                   "  mh.id AS men_health_id,\n" +
-                   "  mh.has_prevent_exam,\n" +
-                   "  mh.prevent_exam_year,\n" +
-                   "  mh.has_prostate_cancer_family_history,\n" +
-                   "  mh.prostate_cancer_family,\n" +
-                   "  mh.vasectomy,\n" +
-                   "  mh.pregnant_partner,\n" +
-                   "  mh.prenatal_pregnant_partner,\n" +
-                   "  mh.offer_vasectomy,\n" +
-                   "  mh.offer_prenatal,\n" +
-                   "\n" +
-                   "  -- tb_mental_health\n" +
-                   "  me.id AS mental_health_id,\n" +
-                   "  me.has_link_caps,\n" +
-                   "  me.caps_city,\n" +
-                   "  me.mental_disorder,\n" +
-                   "  me.use_controlled_medicine,\n" +
-                   "  me.controlled_medicines,\n" +
-                   "  me.was_accompaniment,\n" +
-                   "  me.reason_accompaniment,\n" +
-                   "  me.substance_use,\n" +
-                   "  me.has_treatment,\n" +
-                   "  me.substance_treatment,\n" +
-                   "  me.wanna_treatment,\n" +
-                   "  me.wanna_treatment_substance,\n" +
-                   "  me.offer_psychology,\n" +
-                   "  me.offer_psychiatrist,\n" +
-                   "  me.revenue_renewal,\n" +
-                   "  me.support_groups,\n" +
-                   "\n" +
-                   "  -- tb_vaccination_status\n" +
-                   "  vs.id AS vaccination_status_id,\n" +
-                   "  vs.covid,\n" +
-                   "  vs.influenza,\n" +
-                   "  vs.tetanus,\n" +
-                   "  vs.hepatitis_b,\n" +
-                   "  vs.offer_vaccination,\n" +
-                   "  vs.offer_portfolio_copy,\n" +
-                   "\n" +
-                   "  -- tb_clinical_care\n" +
-                   "  cc.id AS clinical_care_id,\n" +
-                   "  cc.weight,\n" +
-                   "  cc.height,\n" +
-                   "  cc.imc,\n" +
-                   "  cc.blood_pressure,\n" +
-                   "  cc.hear_rate,\n" +
-                   "  cc.saturation,\n" +
-                   "  cc.temperature,\n" +
-                   "  cc.respiratory_symptoms,\n" +
-                   "  cc.start_date_respiratory_symptoms,\n" +
-                   "  cc.has_injuries,\n" +
-                   "  cc.injuries_sites,\n" +
-                   "\n" +
-                   "  -- tb_quick_tests\n" +
-                   "  qt.id AS quick_tests_id,\n" +
-                   "  qt.pregnant_test,\n" +
-                   "  qt.sputum_collection,\n" +
-                   "  qt.has_complaint,\n" +
-                   "  qt.complaint_description,\n" +
-                   "  qt.has_dental_complaint,\n" +
-                   "  qt.dental_complaint,\n" +
-                   "  qt.needs_dental_assessment\n" +
-                   "\n" +
-                   "FROM tb_information i\n" +
-                   "-- JOINs\n" +
-                   "JOIN tb_marital_status ms ON i.marital_status_id = ms.id\n" +
-                   "JOIN tb_ethnicity e ON i.ethnicity_id = e.id\n" +
-                   "JOIN tb_biological_sex bs ON i.biological_sex_id = bs.id\n" +
-                   "JOIN tb_sexual_orientation so ON i.sexual_orientation_id = so.id\n" +
-                   "JOIN tb_gender_identity gi ON i.gender_identity_id = gi.id\n" +
-                   "JOIN tb_treatment t ON i.treatment_id = t.id\n" +
+                   "FROM tb_information info\n" +
+                   "JOIN tb_marital_status ms ON info.marital_status_id = ms.id\n" +
+                   "JOIN tb_ethnicity eth ON info.ethnicity_id = eth.id\n" +
+                   "JOIN tb_biological_sex bs ON info.biological_sex_id = bs.id\n" +
+                   "JOIN tb_sexual_orientation so ON info.sexual_orientation_id = so.id\n" +
+                   "JOIN tb_gender_identity gi ON info.gender_identity_id = gi.id\n" +
+                   "JOIN tb_treatment t ON info.treatment_id = t.id\n" +
                    "JOIN tb_user u ON t.user_id = u.id\n" +
-                   "JOIN tb_social_economic_data sed ON i.social_economic_data_id = sed.id\n" +
-                   "JOIN tb_education ed ON sed.education_id = ed.id\n" +
-                   "JOIN tb_health_conditions hc ON i.health_conditions_id = hc.id\n" +
-                   "LEFT JOIN tb_women_health wh ON i.women_health_id = wh.id\n" +
-                   "LEFT JOIN tb_men_health mh ON i.men_health_id = mh.id\n" +
-                   "JOIN tb_mental_health me ON i.mental_health_id = me.id\n" +
-                   "JOIN tb_vaccination_status vs ON i.vaccination_status_id = vs.id\n" +
-                   "JOIN tb_clinical_care cc ON i.clinical_care_id = cc.id\n" +
-                   "JOIN tb_quick_tests qt ON i.quick_tests_id = qt.id" + filter;
+                   "JOIN tb_social_economic_data sed ON info.social_economic_data_id = sed.id\n" +
+                   "JOIN tb_education edu ON sed.education_id = edu.id\n" +
+                   "JOIN tb_health_conditions hc ON info.health_conditions_id = hc.id\n" +
+                   "LEFT JOIN tb_women_health wh ON info.women_health_id = wh.id\n" +
+                   "LEFT JOIN tb_men_health mh ON info.men_health_id = mh.id\n" +
+                   "JOIN tb_mental_health mth ON info.mental_health_id = mth.id\n" +
+                   "JOIN tb_vaccination_status vs ON info.vaccination_status_id = vs.id\n" +
+                   "JOIN tb_clinical_care cc ON info.clinical_care_id = cc.id\n" +
+                   "JOIN tb_quick_tests qt ON info.quick_tests_id = qt.id" + filter;
 
     try (PreparedStatement st = dbConnection.getConnection().prepareStatement(query)) {
       if (filterName != null && !filterName.isEmpty()) {
@@ -275,13 +260,23 @@ public class InformationService {
           healthConditions.setAllergies(rs.getString("allergies"));
           healthConditions.setHasSurgeries(rs.getBoolean("has_surgeries"));
           healthConditions.setSurgeries(rs.getString("surgeries"));
-          healthConditions.setChronicDiseases(rs.getString("chronic_diseases"));
-          healthConditions.setInfectiousDiseases(rs.getString("infectious_diseases"));
           healthConditions.setHasSkinDiseases(rs.getBoolean("has_skin_disease"));
           healthConditions.setSkinDiseases(rs.getString("skin_diseases"));
           healthConditions.setUseContinuousMedication(rs.getBoolean("use_continuous_medication"));
           healthConditions.setContinuousMedication(rs.getString("continuos_medication"));
           healthConditions.setBloodType(rs.getString("blood_type"));
+          healthConditions.setHasHypertension(rs.getBoolean("has_hypertension"));
+          healthConditions.setHasDiabetes(rs.getBoolean("has_diabetes"));
+          healthConditions.setHasHiv(rs.getBoolean("has_hiv"));
+          healthConditions.setHasAutoimmune(rs.getBoolean("has_autoimmune"));
+          healthConditions.setHasSyphilis(rs.getBoolean("has_syphilis"));
+          healthConditions.setHasHpv(rs.getBoolean("has_hpv"));
+          healthConditions.setOtherChronicDisease(rs.getString("other_chronic_disease"));
+          healthConditions.setHasTuberculosis(rs.getBoolean("has_tuberculosis"));
+          healthConditions.setHasHepatitisB(rs.getBoolean("has_hepatitis_B"));
+          healthConditions.setHasHepatitisC(rs.getBoolean("has_hepatitis_C"));
+          healthConditions.setOtherInfectiousDisease(rs.getString("other_infectious_disease"));
+
 
           womenHealth.setId(rs.getInt("women_health_id"));
           womenHealth.setPregnant(rs.getBoolean("is_pregnant"));
@@ -338,10 +333,15 @@ public class InformationService {
           clinicalCare.setHearRate(rs.getDouble("hear_rate"));
           clinicalCare.setSaturation(rs.getDouble("saturation"));
           clinicalCare.setTemperature(rs.getDouble("temperature"));
-          clinicalCare.setRespiratorySymptoms(rs.getString("respiratory_symptoms"));
           clinicalCare.setStartDateRespiratorySymptoms(rs.getDate("start_date_respiratory_symptoms"));
           clinicalCare.setHasInjuries(rs.getBoolean("has_injuries"));
           clinicalCare.setInjuriesSites(rs.getString("injuries_sites"));
+          clinicalCare.setHasCough(rs.getBoolean("has_cough"));
+          clinicalCare.setHasRunnyNose(rs.getBoolean("has_runny_nose"));
+          clinicalCare.setHasSneezing(rs.getBoolean("has_sneezing"));
+          clinicalCare.setHasFever(rs.getBoolean("has_fever"));
+          clinicalCare.setHasChills(rs.getBoolean("has_chills"));
+          clinicalCare.setOtherSymptoms(rs.getString("other_symptoms"));
 
           quickTests.setId(rs.getInt("quick_tests_id"));
           quickTests.setPregnantTest(rs.getString("pregnant_test"));

@@ -126,19 +126,6 @@ public class TreatmentController {
   }
 
   private int saveHealthConditions() {
-
-    String chronicDiseases = String.format("%s%s%s%s%s",treatment.checkHipertensao.isSelected() ? "Hipertensão, "
-            : "", treatment.checkDiabetes.isSelected() ? "Diabetes, "
-            : "", treatment.checkHIV.isSelected() ? "HIV, "
-            : "", treatment.checkAutoimune.isSelected() ? "Doença Autoimune, " : "",
-            treatment.txtAutoimuneOutra.getText().trim());
-    String infecciousDiseases = String.format("%s%s%s%s%s%s", treatment.checkSifilis.isSelected() ? "Sífilis, "
-            : "", treatment.checkHPV.isSelected() ? "HPV, "
-            : "", treatment.checkTuberculose.isSelected() ? "Tuberculose, "
-            : "", treatment.checkHepatiteB.isSelected() ? "Hepatite B, "
-            : "", treatment.checkHepatiteC.isSelected() ? "Hepatite C, ": "",
-            treatment.txtDoencasInfecciosas.getText().trim());
-
     if (treatment.prisonerInformation != null) {
       return healthConditionsService.updateHealthConditions(
               treatment.prisonerInformation.getHealthConditions().getId(),
@@ -148,8 +135,17 @@ public class TreatmentController {
               treatment.txtAlergiaQual.getText().trim(),
               treatment.radioCirurgiaSim.isSelected(),
               treatment.txtCirurgiaQual.getText().trim(),
-              chronicDiseases,
-              infecciousDiseases,
+              treatment.checkHipertensao.isSelected(),
+              treatment.checkDiabetes.isSelected(),
+              treatment.checkHIV.isSelected(),
+              treatment.checkAutoimune.isSelected(),
+              treatment.checkSifilis.isSelected(),
+              treatment.checkHPV.isSelected(),
+              treatment.txtAutoimuneOutra.getText().trim(),
+              treatment.checkTuberculose.isSelected(),
+              treatment.checkHepatiteB.isSelected(),
+              treatment.checkHepatiteC.isSelected(),
+              treatment.txtDoencasInfecciosas.getText().trim(),
               treatment.checkPele.isSelected(),
               treatment.txtPeleQual.getText().trim(),
               treatment.checkMedicamentoContinuo.isSelected(),
@@ -164,13 +160,89 @@ public class TreatmentController {
               treatment.txtAlergiaQual.getText().trim(),
               treatment.radioCirurgiaSim.isSelected(),
               treatment.txtCirurgiaQual.getText().trim(),
-              chronicDiseases,
-              infecciousDiseases,
+              treatment.checkHipertensao.isSelected(),
+              treatment.checkDiabetes.isSelected(),
+              treatment.checkHIV.isSelected(),
+              treatment.checkAutoimune.isSelected(),
+              treatment.checkSifilis.isSelected(),
+              treatment.checkHPV.isSelected(),
+              treatment.txtAutoimuneOutra.getText().trim(),
+              treatment.checkTuberculose.isSelected(),
+              treatment.checkHepatiteB.isSelected(),
+              treatment.checkHepatiteC.isSelected(),
+              treatment.txtDoencasInfecciosas.getText().trim(),
               treatment.checkPele.isSelected(),
               treatment.txtPeleQual.getText().trim(),
               treatment.checkMedicamentoContinuo.isSelected(),
               treatment.txtMedicamentoQual.getText().trim(),
               treatment.comboTipoSanguineo.getSelectedItem().toString()
+      );
+    }
+  }
+
+  private int saveMentalHealth() {
+    if (treatment.prisonerInformation != null) {
+      return mentalHealthService.updateMentalHealth(
+              treatment.prisonerInformation.getMentalHealth().getId(),
+              treatment.checkCaps.isSelected(),
+              treatment.txtCapsQual.getText().trim(),
+              treatment.checkAnsiedade.isSelected(),
+              treatment.checkDepressao.isSelected(),
+              treatment.checkBipolaridade.isSelected(),
+              treatment.checkEsquizofrenia.isSelected(),
+              treatment.checkAutismo.isSelected(),
+              treatment.txtUsoOutrasDrogas.getText().trim(),
+              treatment.checkUsaMedicamentoControlado.isSelected(),
+              treatment.txtMedicamentoControladoQual.getText().trim(),
+              treatment.checkAcompanhamentoMental.isSelected(),
+              treatment.txtAcompanhamentoMotivo.getText().trim(),
+              treatment.checkUsoAlcool.isSelected(),
+              treatment.checkUsoCigarro.isSelected(),
+              treatment.checkUsoMaconha.isSelected(),
+              treatment.checkUsoCrack.isSelected(),
+              treatment.checkUsoCocaina.isSelected(),
+              treatment.checkUsoAnfetaminas.isSelected(),
+              treatment.checkUsoDrogasK.isSelected(),
+              treatment.txtUsoOutrasDrogas.getText().trim(),
+              treatment.checkTratamentoReducao.isSelected(),
+              treatment.txtTratamentoReducaoQual.getText().trim(),
+              treatment.checkGostariaTratamento.isSelected(),
+              treatment.txtGostariaTratamentoQual.getText().trim(),
+              treatment.checkEncaminhaPsicologia.isSelected(),
+              treatment.checkEncaminhaPsiquiatra.isSelected(),
+              treatment.checkEncaminhaReceitas.isSelected(),
+              treatment.checkEncaminhaGruposApoio.isSelected()
+      );
+    } else {
+      return mentalHealthService.saveMentalHealth(
+              treatment.checkCaps.isSelected(),
+              treatment.txtCapsQual.getText().trim(),
+              treatment.checkAnsiedade.isSelected(),
+              treatment.checkDepressao.isSelected(),
+              treatment.checkBipolaridade.isSelected(),
+              treatment.checkEsquizofrenia.isSelected(),
+              treatment.checkAutismo.isSelected(),
+              treatment.txtUsoOutrasDrogas.getText().trim(),
+              treatment.checkUsaMedicamentoControlado.isSelected(),
+              treatment.txtMedicamentoControladoQual.getText().trim(),
+              treatment.checkAcompanhamentoMental.isSelected(),
+              treatment.txtAcompanhamentoMotivo.getText().trim(),
+              treatment.checkUsoAlcool.isSelected(),
+              treatment.checkUsoCigarro.isSelected(),
+              treatment.checkUsoMaconha.isSelected(),
+              treatment.checkUsoCrack.isSelected(),
+              treatment.checkUsoCocaina.isSelected(),
+              treatment.checkUsoAnfetaminas.isSelected(),
+              treatment.checkUsoDrogasK.isSelected(),
+              treatment.txtUsoOutrasDrogas.getText().trim(),
+              treatment.checkTratamentoReducao.isSelected(),
+              treatment.txtTratamentoReducaoQual.getText().trim(),
+              treatment.checkGostariaTratamento.isSelected(),
+              treatment.txtGostariaTratamentoQual.getText().trim(),
+              treatment.checkEncaminhaPsicologia.isSelected(),
+              treatment.checkEncaminhaPsiquiatra.isSelected(),
+              treatment.checkEncaminhaReceitas.isSelected(),
+              treatment.checkEncaminhaGruposApoio.isSelected()
       );
     }
   }
@@ -208,6 +280,12 @@ public class TreatmentController {
 
     if (healthConditionsId <= 0) {
       JOptionPane.showMessageDialog(treatment, "Erro ao salvar as condições de saúde.", "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+
+    int mentalHealthId = saveMentalHealth();
+    if (mentalHealthId <= 0) {
+      JOptionPane.showMessageDialog(treatment, "Erro ao salvar os dados de saúde mental.", "Erro", JOptionPane.ERROR_MESSAGE);
       return;
     }
  /*
