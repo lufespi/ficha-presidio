@@ -4,7 +4,52 @@ public class WomenHealth {
   private int id;
   private boolean isPregnant;
   private String pregnantAge;
-  private String contraceptiveMethod;
+  private boolean useOralContraceptive;
+  private boolean useInjectableContraceptive;
+  private boolean useIUDImplant;
+  private boolean useTubalLigation;
+  private boolean useHysterectomy;
+
+  public boolean isUseOralContraceptive() {
+    return useOralContraceptive;
+  }
+
+  public void setUseOralContraceptive(boolean useOralContraceptive) {
+    this.useOralContraceptive = useOralContraceptive;
+  }
+
+  public boolean isUseInjectableContraceptive() {
+    return useInjectableContraceptive;
+  }
+
+  public void setUseInjectableContraceptive(boolean useInjectableContraceptive) {
+    this.useInjectableContraceptive = useInjectableContraceptive;
+  }
+
+  public boolean isUseIUDImplant() {
+    return useIUDImplant;
+  }
+
+  public void setUseIUDImplant(boolean useIUDImplant) {
+    this.useIUDImplant = useIUDImplant;
+  }
+
+  public boolean isUseTubalLigation() {
+    return useTubalLigation;
+  }
+
+  public void setUseTubalLigation(boolean useTubalLigation) {
+    this.useTubalLigation = useTubalLigation;
+  }
+
+  public boolean isUseHysterectomy() {
+    return useHysterectomy;
+  }
+
+  public void setUseHysterectomy(boolean useHysterectomy) {
+    this.useHysterectomy = useHysterectomy;
+  }
+
   private boolean hasPreventiveExam;
   private int preventiveExamYear;
   private boolean offerContraceptiveMethod;
@@ -33,14 +78,6 @@ public class WomenHealth {
 
   public void setPregnantAge(String pregnantAge) {
     this.pregnantAge = pregnantAge;
-  }
-
-  public String getContraceptiveMethod() {
-    return contraceptiveMethod;
-  }
-
-  public void setContraceptiveMethod(String contraceptiveMethod) {
-    this.contraceptiveMethod = contraceptiveMethod;
   }
 
   public boolean isHasPreventiveExam() {

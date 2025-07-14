@@ -52,7 +52,7 @@ public class QuickTestsService {
     }
   }
 
-  public boolean updateQuickTests(int id, String pregnantTest, boolean sputumCollection,
+  public int updateQuickTests(int id, String pregnantTest, boolean sputumCollection,
                                   boolean hasComplaint, String complaintDescription,
                                   boolean hasDentalComplaint, String dentalComplaint,
                                   boolean needsDentalAssessment) {
@@ -76,11 +76,13 @@ public class QuickTestsService {
       stmt.setBoolean(7, needsDentalAssessment);
       stmt.setInt(8, id);
 
-      return stmt.executeUpdate() > 0;
+      stmt.executeUpdate();
+
+      return id;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return -1;
     }
   }
 

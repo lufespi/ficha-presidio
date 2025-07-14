@@ -6,6 +6,7 @@ import utils.DateUtils;
 import view.JFtreatment;
 
 import javax.swing.*;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -19,11 +20,24 @@ public class TreatmentController {
   private SocialEconomicDataService socialEconomicDataService;
   private HealthConditionsService healthConditionsService;
   private MentalHealthService mentalHealthService;
+  private ClinicalCareService clinicalCareService;
   private JFtreatment treatment;
+  private VaccinationStatusService vaccinationStatusService;
+  private QuickTestsService quickTestsService;
+  private MenHealthService menHealthService;
+  private WomenHealthService womenHealthService;
 
   public TreatmentController(JFtreatment treatment) {
     this.treatmentService = new TreatmentService();
     this.informationService = new InformationService();
+    this.socialEconomicDataService = new SocialEconomicDataService();
+    this.healthConditionsService = new HealthConditionsService();
+    this.mentalHealthService = new MentalHealthService();
+    this.clinicalCareService = new ClinicalCareService();
+    this.vaccinationStatusService = new VaccinationStatusService();
+    this.quickTestsService = new QuickTestsService();
+    this.menHealthService = new MenHealthService();
+    this.womenHealthService = new WomenHealthService();
     this.treatment = treatment;
   }
 
@@ -95,6 +109,16 @@ public class TreatmentController {
   }
 
   private int saveSocialEconomicData () {
+    Integer quantidadeFilhos = null;
+    if(!treatment.txtFilhosQuantos.getText().isEmpty()){
+      quantidadeFilhos = Integer.parseInt(treatment.txtFilhosQuantos.getText().trim());
+    }
+
+    Integer quantidadeDependentes = null;
+    if(!treatment.txtDependentesQuantos.getText().isEmpty()){
+      quantidadeDependentes = Integer.parseInt(treatment.txtDependentesQuantos.getText().trim());
+    }
+
     if (treatment.prisonerInformation != null) {
       return socialEconomicDataService.updateSocialEconomicData(
               treatment.prisonerInformation.getSocialEconomicData().getId(),
@@ -102,10 +126,10 @@ public class TreatmentController {
               treatment.radioBeneficioSim.isSelected(),
               treatment.txtBeneficioQual.getText().trim(),
               treatment.radioFilhosSim.isSelected(),
-              Integer.parseInt(treatment.txtFilhosQuantos.getText()),
+              quantidadeFilhos,
               treatment.txtFilhosIdades.getText().trim(),
               treatment.radioDependentesSim.isSelected(),
-              Integer.parseInt(treatment.txtDependentesQuantos.getText()),
+              quantidadeDependentes,
               treatment.radioNeejaSim.isSelected(),
               treatment.radioAssistenciaSim.isSelected()
       );
@@ -115,10 +139,10 @@ public class TreatmentController {
               treatment.radioBeneficioSim.isSelected(),
               treatment.txtBeneficioQual.getText().trim(),
               treatment.radioFilhosSim.isSelected(),
-              Integer.parseInt(treatment.txtFilhosQuantos.getText()),
+              quantidadeFilhos,
               treatment.txtFilhosIdades.getText().trim(),
               treatment.radioDependentesSim.isSelected(),
-              Integer.parseInt(treatment.txtDependentesQuantos.getText()),
+              quantidadeDependentes,
               treatment.radioNeejaSim.isSelected(),
               treatment.radioAssistenciaSim.isSelected()
       );
@@ -145,7 +169,7 @@ public class TreatmentController {
               treatment.checkTuberculose.isSelected(),
               treatment.checkHepatiteB.isSelected(),
               treatment.checkHepatiteC.isSelected(),
-              treatment.txtDoencasInfecciosas.getText().trim(),
+              treatment.txtInfecciosaOutra.getText().trim(),
               treatment.checkPele.isSelected(),
               treatment.txtPeleQual.getText().trim(),
               treatment.checkMedicamentoContinuo.isSelected(),
@@ -170,7 +194,7 @@ public class TreatmentController {
               treatment.checkTuberculose.isSelected(),
               treatment.checkHepatiteB.isSelected(),
               treatment.checkHepatiteC.isSelected(),
-              treatment.txtDoencasInfecciosas.getText().trim(),
+              treatment.txtInfecciosaOutra.getText().trim(),
               treatment.checkPele.isSelected(),
               treatment.txtPeleQual.getText().trim(),
               treatment.checkMedicamentoContinuo.isSelected(),
@@ -247,6 +271,189 @@ public class TreatmentController {
     }
   }
 
+  private int saveClinicalCare() {
+    Date startDateRespiratorySymptoms;
+
+    if (!treatment.txtDataInicioSintomas.getText().trim().isEmpty()) {
+      try {
+        startDateRespiratorySymptoms = DateUtils.parseToDate(treatment.txtDataInicioSintomas.getText().trim());
+      } catch (Exception e) {
+        JOptionPane.showMessageDialog(treatment, "Data inválida: ", "Erro", JOptionPane.ERROR_MESSAGE);
+        return -1;
+      }
+    }
+    else {
+      startDateRespiratorySymptoms = null;
+    }
+    if(treatment.prisonerInformation != null) {
+      return clinicalCareService.updateClinicalCare(
+              treatment.prisonerInformation.getClinicalCare().getId(),
+              new BigDecimal(treatment.txtPeso.getText().trim()),
+              new BigDecimal(treatment.txtAltura.getText().trim()),
+              new BigDecimal(treatment.txtIMC.getText().trim()),
+              new BigDecimal(treatment.txtPA.getText().trim()),
+              new BigDecimal(treatment.txtFC.getText().trim()),
+              new BigDecimal(treatment.txtSAT.getText().trim()),
+              new BigDecimal(treatment.txtTemp.getText().trim()),
+              treatment.checkTosse.isSelected(),
+              treatment.checkCoriza.isSelected(),
+              treatment.checkEspirros.isSelected(),
+              treatment.checkFebre.isSelected(),
+              treatment.checkCalafrios.isSelected(),
+              treatment.txtSintomasOutros.getText().trim(),
+              startDateRespiratorySymptoms,
+              treatment.checkLesoes.isSelected(),
+              treatment.txtLesoesLocal.getText().trim()
+      );
+    }else {
+      return clinicalCareService.saveClinicalCare(
+              new BigDecimal(treatment.txtPeso.getText().trim()),
+              new BigDecimal(treatment.txtAltura.getText().trim()),
+              new BigDecimal(treatment.txtIMC.getText().trim()),
+              new BigDecimal(treatment.txtPA.getText().trim()),
+              new BigDecimal(treatment.txtFC.getText().trim()),
+              new BigDecimal(treatment.txtSAT.getText().trim()),
+              new BigDecimal(treatment.txtTemp.getText().trim()),
+              treatment.checkTosse.isSelected(),
+              treatment.checkCoriza.isSelected(),
+              treatment.checkEspirros.isSelected(),
+              treatment.checkFebre.isSelected(),
+              treatment.checkCalafrios.isSelected(),
+              treatment.txtSintomasOutros.getText().trim(),
+              startDateRespiratorySymptoms,
+              treatment.checkLesoes.isSelected(),
+              treatment.txtLesoesLocal.getText().trim()
+              );
+    }
+  }
+
+  private int saveVaccinationStatus() {
+    if(treatment.prisonerInformation != null) {
+      return vaccinationStatusService.updateVaccinationStatus(
+              treatment.prisonerInformation.getVaccinationStatus().getId(),
+              treatment.checkVacinaCovid.isSelected(),
+              treatment.checkVacinaInfluenza.isSelected(),
+              treatment.checkVacinaTetano.isSelected(),
+              treatment.checkVacinaHepatiteB.isSelected(),
+              treatment.checkOfertaCovid.isSelected(),
+              treatment.checkOfertaHepatiteB.isSelected(),
+              treatment.checkOfertaInfluenza.isSelected(),
+              treatment.checkOfertaFebreAmarela.isSelected(),
+              treatment.checkOfertaDuplaAdulto.isSelected(),
+              treatment.checkOfertaTripliceViral.isSelected(),
+              treatment.txtOfertaVacinaOutra.getText().trim(),
+              treatment.checkOfertarCopiaCarteira.isSelected()
+      );
+    }else {
+      return vaccinationStatusService.saveVaccinationStatus(
+              treatment.checkVacinaCovid.isSelected(),
+              treatment.checkVacinaInfluenza.isSelected(),
+              treatment.checkVacinaTetano.isSelected(),
+              treatment.checkVacinaHepatiteB.isSelected(),
+              treatment.checkOfertaCovid.isSelected(),
+              treatment.checkOfertaHepatiteB.isSelected(),
+              treatment.checkOfertaInfluenza.isSelected(),
+              treatment.checkOfertaFebreAmarela.isSelected(),
+              treatment.checkOfertaDuplaAdulto.isSelected(),
+              treatment.checkOfertaTripliceViral.isSelected(),
+              treatment.txtOfertaVacinaOutra.getText().trim(),
+              treatment.checkOfertarCopiaCarteira.isSelected()
+      );
+    }
+  }
+
+  private int saveQuickTests() {
+    if(treatment.prisonerInformation != null) {
+      return quickTestsService.updateQuickTests(
+              treatment.prisonerInformation.getQuickTests().getId(),
+              treatment.radioGravidezPos.isSelected() ? "Positivo" :
+                      treatment.radioGravidezNao.isSelected() ? "Não Realizado" : "Negativo",
+              treatment.checkColetaEscarro.isSelected(),
+              treatment.checkOutraQueixa.isSelected(),
+              treatment.txtOutraQueixaQual.getText().trim(),
+              treatment.checkQueixaOdonto.isSelected(),
+              treatment.txtQueixaOdontoQual.getText().trim(),
+              treatment.checkAvaliacaoDentista.isSelected()
+      );
+    }
+    else {
+      return quickTestsService.saveQuickTests(
+              treatment.radioGravidezPos.isSelected() ? "Positivo" :
+                      treatment.radioGravidezNao.isSelected() ? "Não Realizado" : "Negativo",
+              treatment.checkColetaEscarro.isSelected(),
+              treatment.checkOutraQueixa.isSelected(),
+              treatment.txtOutraQueixaQual.getText().trim(),
+              treatment.checkQueixaOdonto.isSelected(),
+              treatment.txtQueixaOdontoQual.getText().trim(),
+              treatment.checkAvaliacaoDentista.isSelected()
+      );
+    }
+  }
+
+  private int saveMenHealth() {
+    if(treatment.prisonerInformation != null) {
+      return menHealthService.updateMenHealth(
+              treatment.prisonerInformation.getMenHealth().getId(),
+              treatment.checkExameProstata.isSelected(),
+              Integer.parseInt(treatment.txtExameProstataAno.getText().trim()),
+              treatment.checkHistFamiliarProstata.isSelected(),
+              treatment.txtHistFamiliarProstataQual.getText().trim(),
+              treatment.checkVasectomia.isSelected(),
+              treatment.checkParceiraGestante.isSelected(),
+              treatment.checkParticipaPreNatal.isSelected(),
+              treatment.checkEncaminhaVasectomia.isSelected(),
+              treatment.checkEncaminhaPreNatalParceiro.isSelected()
+      );
+    } else {
+      return menHealthService.saveMenHealth(
+              treatment.checkExameProstata.isSelected(),
+              Integer.parseInt(treatment.txtExameProstataAno.getText().trim()),
+              treatment.checkHistFamiliarProstata.isSelected(),
+              treatment.txtHistFamiliarProstataQual.getText().trim(),
+              treatment.checkVasectomia.isSelected(),
+              treatment.checkParceiraGestante.isSelected(),
+              treatment.checkParticipaPreNatal.isSelected(),
+              treatment.checkEncaminhaVasectomia.isSelected(),
+              treatment.checkEncaminhaPreNatalParceiro.isSelected()
+      );
+    }
+  }
+
+  private int saveWomenHealth() {
+    if(treatment.prisonerInformation != null){
+      return womenHealthService.updateWomenHealth(
+              treatment.prisonerInformation.getWomenHealth().getId(),
+              treatment.radioGestacaoSim.isSelected(),
+              treatment.txtIdadeGestacional.getText().trim(),
+              treatment.checkContraOral.isSelected(),
+              treatment.checkContraInjetavel.isSelected(),
+              treatment.checkContraDIU.isSelected(),
+              treatment.checkContraLigadura.isSelected(),
+              treatment.checkContraHisterectomia.isSelected(),
+              treatment.checkPapanicolau.isSelected(),
+              Integer.parseInt(treatment.txtPapanicolauAno.getText().trim()),
+              treatment.checkEncaminhaContraceptivo.isSelected(),
+              treatment.checkEncaminhaPreventivo.isSelected(),
+              treatment.checkEncaminhaPreNatal.isSelected()
+      );
+    }else {
+      return womenHealthService.saveWomenHealth(
+              treatment.radioGestacaoSim.isSelected(),
+              treatment.txtIdadeGestacional.getText().trim(),
+              treatment.checkContraOral.isSelected(),
+              treatment.checkContraInjetavel.isSelected(),
+              treatment.checkContraDIU.isSelected(),
+              treatment.checkContraLigadura.isSelected(),
+              treatment.checkContraHisterectomia.isSelected(),
+              treatment.checkPapanicolau.isSelected(),
+              Integer.parseInt(treatment.txtPapanicolauAno.getText().trim()),
+              treatment.checkEncaminhaContraceptivo.isSelected(),
+              treatment.checkEncaminhaPreventivo.isSelected(),
+              treatment.checkEncaminhaPreNatal.isSelected()
+      );
+    }
+  }
+
   public void savePrisoner () {
     if(!validateFields()) return;
     int treatmentId = saveTreatment();
@@ -288,7 +495,41 @@ public class TreatmentController {
       JOptionPane.showMessageDialog(treatment, "Erro ao salvar os dados de saúde mental.", "Erro", JOptionPane.ERROR_MESSAGE);
       return;
     }
- /*
+
+    int clinicalCareId = saveClinicalCare();
+    if (clinicalCareId <= 0) {
+      JOptionPane.showMessageDialog(treatment, "Erro ao salvar os dados de atendimento clínico.", "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+
+    int vaccinationStatusId = saveVaccinationStatus();
+    if (vaccinationStatusId <= 0) {
+      JOptionPane.showMessageDialog(treatment, "Erro ao salvar o status de vacinação.", "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+
+    int quickTestsId = saveQuickTests();
+    if (quickTestsId <= 0) {
+      JOptionPane.showMessageDialog(treatment, "Erro ao salvar ao finalizar o atendimento.", "Erro", JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+    Integer menHealthId = null;
+    Integer womenHealthId = null;
+    if(treatment.radioSaudeHomem.isSelected()){
+      menHealthId = saveMenHealth();
+      if (menHealthId <= 0) {
+        JOptionPane.showMessageDialog(treatment, "Erro ao salvar os dados de saúde do homem.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+    }else {
+      womenHealthId = saveWomenHealth();
+      if (womenHealthId <= 0) {
+        JOptionPane.showMessageDialog(treatment, "Erro ao salvar os dados de saúde da mulher.", "Erro", JOptionPane.ERROR_MESSAGE);
+        return;
+      }
+    }
+
+
     int returnedValidation;
 
     if (treatment.prisonerInformation != null) {
@@ -309,7 +550,15 @@ public class TreatmentController {
               treatment.comboRaca.getSelectedItem().toString(),
               treatment.comboSexo.getSelectedItem().toString(),
               treatment.comboOrientacao.getSelectedItem().toString(),
-              treatment.comboGenero.getSelectedItem().toString()
+              treatment.comboGenero.getSelectedItem().toString(),
+              socialEconomicDataId,
+              healthConditionsId,
+              womenHealthId,
+              menHealthId,
+              mentalHealthId,
+              vaccinationStatusId,
+              clinicalCareId,
+              quickTestsId
               );
     }else {
 
@@ -328,7 +577,15 @@ public class TreatmentController {
               treatment.comboSexo.getSelectedItem().toString(),
               treatment.comboOrientacao.getSelectedItem().toString(),
               treatment.comboGenero.getSelectedItem().toString(),
-              treatmentId
+              treatmentId,
+              socialEconomicDataId,
+              healthConditionsId,
+              womenHealthId,
+              menHealthId,
+              mentalHealthId,
+              vaccinationStatusId,
+              clinicalCareId,
+              quickTestsId
       );
     }
 
@@ -337,7 +594,7 @@ public class TreatmentController {
       return;
     }
     treatment.homeScreen.populateTable(null);
-    treatment.dispose();*/
+    treatment.dispose();
   }
 
   private String getSelectedButtonText(ButtonGroup buttonGroup) {

@@ -4,7 +4,11 @@ import configs.DBConnection;
 import utils.DateUtils;
 
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
 
 public class ClinicalCareService {
   private DBConnection dbConnection;
@@ -27,7 +31,7 @@ public class ClinicalCareService {
           boolean hasFever,
           boolean hasChills,
           String otherSymptoms,
-          java.sql.Date startDateRespiratorySymptoms,
+          Date startDateRespiratorySymptoms,
           boolean hasInjuries,
           String injuriesSites) {
 
@@ -57,7 +61,10 @@ public class ClinicalCareService {
       stmt.setBoolean(11, hasFever);
       stmt.setBoolean(12, hasChills);
       stmt.setString(13, otherSymptoms);
-      stmt.setDate(14, startDateRespiratorySymptoms);
+      if (startDateRespiratorySymptoms != null)
+        stmt.setString(14, DateUtils.getFormattedDate(startDateRespiratorySymptoms));
+      else
+        stmt.setNull(14, java.sql.Types.VARCHAR);
       stmt.setBoolean(15, hasInjuries);
       stmt.setString(16, injuriesSites);
 
@@ -92,7 +99,7 @@ public class ClinicalCareService {
           boolean hasFever,
           boolean hasChills,
           String otherSymptoms,
-          java.sql.Date startDateRespiratorySymptoms,
+          Date startDateRespiratorySymptoms,
           boolean hasInjuries,
           String injuriesSites) {
 
@@ -121,7 +128,10 @@ public class ClinicalCareService {
       stmt.setBoolean(11, hasFever);
       stmt.setBoolean(12, hasChills);
       stmt.setString(13, otherSymptoms);
-      stmt.setDate(14, startDateRespiratorySymptoms);
+      if (startDateRespiratorySymptoms != null)
+        stmt.setString(14, DateUtils.getFormattedDate(startDateRespiratorySymptoms));
+      else
+        stmt.setNull(14, java.sql.Types.VARCHAR);
       stmt.setBoolean(15, hasInjuries);
       stmt.setString(16, injuriesSites);
       stmt.setInt(17, id);

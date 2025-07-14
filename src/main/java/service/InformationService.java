@@ -24,150 +24,82 @@ public class InformationService {
     }
 
     String query = "SELECT \n" +
-                   "    info.id AS information_id,\n" +
-                   "    info.social_name,\n" +
-                   "    info.full_name,\n" +
-                   "    info.born_date,\n" +
-                   "    info.age,\n" +
-                   "    info.cpf,\n" +
-                   "    info.nationality,\n" +
-                   "    info.mother_name,\n" +
-                   "    info.father_name,\n" +
+                   "  info.id AS information_id,\n" +
+                   "  info.social_name,\n" +
+                   "  info.full_name,\n" +
+                   "  info.born_date,\n" +
+                   "  info.age,\n" +
+                   "  info.cpf,\n" +
+                   "  info.nationality,\n" +
+                   "  info.mother_name,\n" +
+                   "  info.father_name,\n" +
                    "\n" +
-                   "    ms.marital_status,\n" +
-                   "    eth.etnia,\n" +
-                   "    bs.biology_sex,\n" +
-                   "    so.sexual_orientation,\n" +
-                   "    gi.gender_identity,\n" +
+                   "  u.id AS user_id,\n" +
+                   "  u.username,\n" +
+                   "  \n" +
+                   "  t.id AS treatment_id,\n" +
+                   "  t.treatment_date,\n" +
+                   "  t.entry_date,\n" +
+                   "  t.is_transfer,\n" +
+                   "  t.source_transfer,\n" +
                    "\n" +
-                   "    t.treatment_date,\n" +
-                   "    t.entry_date,\n" +
-                   "    t.is_transfer,\n" +
-                   "    t.source_transfer,\n" +
-                   "    u.username,\n" +
+                   "  ms.marital_status,\n" +
+                   "  eth.etnia AS ethnicity,\n" +
+                   "  bs.biology_sex,\n" +
+                   "  so.sexual_orientation,\n" +
+                   "  gi.gender_identity,\n" +
                    "\n" +
-                   "    edu.education,\n" +
-                   "    sed.has_family_benefits,\n" +
-                   "    sed.family_benefits,\n" +
-                   "    sed.has_children,\n" +
-                   "    sed.children_quantity,\n" +
-                   "    sed.ages,\n" +
-                   "    sed.has_dependents,\n" +
-                   "    sed.dependents_quantity,\n" +
-                   "    sed.has_neeja_education,\n" +
-                   "    sed.has_social_assistent,\n" +
+                   "  edu.education,\n" +
+                   "  sed.has_family_benefits,\n" +
+                   "  sed.family_benefits,\n" +
+                   "  sed.has_children,\n" +
+                   "  sed.children_quantity,\n" +
+                   "  sed.ages,\n" +
+                   "  sed.has_dependents,\n" +
+                   "  sed.dependents_quantity,\n" +
+                   "  sed.has_neeja_education,\n" +
+                   "  sed.has_social_assistent,\n" +
                    "\n" +
-                   "    hc.has_deficiency,\n" +
-                   "    hc.deficiency,\n" +
-                   "    hc.has_allergies,\n" +
-                   "    hc.allergies,\n" +
-                   "    hc.has_surgeries,\n" +
-                   "    hc.surgeries,\n" +
-                   "    hc.has_hypertension,\n" +
-                   "    hc.has_diabetes,\n" +
-                   "    hc.has_hiv,\n" +
-                   "    hc.has_autoimmune,\n" +
-                   "    hc.has_syphilis,\n" +
-                   "    hc.has_hpv,\n" +
-                   "    hc.other_chronic_disease,\n" +
-                   "    hc.has_tuberculosis,\n" +
-                   "    hc.has_hepatitis_B,\n" +
-                   "    hc.has_hepatitis_C,\n" +
-                   "    hc.other_infectious_disease,\n" +
-                   "    hc.has_skin_disease,\n" +
-                   "    hc.skin_diseases,\n" +
-                   "    hc.use_continuous_medication,\n" +
-                   "    hc.continuos_medication,\n" +
-                   "    hc.blood_type,\n" +
+                   "  hc.*,\n" +
                    "\n" +
-                   "    wh.is_pregant,\n" +
-                   "    wh.pregnant_age,\n" +
-                   "    wh.contraceptive_method,\n" +
-                   "    wh.has_preventive_exam,\n" +
-                   "    wh.preventive_exam_year,\n" +
-                   "    wh.offer_contraceptive_method,\n" +
-                   "    wh.offer_preventive_exam,\n" +
-                   "    wh.is_prenatal,\n" +
+                   "  -- mulheres\n" +
+                   "  wh.is_pregnant,\n" +
+                   "  wh.pregnant_age,\n" +
+                   "  wh.use_oral_contraceptive,\n" +
+                   "  wh.use_injectable_contraceptive,\n" +
+                   "  wh.use_IUD_implant,\n" +
+                   "  wh.use_tubal_ligation,\n" +
+                   "  wh.use_hysterectomy,\n" +
+                   "  wh.has_preventive_exam,\n" +
+                   "  wh.preventive_exam_year,\n" +
+                   "  wh.offer_contraceptive_method,\n" +
+                   "  wh.offer_preventive_exam,\n" +
+                   "  wh.is_prenatal,\n" +
                    "\n" +
-                   "    mh.has_prevent_exam,\n" +
-                   "    mh.prevent_exam_year,\n" +
-                   "    mh.has_prostate_cancer_family_history,\n" +
-                   "    mh.prostate_cancer_family,\n" +
-                   "    mh.vasectomy,\n" +
-                   "    mh.pregnant_partner,\n" +
-                   "    mh.prenatal_pregnant_partner,\n" +
-                   "    mh.offer_vasectomy,\n" +
-                   "    mh.offer_prenatal,\n" +
+                   "  -- homens\n" +
+                   "  mh.has_prevent_exam,\n" +
+                   "  mh.prevent_exam_year,\n" +
+                   "  mh.has_prostate_cancer_family_history,\n" +
+                   "  mh.prostate_cancer_family,\n" +
+                   "  mh.vasectomy,\n" +
+                   "  mh.pregnant_partner,\n" +
+                   "  mh.prenatal_pregnant_partner,\n" +
+                   "  mh.offer_vasectomy,\n" +
+                   "  mh.offer_prenatal,\n" +
                    "\n" +
-                   "    mth.has_link_caps,\n" +
-                   "    mth.caps_city,\n" +
-                   "    mth.has_anxiety,\n" +
-                   "    mth.has_depression,\n" +
-                   "    mth.has_bipolarity,\n" +
-                   "    mth.has_schizophrenia,\n" +
-                   "    mth.has_autism,\n" +
-                   "    mth.other_mental_disorder,\n" +
-                   "    mth.use_controlled_medicine,\n" +
-                   "    mth.controlled_medicines,\n" +
-                   "    mth.was_accompaniment,\n" +
-                   "    mth.reason_accompaniment,\n" +
-                   "    mth.use_alcohol,\n" +
-                   "    mth.use_cigarettes,\n" +
-                   "    mth.use_marijuana,\n" +
-                   "    mth.use_crack,\n" +
-                   "    mth.use_cocaine,\n" +
-                   "    mth.use_amphetamines,\n" +
-                   "    mth.use_k_drugs,\n" +
-                   "    mth.other_substances,\n" +
-                   "    mth.has_treatment,\n" +
-                   "    mth.substance_treatment,\n" +
-                   "    mth.wanna_treatment,\n" +
-                   "    mth.wanna_treatment_substance,\n" +
-                   "    mth.offer_psychology,\n" +
-                   "    mth.offer_psychiatrist,\n" +
-                   "    mth.revenue_renewal,\n" +
-                   "    mth.support_groups,\n" +
-                   "\n" +
-                   "    vs.covid,\n" +
-                   "    vs.influenza,\n" +
-                   "    vs.tetanus,\n" +
-                   "    vs.hepatitis_b,\n" +
-                   "    vs.offer_vaccination,\n" +
-                   "    vs.offer_portfolio_copy,\n" +
-                   "\n" +
-                   "    cc.weight,\n" +
-                   "    cc.height,\n" +
-                   "    cc.imc,\n" +
-                   "    cc.blood_pressure,\n" +
-                   "    cc.hear_rate,\n" +
-                   "    cc.saturation,\n" +
-                   "    cc.temperature,\n" +
-                   "    cc.has_cough,\n" +
-                   "    cc.has_runny_nose,\n" +
-                   "    cc.has_sneezing,\n" +
-                   "    cc.has_fever,\n" +
-                   "    cc.has_chills,\n" +
-                   "    cc.other_symptoms,\n" +
-                   "    cc.start_date_respiratory_symptoms,\n" +
-                   "    cc.has_injuries,\n" +
-                   "    cc.injuries_sites,\n" +
-                   "\n" +
-                   "    qt.pregnant_test,\n" +
-                   "    qt.sputum_collection,\n" +
-                   "    qt.has_complaint,\n" +
-                   "    qt.complaint_description,\n" +
-                   "    qt.has_dental_complaint,\n" +
-                   "    qt.dental_complaint,\n" +
-                   "    qt.needs_dental_assessment\n" +
+                   "  mth.*,\n" +
+                   "  vs.*,\n" +
+                   "  cc.*,\n" +
+                   "  qt.*\n" +
                    "\n" +
                    "FROM tb_information info\n" +
+                   "JOIN tb_treatment t ON info.treatment_id = t.id\n" +
+                   "JOIN tb_user u ON t.user_id = u.id\n" +
                    "JOIN tb_marital_status ms ON info.marital_status_id = ms.id\n" +
                    "JOIN tb_ethnicity eth ON info.ethnicity_id = eth.id\n" +
                    "JOIN tb_biological_sex bs ON info.biological_sex_id = bs.id\n" +
                    "JOIN tb_sexual_orientation so ON info.sexual_orientation_id = so.id\n" +
                    "JOIN tb_gender_identity gi ON info.gender_identity_id = gi.id\n" +
-                   "JOIN tb_treatment t ON info.treatment_id = t.id\n" +
-                   "JOIN tb_user u ON t.user_id = u.id\n" +
                    "JOIN tb_social_economic_data sed ON info.social_economic_data_id = sed.id\n" +
                    "JOIN tb_education edu ON sed.education_id = edu.id\n" +
                    "JOIN tb_health_conditions hc ON info.health_conditions_id = hc.id\n" +
@@ -281,10 +213,13 @@ public class InformationService {
           womenHealth.setId(rs.getInt("women_health_id"));
           womenHealth.setPregnant(rs.getBoolean("is_pregnant"));
           womenHealth.setPregnantAge(rs.getString("pregnant_age"));
-          womenHealth.setContraceptiveMethod(rs.getString("contraceptive_method"));
           womenHealth.setHasPreventiveExam(rs.getBoolean("has_preventive_exam"));
           womenHealth.setPreventiveExamYear(rs.getInt("preventive_exam_year"));
-          womenHealth.setOfferContraceptiveMethod(rs.getBoolean("offer_contraceptive_method"));
+          womenHealth.setUseOralContraceptive(rs.getBoolean("use_oral_contraceptive"));
+          womenHealth.setUseInjectableContraceptive(rs.getBoolean("use_injectable_contraceptive"));
+          womenHealth.setUseHysterectomy(rs.getBoolean("use_hysterectomy"));
+          womenHealth.setUseIUDImplant(rs.getBoolean("use_iud_implant"));
+          womenHealth.setUseTubalLigation(rs.getBoolean("use_tubal_ligation"));
           womenHealth.setOfferPreventiveExam(rs.getBoolean("offer_preventive_exam"));
           womenHealth.setPrenatal(rs.getBoolean("is_prenatal"));
 
@@ -322,7 +257,13 @@ public class InformationService {
           vaccinationStatus.setInfluenza(rs.getBoolean("influenza"));
           vaccinationStatus.setTetanus(rs.getBoolean("tetanus"));
           vaccinationStatus.setHepatitisB(rs.getBoolean("hepatitis_b"));
-          vaccinationStatus.setOfferVaccination(rs.getString("offer_vaccination"));
+          vaccinationStatus.setOfferCovid(rs.getBoolean("offer_covid"));
+          vaccinationStatus.setOfferHepatitis(rs.getBoolean("offer_hepatitis"));
+          vaccinationStatus.setOfferInfluenza(rs.getBoolean("offer_influenza"));
+          vaccinationStatus.setOfferFever(rs.getBoolean("offer_fever"));
+          vaccinationStatus.setOfferAdultDuo(rs.getBoolean("offer_adult_duo"));
+          vaccinationStatus.setOfferSrc(rs.getBoolean("offer_src"));
+          vaccinationStatus.setOfferOtherVaccination(rs.getString("offer_other_vaccination"));
           vaccinationStatus.setOfferPortfolioCopy(rs.getBoolean("offer_portfolio_copy"));
 
           clinicalCare.setId(rs.getInt("clinical_care_id"));

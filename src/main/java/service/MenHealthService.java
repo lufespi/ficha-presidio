@@ -56,7 +56,7 @@ public class MenHealthService {
     }
   }
 
-  public boolean updateMenHealth(int id, boolean hasPreventExam, int preventExamYear,
+  public int updateMenHealth(int id, boolean hasPreventExam, int preventExamYear,
                                  boolean hasProstateCancerFamilyHistory, String prostateCancerFamily,
                                  boolean vasectomy, boolean pregnantPartner,
                                  boolean prenatalPregnantPartner, boolean offerVasectomy,
@@ -83,11 +83,13 @@ public class MenHealthService {
       stmt.setBoolean(9, offerPrenatal);
       stmt.setInt(10, id);
 
-      return stmt.executeUpdate() > 0;
+      stmt.executeUpdate();
+
+      return id;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return -1;
     }
   }
 
