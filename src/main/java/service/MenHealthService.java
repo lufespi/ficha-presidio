@@ -13,7 +13,7 @@ public class MenHealthService {
     this.dbConnection = new DBConnection();
   }
 
-  public int saveMenHealth(boolean hasPreventExam, int preventExamYear,
+  public int saveMenHealth(boolean hasPreventExam, Integer preventExamYear,
                            boolean hasProstateCancerFamilyHistory, String prostateCancerFamily,
                            boolean vasectomy, boolean pregnantPartner,
                            boolean prenatalPregnantPartner, boolean offerVasectomy,
@@ -56,7 +56,7 @@ public class MenHealthService {
     }
   }
 
-  public int updateMenHealth(int id, boolean hasPreventExam, int preventExamYear,
+  public int updateMenHealth(int id, boolean hasPreventExam, Integer preventExamYear,
                                  boolean hasProstateCancerFamilyHistory, String prostateCancerFamily,
                                  boolean vasectomy, boolean pregnantPartner,
                                  boolean prenatalPregnantPartner, boolean offerVasectomy,

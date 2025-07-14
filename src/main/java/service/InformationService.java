@@ -20,7 +20,7 @@ public class InformationService {
     if (filterName == null || filterName.isEmpty()) {
       filter = ";";
     } else {
-      filter = " WHERE i.full_name LIKE ? OR i.social_name LIKE ?;";
+      filter = " WHERE info.full_name LIKE ? OR info.social_name LIKE ?;";
     }
 
     String query = "SELECT \n" +
@@ -34,21 +34,41 @@ public class InformationService {
                    "  info.mother_name,\n" +
                    "  info.father_name,\n" +
                    "\n" +
+                   "  -- IDs\n" +
                    "  u.id AS user_id,\n" +
-                   "  u.username,\n" +
-                   "  \n" +
                    "  t.id AS treatment_id,\n" +
+                   "  ms.id AS marital_status_id,\n" +
+                   "  eth.id AS ethnicity_id,\n" +
+                   "  bs.id AS biological_sex_id,\n" +
+                   "  so.id AS sexual_orientation_id,\n" +
+                   "  gi.id AS gender_identity_id,\n" +
+                   "  sed.id AS social_economic_data_id,\n" +
+                   "  edu.id AS education_id,\n" +
+                   "  hc.id AS health_conditions_id,\n" +
+                   "  wh.id AS women_health_id,\n" +
+                   "  mh.id AS men_health_id,\n" +
+                   "  mth.id AS mental_health_id,\n" +
+                   "  vs.id AS vaccination_status_id,\n" +
+                   "  cc.id AS clinical_care_id,\n" +
+                   "  qt.id AS quick_tests_id,\n" +
+                   "\n" +
+                   "  -- User\n" +
+                   "  u.username,\n" +
+                   "\n" +
+                   "  -- Tratamento\n" +
                    "  t.treatment_date,\n" +
                    "  t.entry_date,\n" +
                    "  t.is_transfer,\n" +
                    "  t.source_transfer,\n" +
                    "\n" +
+                   "  -- Demográficos\n" +
                    "  ms.marital_status,\n" +
                    "  eth.etnia AS ethnicity,\n" +
                    "  bs.biology_sex,\n" +
                    "  so.sexual_orientation,\n" +
                    "  gi.gender_identity,\n" +
                    "\n" +
+                   "  -- Socioeconômico\n" +
                    "  edu.education,\n" +
                    "  sed.has_family_benefits,\n" +
                    "  sed.family_benefits,\n" +
@@ -60,9 +80,31 @@ public class InformationService {
                    "  sed.has_neeja_education,\n" +
                    "  sed.has_social_assistent,\n" +
                    "\n" +
-                   "  hc.*,\n" +
+                   "  -- Saúde física\n" +
+                   "  hc.has_deficiency,\n" +
+                   "  hc.deficiency,\n" +
+                   "  hc.has_allergies,\n" +
+                   "  hc.allergies,\n" +
+                   "  hc.has_surgeries,\n" +
+                   "  hc.surgeries,\n" +
+                   "  hc.has_hypertension,\n" +
+                   "  hc.has_diabetes,\n" +
+                   "  hc.has_hiv,\n" +
+                   "  hc.has_autoimmune,\n" +
+                   "  hc.has_syphilis,\n" +
+                   "  hc.has_hpv,\n" +
+                   "  hc.other_chronic_disease,\n" +
+                   "  hc.has_tuberculosis,\n" +
+                   "  hc.has_hepatitis_B,\n" +
+                   "  hc.has_hepatitis_C,\n" +
+                   "  hc.other_infectious_disease,\n" +
+                   "  hc.has_skin_disease,\n" +
+                   "  hc.skin_diseases,\n" +
+                   "  hc.use_continuous_medication,\n" +
+                   "  hc.continuos_medication,\n" +
+                   "  hc.blood_type,\n" +
                    "\n" +
-                   "  -- mulheres\n" +
+                   "  -- Saúde da mulher\n" +
                    "  wh.is_pregnant,\n" +
                    "  wh.pregnant_age,\n" +
                    "  wh.use_oral_contraceptive,\n" +
@@ -76,7 +118,7 @@ public class InformationService {
                    "  wh.offer_preventive_exam,\n" +
                    "  wh.is_prenatal,\n" +
                    "\n" +
-                   "  -- homens\n" +
+                   "  -- Saúde do homem\n" +
                    "  mh.has_prevent_exam,\n" +
                    "  mh.prevent_exam_year,\n" +
                    "  mh.has_prostate_cancer_family_history,\n" +
@@ -87,10 +129,76 @@ public class InformationService {
                    "  mh.offer_vasectomy,\n" +
                    "  mh.offer_prenatal,\n" +
                    "\n" +
-                   "  mth.*,\n" +
-                   "  vs.*,\n" +
-                   "  cc.*,\n" +
-                   "  qt.*\n" +
+                   "  -- Saúde mental\n" +
+                   "  mth.has_link_caps,\n" +
+                   "  mth.caps_city,\n" +
+                   "  mth.has_anxiety,\n" +
+                   "  mth.has_depression,\n" +
+                   "  mth.has_bipolarity,\n" +
+                   "  mth.has_schizophrenia,\n" +
+                   "  mth.has_autism,\n" +
+                   "  mth.other_mental_disorder,\n" +
+                   "  mth.use_controlled_medicine,\n" +
+                   "  mth.controlled_medicines,\n" +
+                   "  mth.was_accompaniment,\n" +
+                   "  mth.reason_accompaniment,\n" +
+                   "  mth.use_alcohol,\n" +
+                   "  mth.use_cigarettes,\n" +
+                   "  mth.use_marijuana,\n" +
+                   "  mth.use_crack,\n" +
+                   "  mth.use_cocaine,\n" +
+                   "  mth.use_amphetamines,\n" +
+                   "  mth.use_k_drugs,\n" +
+                   "  mth.other_substances,\n" +
+                   "  mth.has_treatment,\n" +
+                   "  mth.substance_treatment,\n" +
+                   "  mth.wanna_treatment,\n" +
+                   "  mth.wanna_treatment_substance,\n" +
+                   "  mth.offer_psychology,\n" +
+                   "  mth.offer_psychiatrist,\n" +
+                   "  mth.revenue_renewal,\n" +
+                   "  mth.support_groups,\n" +
+                   "\n" +
+                   "  -- Vacinação\n" +
+                   "  vs.covid,\n" +
+                   "  vs.influenza,\n" +
+                   "  vs.tetanus,\n" +
+                   "  vs.hepatitis_b,\n" +
+                   "  vs.offer_covid,\n" +
+                   "  vs.offer_hepatitis,\n" +
+                   "  vs.offer_influenza,\n" +
+                   "  vs.offer_fever,\n" +
+                   "  vs.offer_adult_duo,\n" +
+                   "  vs.offer_src,\n" +
+                   "  vs.offer_other_vaccination,\n" +
+                   "  vs.offer_portfolio_copy,\n" +
+                   "\n" +
+                   "  -- Cuidados clínicos\n" +
+                   "  cc.weight,\n" +
+                   "  cc.height,\n" +
+                   "  cc.imc,\n" +
+                   "  cc.blood_pressure,\n" +
+                   "  cc.hear_rate,\n" +
+                   "  cc.saturation,\n" +
+                   "  cc.temperature,\n" +
+                   "  cc.has_cough,\n" +
+                   "  cc.has_runny_nose,\n" +
+                   "  cc.has_sneezing,\n" +
+                   "  cc.has_fever,\n" +
+                   "  cc.has_chills,\n" +
+                   "  cc.other_symptoms,\n" +
+                   "  cc.start_date_respiratory_symptoms,\n" +
+                   "  cc.has_injuries,\n" +
+                   "  cc.injuries_sites,\n" +
+                   "\n" +
+                   "  -- Testes rápidos\n" +
+                   "  qt.pregnant_test,\n" +
+                   "  qt.sputum_collection,\n" +
+                   "  qt.has_complaint,\n" +
+                   "  qt.complaint_description,\n" +
+                   "  qt.has_dental_complaint,\n" +
+                   "  qt.dental_complaint,\n" +
+                   "  qt.needs_dental_assessment\n" +
                    "\n" +
                    "FROM tb_information info\n" +
                    "JOIN tb_treatment t ON info.treatment_id = t.id\n" +
@@ -108,7 +216,7 @@ public class InformationService {
                    "JOIN tb_mental_health mth ON info.mental_health_id = mth.id\n" +
                    "JOIN tb_vaccination_status vs ON info.vaccination_status_id = vs.id\n" +
                    "JOIN tb_clinical_care cc ON info.clinical_care_id = cc.id\n" +
-                   "JOIN tb_quick_tests qt ON info.quick_tests_id = qt.id" + filter;
+                   "JOIN tb_quick_tests qt ON info.quick_tests_id = qt.id\n" + filter;
 
     try (PreparedStatement st = dbConnection.getConnection().prepareStatement(query)) {
       if (filterName != null && !filterName.isEmpty()) {
@@ -151,9 +259,9 @@ public class InformationService {
           maritalStatus.setMaritalStatus(rs.getString("marital_status"));
 
           ethnicity.setId(rs.getInt("ethnicity_id"));
-          ethnicity.setEtnia(rs.getString("etnia"));
+          ethnicity.setEtnia(rs.getString("ethnicity"));
 
-          biologicalSex.setId(rs.getInt("biological_id"));
+          biologicalSex.setId(rs.getInt("biological_sex_id"));
           biologicalSex.setBiologySex(rs.getString("biology_sex"));
 
           sexualOrientation.setId(rs.getInt("sexual_orientation_id"));
@@ -237,12 +345,24 @@ public class InformationService {
           mentalHealth.setId(rs.getInt("mental_health_id"));
           mentalHealth.setHasLinkCaps(rs.getBoolean("has_link_caps"));
           mentalHealth.setCapsCity(rs.getString("caps_city"));
-          mentalHealth.setMentalDisorder(rs.getString("mental_disorder"));
+          mentalHealth.setHasAnxiety(rs.getBoolean("has_anxiety"));
+          mentalHealth.setHasDepression(rs.getBoolean("has_depression"));
+          mentalHealth.setHasBipolarity(rs.getBoolean("has_bipolarity"));
+          mentalHealth.setHasSchizophrenia(rs.getBoolean("has_schizophrenia"));
+          mentalHealth.setHasAutism(rs.getBoolean("has_autism"));
+          mentalHealth.setOtherMentalDisorder(rs.getString("other_mental_disorder"));
           mentalHealth.setUseControlledMedicine(rs.getBoolean("use_controlled_medicine"));
           mentalHealth.setControlledMedicines(rs.getString("controlled_medicines"));
           mentalHealth.setWasAccompaniment(rs.getBoolean("was_accompaniment"));
           mentalHealth.setReasonAccompaniment(rs.getString("reason_accompaniment"));
-          mentalHealth.setSubstanceUse(rs.getString("substance_use"));
+          mentalHealth.setUseAlcohol(rs.getBoolean("use_alcohol"));
+          mentalHealth.setUseCigarettes(rs.getBoolean("use_cigarettes"));
+          mentalHealth.setUseMarijuana(rs.getBoolean("use_marijuana"));
+          mentalHealth.setUseCrack(rs.getBoolean("use_crack"));
+          mentalHealth.setUseCocaine(rs.getBoolean("use_cocaine"));
+          mentalHealth.setUseAmphetamines(rs.getBoolean("use_amphetamines"));
+          mentalHealth.setUseKDrugs(rs.getBoolean("use_k_drugs"));
+          mentalHealth.setOtherSubstances(rs.getString("other_substances"));
           mentalHealth.setHasTreatment(rs.getBoolean("has_treatment"));
           mentalHealth.setSubstanceTreatment(rs.getString("substance_treatment"));
           mentalHealth.setWannaTreatment(rs.getBoolean("wanna_treatment"));
@@ -338,7 +458,7 @@ public class InformationService {
                  "(SELECT id FROM tb_ethnicity WHERE etnia = ?), " +
                  "(SELECT id FROM tb_biological_sex WHERE biology_sex = ?), " +
                  "(SELECT id FROM tb_sexual_orientation WHERE sexual_orientation = ?), " +
-                 "(SELECT id FROM tb_gender_identity WHERE gender_identity = ?), ?, ?, ?, ?, ?, ?, ?, ?)";
+                 "(SELECT id FROM tb_gender_identity WHERE gender_identity = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (PreparedStatement stmt = dbConnection.getConnection().prepareStatement(sql,
             Statement.RETURN_GENERATED_KEYS)) {

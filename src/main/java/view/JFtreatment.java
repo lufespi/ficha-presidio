@@ -29,7 +29,6 @@ public class JFtreatment extends JFrame {
     public JCheckBox checkPaiDesconhecido;
     public JComboBox<String> comboRaca, comboSexo, comboGenero, comboOrientacao;
     public JComboBox<String> comboEscolaridade;
-    public JTextArea txtProfissao;
     public JRadioButton radioBeneficioNao, radioBeneficioSim;
     public JTextField txtBeneficioQual;
     public JRadioButton radioFilhosNao, radioFilhosSim;
@@ -111,6 +110,8 @@ public class JFtreatment extends JFrame {
     public User username;
     private TreatmentController treatmentController;
     public Information prisonerInformation;
+    public CardLayout cardLayout;
+    public JPanel panelContainerDinamico;
 
     public JFtreatment(JFhome homeScreen, User username, Information prisonerInformation) {
         this.homeScreen = homeScreen;
@@ -347,13 +348,6 @@ public class JFtreatment extends JFrame {
         comboEscolaridade = new JComboBox<>(escolaridades);
         comboEscolaridade.setBounds(130, 30, 240, 25);
         panelSocial.add(comboEscolaridade);
-        JLabel lblProfissao = new JLabel("Profissão/Ocupação/Renda:");
-        lblProfissao.setBounds(20, 65, 200, 25);
-        panelSocial.add(lblProfissao);
-        txtProfissao = new JTextArea();
-        JScrollPane scrollProfissao = new JScrollPane(txtProfissao);
-        scrollProfissao.setBounds(20, 90, 350, 60);
-        panelSocial.add(scrollProfissao);
         JLabel lblBeneficio = new JLabel("A família recebe algum benefício?");
         lblBeneficio.setBounds(380, 65, 250, 25);
         panelSocial.add(lblBeneficio);
@@ -834,8 +828,8 @@ public class JFtreatment extends JFrame {
         panelSelecao.add(radioSaudeHomem);
 
         // --- CONTAINER DOS PAINÉIS DINÂMICOS ---
-        JPanel panelContainerDinamico = new JPanel();
-        CardLayout cardLayout = new CardLayout();
+        panelContainerDinamico = new JPanel();
+        cardLayout = new CardLayout();
         panelContainerDinamico.setLayout(cardLayout);
         panelContainerDinamico.setBounds(10, 2760, 740, 350);
         mainPanel.add(panelContainerDinamico);

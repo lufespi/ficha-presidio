@@ -6,6 +6,7 @@ import utils.DateUtils;
 import view.JFtreatment;
 
 import javax.swing.*;
+import java.awt.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
@@ -391,11 +392,16 @@ public class TreatmentController {
   }
 
   private int saveMenHealth() {
+    Integer exameProstataAno = null;
+    if(!treatment.txtExameProstataAno.getText().trim().isEmpty()){
+      exameProstataAno = Integer.parseInt(treatment.txtExameProstataAno.getText().trim());
+    }
+
     if(treatment.prisonerInformation != null) {
       return menHealthService.updateMenHealth(
               treatment.prisonerInformation.getMenHealth().getId(),
               treatment.checkExameProstata.isSelected(),
-              Integer.parseInt(treatment.txtExameProstataAno.getText().trim()),
+              exameProstataAno,
               treatment.checkHistFamiliarProstata.isSelected(),
               treatment.txtHistFamiliarProstataQual.getText().trim(),
               treatment.checkVasectomia.isSelected(),
@@ -407,7 +413,7 @@ public class TreatmentController {
     } else {
       return menHealthService.saveMenHealth(
               treatment.checkExameProstata.isSelected(),
-              Integer.parseInt(treatment.txtExameProstataAno.getText().trim()),
+              exameProstataAno,
               treatment.checkHistFamiliarProstata.isSelected(),
               treatment.txtHistFamiliarProstataQual.getText().trim(),
               treatment.checkVasectomia.isSelected(),
@@ -420,6 +426,10 @@ public class TreatmentController {
   }
 
   private int saveWomenHealth() {
+    Integer papanicolauAno = null;
+    if(!treatment.txtPapanicolauAno.getText().trim().isEmpty()){
+      papanicolauAno = Integer.parseInt(treatment.txtPapanicolauAno.getText().trim());
+    }
     if(treatment.prisonerInformation != null){
       return womenHealthService.updateWomenHealth(
               treatment.prisonerInformation.getWomenHealth().getId(),
@@ -431,7 +441,7 @@ public class TreatmentController {
               treatment.checkContraLigadura.isSelected(),
               treatment.checkContraHisterectomia.isSelected(),
               treatment.checkPapanicolau.isSelected(),
-              Integer.parseInt(treatment.txtPapanicolauAno.getText().trim()),
+              papanicolauAno,
               treatment.checkEncaminhaContraceptivo.isSelected(),
               treatment.checkEncaminhaPreventivo.isSelected(),
               treatment.checkEncaminhaPreNatal.isSelected()
@@ -446,7 +456,7 @@ public class TreatmentController {
               treatment.checkContraLigadura.isSelected(),
               treatment.checkContraHisterectomia.isSelected(),
               treatment.checkPapanicolau.isSelected(),
-              Integer.parseInt(treatment.txtPapanicolauAno.getText().trim()),
+              papanicolauAno,
               treatment.checkEncaminhaContraceptivo.isSelected(),
               treatment.checkEncaminhaPreventivo.isSelected(),
               treatment.checkEncaminhaPreNatal.isSelected()
@@ -628,6 +638,236 @@ public class TreatmentController {
     treatment.txtSource.setEnabled(true);
     treatment.radioTransfSim.setSelected(treatment.prisonerInformation.getTreatment().isTransfer());
     treatment.radioTransfNao.setSelected(!treatment.prisonerInformation.getTreatment().isTransfer());
+
+    treatment.comboEscolaridade.setSelectedItem(treatment.prisonerInformation.getSocialEconomicData().getEducation().getEducation());
+    treatment.radioBeneficioSim.setSelected(treatment.prisonerInformation.getSocialEconomicData().isHasFamilyBenefits());
+    treatment.radioBeneficioNao.setSelected(!treatment.prisonerInformation.getSocialEconomicData().isHasFamilyBenefits());
+    treatment.txtBeneficioQual.setText(treatment.prisonerInformation.getSocialEconomicData().getFamilyBenefits());
+    treatment.radioFilhosSim.setSelected(treatment.prisonerInformation.getSocialEconomicData().isHasChildren());
+    treatment.radioFilhosNao.setSelected(!treatment.prisonerInformation.getSocialEconomicData().isHasChildren());
+    treatment.txtFilhosQuantos.setText(String.valueOf(treatment.prisonerInformation.getSocialEconomicData().getChildrenQuantity()));
+    treatment.txtFilhosIdades.setText(treatment.prisonerInformation.getSocialEconomicData().getAges());
+    treatment.radioDependentesSim.setSelected(treatment.prisonerInformation.getSocialEconomicData().isHasDependents());
+    treatment.radioDependentesNao.setSelected(!treatment.prisonerInformation.getSocialEconomicData().isHasDependents());
+    treatment.txtDependentesQuantos.setText(String.valueOf(treatment.prisonerInformation.getSocialEconomicData().getDependentsQuantity()));
+    treatment.radioNeejaSim.setSelected(treatment.prisonerInformation.getSocialEconomicData().isHasNeejaEducation());
+    treatment.radioNeejaNao.setSelected(!treatment.prisonerInformation.getSocialEconomicData().isHasNeejaEducation());
+    treatment.radioAssistenciaSim.setSelected(treatment.prisonerInformation.getSocialEconomicData().isHasSocialAssistent());
+    treatment.radioAssistenciaNao.setSelected(!treatment.prisonerInformation.getSocialEconomicData().isHasSocialAssistent());
+
+    treatment.txtPeso.setText(String.valueOf(treatment.prisonerInformation.getClinicalCare().getWeight()));
+    treatment.txtAltura.setText(String.valueOf(treatment.prisonerInformation.getClinicalCare().getHeight()));
+    treatment.txtIMC.setText(String.valueOf(treatment.prisonerInformation.getClinicalCare().getImc()));
+    treatment.txtPA.setText(String.valueOf(treatment.prisonerInformation.getClinicalCare().getBloodPressure()));
+    treatment.txtFC.setText(String.valueOf(treatment.prisonerInformation.getClinicalCare().getHearRate()));
+    treatment.txtSAT.setText(String.valueOf(treatment.prisonerInformation.getClinicalCare().getSaturation()));
+    treatment.txtTemp.setText(String.valueOf(treatment.prisonerInformation.getClinicalCare().getTemperature()));
+    if(treatment.prisonerInformation.getClinicalCare().isHasCough() ||
+       treatment.prisonerInformation.getClinicalCare().isHasRunnyNose() ||
+       treatment.prisonerInformation.getClinicalCare().isHasSneezing() ||
+       treatment.prisonerInformation.getClinicalCare().isHasFever() ||
+       treatment.prisonerInformation.getClinicalCare().isHasChills()) {
+      treatment.checkSintomasResp.setSelected(true);
+      Component[] componentesSintomas = {treatment.checkTosse,
+              treatment.checkCoriza, treatment.checkEspirros,
+              treatment.checkFebre, treatment.checkCalafrios, treatment.txtSintomasOutros,
+              treatment.txtDataInicioSintomas};
+      for(Component c : componentesSintomas) {
+        c.setEnabled(true);
+      }
+    }
+    treatment.checkTosse.setSelected(treatment.prisonerInformation.getClinicalCare().isHasCough());
+    treatment.checkCoriza.setSelected(treatment.prisonerInformation.getClinicalCare().isHasRunnyNose());
+    treatment.checkEspirros.setSelected(treatment.prisonerInformation.getClinicalCare().isHasSneezing());
+    treatment.checkFebre.setSelected(treatment.prisonerInformation.getClinicalCare().isHasFever());
+    treatment.checkCalafrios.setSelected(treatment.prisonerInformation.getClinicalCare().isHasChills());
+    treatment.txtSintomasOutros.setText(treatment.prisonerInformation.getClinicalCare().getOtherSymptoms());
+    if (treatment.prisonerInformation.getClinicalCare().getStartDateRespiratorySymptoms() != null) {
+      treatment.txtDataInicioSintomas.setText(new SimpleDateFormat("dd/MM/yyyy").format(treatment.prisonerInformation.getClinicalCare().getStartDateRespiratorySymptoms()));
+    } else {
+      treatment.txtDataInicioSintomas.setText("");
+    }
+    treatment.checkLesoes.setSelected(treatment.prisonerInformation.getClinicalCare().isHasInjuries());
+    if (treatment.prisonerInformation.getClinicalCare().isHasInjuries()) {
+      treatment.txtLesoesLocal.setEnabled(true);
+    } else {
+      treatment.txtLesoesLocal.setEnabled(false);
+    }
+    treatment.txtLesoesLocal.setText(treatment.prisonerInformation.getClinicalCare().getInjuriesSites());
+
+    treatment.radioDeficienciaSim.setSelected(treatment.prisonerInformation.getHealthConditions().isHasDeficiency());
+    treatment.radioDeficienciaNao.setSelected(!treatment.prisonerInformation.getHealthConditions().isHasDeficiency());
+    treatment.txtDeficienciaQual.setText(treatment.prisonerInformation.getHealthConditions().getDeficiency());
+    treatment.radioAlergiaSim.setSelected(treatment.prisonerInformation.getHealthConditions().isHasAllergies());
+    treatment.radioAlergiaNao.setSelected(!treatment.prisonerInformation.getHealthConditions().isHasAllergies());
+    treatment.radioCirurgiaSim.setSelected(treatment.prisonerInformation.getHealthConditions().isHasSurgeries());
+    treatment.radioCirurgiaNao.setSelected(!treatment.prisonerInformation.getHealthConditions().isHasSurgeries());
+    treatment.txtCirurgiaQual.setText(treatment.prisonerInformation.getHealthConditions().getSurgeries());
+    treatment.txtAlergiaQual.setText(treatment.prisonerInformation.getHealthConditions().getAllergies());
+    treatment.checkHipertensao.setSelected(treatment.prisonerInformation.getHealthConditions().isHasHypertension());
+    treatment.checkDiabetes.setSelected(treatment.prisonerInformation.getHealthConditions().isHasDiabetes());
+    treatment.checkHIV.setSelected(treatment.prisonerInformation.getHealthConditions().isHasHiv());
+    treatment.checkAutoimune.setSelected(treatment.prisonerInformation.getHealthConditions().isHasAutoimmune());
+    treatment.checkSifilis.setSelected(treatment.prisonerInformation.getHealthConditions().isHasSyphilis());
+    treatment.checkHPV.setSelected(treatment.prisonerInformation.getHealthConditions().isHasHpv());
+    treatment.txtAutoimuneOutra.setText(treatment.prisonerInformation.getHealthConditions().getOtherChronicDisease());
+    treatment.checkTuberculose.setSelected(treatment.prisonerInformation.getHealthConditions().isHasTuberculosis());
+    treatment.checkHepatiteB.setSelected(treatment.prisonerInformation.getHealthConditions().isHasHepatitisB());
+    treatment.checkHepatiteC.setSelected(treatment.prisonerInformation.getHealthConditions().isHasHepatitisC());
+    treatment.txtInfecciosaOutra.setText(treatment.prisonerInformation.getHealthConditions().getOtherInfectiousDisease());
+    treatment.checkPele.setSelected(treatment.prisonerInformation.getHealthConditions().isHasSkinDiseases());
+    if (treatment.prisonerInformation.getHealthConditions().isHasSkinDiseases()) {
+      treatment.txtPeleQual.setEnabled(true);
+    } else {
+      treatment.txtPeleQual.setEnabled(false);
+    }
+    treatment.txtPeleQual.setText(treatment.prisonerInformation.getHealthConditions().getSkinDiseases());
+    treatment.checkMedicamentoContinuo.setSelected(treatment.prisonerInformation.getHealthConditions().isUseContinuousMedication());
+    if (treatment.prisonerInformation.getHealthConditions().isUseContinuousMedication()) {
+      treatment.txtMedicamentoQual.setEnabled(true);
+    } else {
+      treatment.txtMedicamentoQual.setEnabled(false);
+    }
+    treatment.txtMedicamentoQual.setText(treatment.prisonerInformation.getHealthConditions().getContinuousMedication());
+    treatment.comboTipoSanguineo.setSelectedItem(treatment.prisonerInformation.getHealthConditions().getBloodType());
+
+    treatment.checkCaps.setSelected(treatment.prisonerInformation.getMentalHealth().isHasLinkCaps());
+    treatment.txtCapsQual.setText(treatment.prisonerInformation.getMentalHealth().getCapsCity());
+    treatment.checkAcompanhamentoMental.setSelected(treatment.prisonerInformation.getMentalHealth().isWasAccompaniment());
+    if (treatment.prisonerInformation.getMentalHealth().isWasAccompaniment()) {
+      treatment.txtAcompanhamentoMotivo.setEnabled(true);
+    } else {
+      treatment.txtAcompanhamentoMotivo.setEnabled(false);
+    }
+    treatment.txtAcompanhamentoMotivo.setText(treatment.prisonerInformation.getMentalHealth().getReasonAccompaniment());
+    treatment.checkAnsiedade.setSelected(treatment.prisonerInformation.getMentalHealth().isHasAnxiety());
+    treatment.checkDepressao.setSelected(treatment.prisonerInformation.getMentalHealth().isHasDepression());
+    treatment.checkBipolaridade.setSelected(treatment.prisonerInformation.getMentalHealth().isHasBipolarity());
+    treatment.checkEsquizofrenia.setSelected(treatment.prisonerInformation.getMentalHealth().isHasSchizophrenia());
+    treatment.checkAutismo.setSelected(treatment.prisonerInformation.getMentalHealth().isHasAutism());
+    treatment.txtTranstornoOutro.setText(treatment.prisonerInformation.getMentalHealth().getOtherMentalDisorder());
+    treatment.checkUsaMedicamentoControlado.setSelected(treatment.prisonerInformation.getMentalHealth().isUseControlledMedicine());
+    treatment.txtMedicamentoControladoQual.setText(treatment.prisonerInformation.getMentalHealth().getControlledMedicines());
+    if (treatment.prisonerInformation.getMentalHealth().isUseControlledMedicine()) {
+      treatment.txtMedicamentoControladoQual.setEnabled(true);
+    } else {
+      treatment.txtMedicamentoControladoQual.setEnabled(false);
+    }
+    treatment.checkUsoAlcool.setSelected(treatment.prisonerInformation.getMentalHealth().isUseAlcohol());
+    treatment.checkUsoCigarro.setSelected(treatment.prisonerInformation.getMentalHealth().isUseCigarettes());
+    treatment.checkUsoMaconha.setSelected(treatment.prisonerInformation.getMentalHealth().isUseMarijuana());
+    treatment.checkUsoCrack.setSelected(treatment.prisonerInformation.getMentalHealth().isUseCrack());
+    treatment.checkUsoCocaina.setSelected(treatment.prisonerInformation.getMentalHealth().isUseCocaine());
+    treatment.checkUsoAnfetaminas.setSelected(treatment.prisonerInformation.getMentalHealth().isUseAmphetamines());
+    treatment.checkUsoDrogasK.setSelected(treatment.prisonerInformation.getMentalHealth().isUseKDrugs());
+    treatment.txtUsoOutrasDrogas.setText(treatment.prisonerInformation.getMentalHealth().getOtherSubstances());
+    treatment.checkTratamentoReducao.setSelected(treatment.prisonerInformation.getMentalHealth().isHasTreatment());
+    treatment.txtTratamentoReducaoQual.setText(treatment.prisonerInformation.getMentalHealth().getSubstanceTreatment());
+    if (treatment.prisonerInformation.getMentalHealth().isHasTreatment()) {
+      treatment.txtTratamentoReducaoQual.setEnabled(true);
+    } else {
+      treatment.txtTratamentoReducaoQual.setEnabled(false);
+    }
+    treatment.checkGostariaTratamento.setSelected(treatment.prisonerInformation.getMentalHealth().isWannaTreatment());
+    treatment.txtGostariaTratamentoQual.setText(treatment.prisonerInformation.getMentalHealth().getWannaTreatmentSubstance());
+    if (treatment.prisonerInformation.getMentalHealth().isWannaTreatment()) {
+      treatment.txtGostariaTratamentoQual.setEnabled(true);
+    } else {
+      treatment.txtGostariaTratamentoQual.setEnabled(false);
+    }
+    treatment.checkEncaminhaPsicologia.setSelected(treatment.prisonerInformation.getMentalHealth().isOfferPsychology());
+    treatment.checkEncaminhaPsiquiatra.setSelected(treatment.prisonerInformation.getMentalHealth().isOfferPsychiatrist());
+    treatment.checkEncaminhaReceitas.setSelected(treatment.prisonerInformation.getMentalHealth().isRevenueRenewal());
+    treatment.checkEncaminhaGruposApoio.setSelected(treatment.prisonerInformation.getMentalHealth().isSupportGroups());
+
+    treatment.checkVacinaCovid.setSelected(treatment.prisonerInformation.getVaccinationStatus().isCovid());
+    treatment.checkVacinaInfluenza.setSelected(treatment.prisonerInformation.getVaccinationStatus().isInfluenza());
+    treatment.checkVacinaTetano.setSelected(treatment.prisonerInformation.getVaccinationStatus().isTetanus());
+    treatment.checkVacinaHepatiteB.setSelected(treatment.prisonerInformation.getVaccinationStatus().isHepatitisB());
+    treatment.checkOfertaCovid.setSelected(treatment.prisonerInformation.getVaccinationStatus().isOfferCovid());
+    treatment.checkOfertaHepatiteB.setSelected(treatment.prisonerInformation.getVaccinationStatus().isOfferHepatitis());
+    treatment.checkOfertaInfluenza.setSelected(treatment.prisonerInformation.getVaccinationStatus().isOfferInfluenza());
+    treatment.checkOfertaFebreAmarela.setSelected(treatment.prisonerInformation.getVaccinationStatus().isOfferFever());
+    treatment.checkOfertaDuplaAdulto.setSelected(treatment.prisonerInformation.getVaccinationStatus().isOfferAdultDuo());
+    treatment.checkOfertaTripliceViral.setSelected(treatment.prisonerInformation.getVaccinationStatus().isOfferSrc());
+    treatment.txtOfertaVacinaOutra.setText(treatment.prisonerInformation.getVaccinationStatus().getOfferOtherVaccination());
+    treatment.checkOfertarCopiaCarteira.setSelected(treatment.prisonerInformation.getVaccinationStatus().isOfferPortfolioCopy());
+
+    switch (treatment.prisonerInformation.getQuickTests().getPregnantTest()) {
+      case "Positivo": treatment.radioGravidezPos.setSelected(true); break;
+      case "Negativo": treatment.radioGravidezNeg.setSelected(true); break;
+      case "Não Realizado": treatment.radioGravidezNao.setSelected(true); break;
+    }
+    treatment.checkColetaEscarro.setSelected(treatment.prisonerInformation.getQuickTests().isSputumCollection());
+    treatment.checkOutraQueixa.setSelected(treatment.prisonerInformation.getQuickTests().isHasComplaint());
+    if (treatment.prisonerInformation.getQuickTests().isHasComplaint()) {
+      treatment.txtOutraQueixaQual.setEnabled(true);
+    } else {
+      treatment.txtOutraQueixaQual.setEnabled(false);
+    }
+    treatment.txtOutraQueixaQual.setText(treatment.prisonerInformation.getQuickTests().getComplaintDescription());
+    treatment.checkQueixaOdonto.setSelected(treatment.prisonerInformation.getQuickTests().isHasDentalComplaint());
+    if (treatment.prisonerInformation.getQuickTests().isHasDentalComplaint()) {
+      treatment.txtQueixaOdontoQual.setEnabled(true);
+    } else {
+      treatment.txtQueixaOdontoQual.setEnabled(false);
+    }
+    treatment.txtQueixaOdontoQual.setText(treatment.prisonerInformation.getQuickTests().getDentalComplaint());
+    if(treatment.prisonerInformation.getWomenHealth().getId() > 0) {
+      treatment.radioSaudeMulher.setSelected(true);
+      treatment.cardLayout.show(treatment.panelContainerDinamico, "MULHER");
+      treatment.txtIdadeGestacional.setText(treatment.prisonerInformation.getWomenHealth().getPregnantAge());
+      treatment.radioGestacaoSim.setSelected(treatment.prisonerInformation.getWomenHealth().isPregnant());
+      treatment.radioGestacaoNao.setSelected(!treatment.prisonerInformation.getWomenHealth().isPregnant());
+      treatment.checkContraOral.setSelected(treatment.prisonerInformation.getWomenHealth().isUseOralContraceptive());
+      treatment.checkContraInjetavel.setSelected(treatment.prisonerInformation.getWomenHealth().isUseInjectableContraceptive());
+      treatment.checkContraDIU.setSelected(treatment.prisonerInformation.getWomenHealth().isUseIUDImplant());
+      treatment.checkContraLigadura.setSelected(treatment.prisonerInformation.getWomenHealth().isUseTubalLigation());
+      treatment.checkContraHisterectomia.setSelected(treatment.prisonerInformation.getWomenHealth().isUseHysterectomy());
+      treatment.checkPapanicolau.setSelected(treatment.prisonerInformation.getWomenHealth().isHasPreventiveExam());
+      if (treatment.prisonerInformation.getWomenHealth().isHasPreventiveExam()) {
+        treatment.txtPapanicolauAno.setEnabled(true);
+      } else {
+        treatment.txtPapanicolauAno.setEnabled(false);
+      }
+      treatment.txtPapanicolauAno.setText(String.valueOf(treatment.prisonerInformation.getWomenHealth().getPreventiveExamYear()));
+
+      treatment.checkEncaminhaContraceptivo.setSelected(treatment.prisonerInformation.getWomenHealth().isOfferContraceptiveMethod());
+      treatment.checkEncaminhaPreventivo.setSelected(treatment.prisonerInformation.getWomenHealth().isOfferPreventiveExam());
+      treatment.checkEncaminhaPreNatal.setSelected(treatment.prisonerInformation.getWomenHealth().isPrenatal());
+    } else {
+      treatment.radioSaudeHomem.setSelected(true);
+      treatment.cardLayout.show(treatment.panelContainerDinamico, "HOMEM");
+      treatment.checkExameProstata.setSelected(treatment.prisonerInformation.getMenHealth().isHasPreventExam());
+      if (treatment.prisonerInformation.getMenHealth().isHasPreventExam()) {
+        treatment.txtExameProstataAno.setEnabled(true);
+      } else {
+        treatment.txtExameProstataAno.setEnabled(false);
+      }
+      treatment.txtExameProstataAno.setText(String.valueOf(treatment.prisonerInformation.getMenHealth().getPreventExamYear()));
+      treatment.checkHistFamiliarProstata.setSelected(treatment.prisonerInformation.getMenHealth().isHasProstateCancerFamilyHistory());
+      treatment.txtHistFamiliarProstataQual.setText(treatment.prisonerInformation.getMenHealth().getProstateCancerFamily());
+      if (treatment.prisonerInformation.getMenHealth().isHasProstateCancerFamilyHistory()) {
+        treatment.txtHistFamiliarProstataQual.setEnabled(true);
+      } else {
+        treatment.txtHistFamiliarProstataQual.setEnabled(false);
+      }
+      treatment.checkVasectomia.setSelected(treatment.prisonerInformation.getMenHealth().isVasectomy());
+      treatment.checkParceiraGestante.setSelected(treatment.prisonerInformation.getMenHealth().isPregnantPartner());
+      treatment.checkParticipaPreNatal.setSelected(treatment.prisonerInformation.getMenHealth().isPrenatalPregnantPartner());
+      if(treatment.prisonerInformation.getMenHealth().isPrenatalPregnantPartner()) {
+        treatment.checkParticipaPreNatal.setEnabled(true);
+        treatment.checkEncaminhaPreNatalParceiro.setEnabled(true);
+      } else {
+        treatment.checkParticipaPreNatal.setEnabled(false);
+        treatment.checkEncaminhaPreNatalParceiro.setEnabled(false);
+      }
+      treatment.checkEncaminhaVasectomia.setSelected(treatment.prisonerInformation.getMenHealth().isOfferVasectomy());
+      treatment.checkEncaminhaPreNatalParceiro.setSelected(treatment.prisonerInformation.getMenHealth().isOfferPrenatal());
+
+    }
+
+
 
     switch (treatment.prisonerInformation.getNationality()) {
       case "Brasileira": treatment.radioBrasileira.setSelected(true); break;
