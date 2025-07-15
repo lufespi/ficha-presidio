@@ -2,10 +2,7 @@ package service;
 
 import configs.DBConnection;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class MenHealthService {
   private DBConnection dbConnection;
@@ -32,7 +29,10 @@ public class MenHealthService {
             .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
       stmt.setBoolean(1, hasPreventExam);
-      stmt.setInt(2, preventExamYear);
+      if(preventExamYear != null)
+        stmt.setInt(2, preventExamYear);
+      else
+        stmt.setNull(2, Types.INTEGER);
       stmt.setBoolean(3, hasProstateCancerFamilyHistory);
       stmt.setString(4, prostateCancerFamily);
       stmt.setBoolean(5, vasectomy);
@@ -73,7 +73,10 @@ public class MenHealthService {
 
     try (PreparedStatement stmt = dbConnection.getConnection().prepareStatement(sql)) {
       stmt.setBoolean(1, hasPreventExam);
-      stmt.setInt(2, preventExamYear);
+      if(preventExamYear != null)
+        stmt.setInt(2, preventExamYear);
+      else
+        stmt.setNull(2, Types.INTEGER);
       stmt.setBoolean(3, hasProstateCancerFamilyHistory);
       stmt.setString(4, prostateCancerFamily);
       stmt.setBoolean(5, vasectomy);

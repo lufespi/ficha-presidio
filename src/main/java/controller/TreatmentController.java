@@ -275,7 +275,8 @@ public class TreatmentController {
   private int saveClinicalCare() {
     Date startDateRespiratorySymptoms;
 
-    if (!treatment.txtDataInicioSintomas.getText().trim().isEmpty()) {
+    if (!treatment.txtDataInicioSintomas.getText().replace("_", "")
+            .replace("/", "").isEmpty()) {
       try {
         startDateRespiratorySymptoms = DateUtils.parseToDate(treatment.txtDataInicioSintomas.getText().trim());
       } catch (Exception e) {
@@ -392,7 +393,7 @@ public class TreatmentController {
   }
 
   private int saveMenHealth() {
-    Integer exameProstataAno = null;
+    int exameProstataAno = 0;
     if(!treatment.txtExameProstataAno.getText().trim().isEmpty()){
       exameProstataAno = Integer.parseInt(treatment.txtExameProstataAno.getText().trim());
     }
@@ -426,7 +427,7 @@ public class TreatmentController {
   }
 
   private int saveWomenHealth() {
-    Integer papanicolauAno = null;
+    int papanicolauAno = 0;
     if(!treatment.txtPapanicolauAno.getText().trim().isEmpty()){
       papanicolauAno = Integer.parseInt(treatment.txtPapanicolauAno.getText().trim());
     }

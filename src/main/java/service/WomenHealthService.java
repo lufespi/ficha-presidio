@@ -3,10 +3,7 @@ package service;
 import configs.DBConnection;
 import entities.WomenHealth;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class WomenHealthService {
   private DBConnection dbConnection;
@@ -82,7 +79,7 @@ public class WomenHealthService {
           boolean useTubalLigation,
           boolean useHysterectomy,
           boolean hasPreventiveExam,
-          int preventiveExamYear,
+          Integer preventiveExamYear,
           boolean offerContraceptiveMethod,
           boolean offerPreventiveExam,
           boolean isPrenatal) {
@@ -108,7 +105,10 @@ public class WomenHealthService {
       stmt.setBoolean(6, useTubalLigation);
       stmt.setBoolean(7, useHysterectomy);
       stmt.setBoolean(8, hasPreventiveExam);
-      stmt.setInt(9, preventiveExamYear);
+      if (preventiveExamYear != null)
+        stmt.setInt(9, preventiveExamYear);
+      else
+        stmt.setNull(9, Types.INTEGER);
       stmt.setBoolean(10, offerContraceptiveMethod);
       stmt.setBoolean(11, offerPreventiveExam);
       stmt.setBoolean(12, isPrenatal);
